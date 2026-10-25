@@ -38,6 +38,7 @@
     if (HEIGHT[h.get('width')]) L.width = Number(h.get('width'));
     if (h.get('text')) L.textScale = Number(h.get('text')) || 1;
     if (h.get('deco')) L.deco = h.get('deco');
+    if (h.get('motion') === 'reduced') L.motion = 'reduced';
     L.solo = h.get('solo') === '1';
     L.tall = h.get('tall') === '1';
     if (E.JUMPS[h.get('screen')]) screenId = h.get('screen');
@@ -45,7 +46,7 @@
 
   function writeHash() {
     const L = S.lab;
-    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco });
+    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
     if (L.solo) h.set('solo', '1');
     if (L.tall) h.set('tall', '1');
     history.replaceState(null, '', '#' + h.toString());
@@ -63,6 +64,7 @@
     $('c-width').value = String(L.width);
     $('c-text').value = String(L.textScale);
     $('c-deco').value = L.deco;
+    $('c-motion').value = L.motion;
     document.querySelectorAll('[data-when="compare"]').forEach((el) => { el.hidden = L.view !== 'compare'; });
     $('c-family').parentElement.hidden = L.view === 'gallery';
   }
@@ -108,6 +110,7 @@
     L.width = Number($('c-width').value);
     L.textScale = Number($('c-text').value);
     L.deco = $('c-deco').value;
+    L.motion = $('c-motion').value;
     if (L.view === 'compare' && L.familyB === L.family) {
       L.familyB = Object.keys(FAMS).find((f) => f !== L.family);
     }

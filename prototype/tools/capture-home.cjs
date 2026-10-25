@@ -8,12 +8,15 @@ const INDEX = 'file://' + path.resolve(__dirname, '..', 'index.html');
 const OUT = path.resolve(__dirname, '..', 'captures', 'home');
 const FAMS = [['v0', 'V0 Actual'], ['v1', 'V1 Esencial'], ['v2', 'V2 Claridad'], ['v3', 'V3 Estudio']];
 const W = 390;
+// Stills are taken at a resting moment of the hat animation (after the drop-in).
+const settle = (page) => page.evaluate(() => document.querySelectorAll('svg.xmas-hat').forEach((s) => { s.pauseAnimations(); s.setCurrentTime(3); }));
 
 // Renders Home in solo mode and returns a PNG tall enough to show the whole scroll content.
 async function shot(page, hash, full) {
   await page.setViewportSize({ width: W, height: 844 });
   await page.goto(`${INDEX}#solo=1&lang=es&${hash}`);
   await page.waitForTimeout(250);
+  await settle(page);
   if (full) {
     const extra = await page.evaluate(() => {
       const s = document.querySelector('.scroll');
@@ -64,10 +67,10 @@ async function sheet(browser, file, title, cells, cols) {
   await sheet(browser, '05-inicio-desglose-abierto.png', 'Inicio · desglose del cobro abierto', open, 2);
 
   // Christmas variety (lab option): V3 base plus one pill example.
-  const XMAS = [['xmas-hat', 'Gorro de Santa'], ['xmas-ornament', 'Esfera'], ['xmas-wreath', 'Corona']];
+  const XMAS = [['xmas-hat', 'Gorro de Santa (lado derecho, animado)'], ['xmas-ornament', 'Esfera'], ['xmas-wreath', 'Corona']];
   const grid = [];
   for (const [deco, label] of XMAS) grid.push([`V3 · ${label}`, await shot(page, `family=v3&screen=home&scenario=partial&deco=${deco}`, false)]);
-  grid.push(['V1 · Gorro en botón píldora', await shot(page, 'family=v1&screen=home&scenario=partial&deco=xmas-hat', false)]);
+  grid.push(['V1 · Gorro pequeño en botón píldora', await shot(page, 'family=v1&screen=home&scenario=partial&deco=xmas-hat', false)]);
   await sheet(browser, '06-navidad-variedad.png', 'Navidad · pequeña variedad para Inicio', grid, 2);
   n = 7;
   for (const [deco, label] of XMAS) {
@@ -81,6 +84,7 @@ async function sheet(browser, file, title, cells, cols) {
   for (const [deco, label] of XMAS) {
     await cu.goto(`${INDEX}#solo=1&lang=es&family=v3&screen=home&deco=${deco}`);
     await cu.waitForTimeout(250);
+    await settle(cu);
     crops.push([label, (await (await cu.$('.start-wrap')).screenshot()).toString('base64')]);
   }
   await cu.close();

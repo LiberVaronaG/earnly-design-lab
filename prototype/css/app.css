@@ -353,7 +353,7 @@
 .sheet-backdrop, .dialog-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.38); z-index: 20; display: flex; }
 .sheet { margin-top: 56px; flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--color-sheet); border-radius: var(--radius-sheet) var(--radius-sheet) 0 0; min-height: 0; box-shadow: 0 -8px 30px rgba(0,0,0,.2); animation: sheet-in var(--motion-base) var(--motion-easing); }
 @keyframes sheet-in { from { transform: translateY(30px); opacity: .6; } }
-@media (prefers-reduced-motion: reduce) { .sheet { animation: none; } .app * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .sheet { animation: none; } .app * { transition: none !important; } .start-circle:active ~ .xmas-hat-right { transform: none; } }
 .sheet-body { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-xs) var(--space-md) var(--space-lg); display: flex; flex-direction: column; gap: var(--space-sm); }
 .sheet-center { align-items: center; justify-content: center; text-align: center; gap: var(--space-md); }
 .sheet-center .btn { max-width: 320px; }
@@ -415,7 +415,11 @@
 .start-xmas { padding: 64px 0 var(--space-lg); }
 .start-holder { position: relative; display: grid; place-items: center; }
 .start-holder .start-circle { position: relative; z-index: 1; }
-.xmas-hat { position: absolute; z-index: 2; left: -5%; top: -37.5%; width: 115%; height: auto; overflow: visible; pointer-events: none; transform: rotate(-6deg); transform-origin: 50% 100%; }
+.xmas-hat { position: absolute; z-index: 2; overflow: visible; pointer-events: none; }
+.xmas-hat-right { inset: 0; width: 100%; height: 100%; transition: transform var(--motion-fast) var(--motion-easing); }
+/* Pressing the button makes the hat hop. */
+.start-circle:active ~ .xmas-hat-right { transform: translate(2px, -7px) rotate(3deg); }
+.start-xmas-hat { padding-top: 60px; }
 .xmas-cap { position: absolute; z-index: 2; left: 38%; top: -17%; width: 24%; overflow: visible; pointer-events: none; }
 .xmas-sparkles { position: absolute; inset: -14%; width: 128%; height: 128%; pointer-events: none; }
 .xmas-wreath { position: absolute; z-index: 2; overflow: visible; width: calc(max(var(--control-start-diameter), 6.4em) + 56px); aspect-ratio: 1; pointer-events: none; }
@@ -429,7 +433,7 @@
 .start-ornament::after { content: ""; position: absolute; inset: 14%; border-radius: 50%; border: 2px dotted rgba(246,217,138,.45); pointer-events: none; }
 .start-xmas-ornament { padding-top: 48px; }
 .footer-xmas { position: relative; }
-.footer-xmas .xmas-hat { left: 6px; top: -14px; width: 74px; transform: rotate(-18deg); }
+.footer-xmas .xmas-hat-pill { right: 10px; top: -18px; width: 72px; transform: rotate(16deg); }
 /* With very large text the label wins: button decorations step aside, only the snow stays. */
 .app[data-ax="true"] :is(.xmas-sparkles, .xmas-hat, .xmas-cap, .xmas-wreath) { display: none; }
 .app[data-ax="true"] .start-xmas { padding-top: var(--space-md); }

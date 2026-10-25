@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };

@@ -32,7 +32,7 @@ Las cuatro familias comparten datos, textos, navegación y componentes. Cada una
 12. **Textos nuevos.** La etiqueta «Cobrado este mes» (V1/V3) aclara el periodo de la cifra que la referencia rotula solo «Paid/Cobrado». Es una propuesta de redacción. Las cadenas ES sin captura en español son traducciones del laboratorio.
 13. **Texto grande.** Al 200 % (`data-ax`) los pares etiqueta/valor, las filas, el triple de V0, las columnas de la tabla de V2 y los segmentos se apilan o se envuelven en lugar de recortarse. Las cifras grandes se limitan al ancho del teléfono con unidades de contenedor (`cqi`).
 14. **Navidad en el botón de Inicio (pedido del propietario, 25 oct).** Hay tres variantes, todas sobre el círculo de V3 (también funcionan en V0):
-    - **gorro de Santa** con ala de pelo, pompón y sombra sobre el botón;
+    - **gorro de Santa en el lado derecho, animado** (pedido del propietario: solo durará un mes). Al aparecer Inicio cae y rebota; en reposo la punta se balancea y el pompón la sigue con retraso, un brillo recorre la tela y destellan puntos del pelo; al pulsar el botón da un saltito. Es SVG con animación SMIL. Con «Movimiento: reducido» o con el ajuste del sistema activado queda quieto, y la caída solo se reproduce al entrar en Inicio, no en cada redibujado;
     - **esfera** de árbol con tapa dorada;
     - **corona** de pino con bayas y lazo.
 

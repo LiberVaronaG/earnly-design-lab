@@ -35,7 +35,7 @@
 
 ### Navidad (25 oct)
 
-El propietario prefiere la línea de V3 (círculo) y quiere una actualización con temática navideña sutil. Hay tres variantes del botón «Iniciar turno»: gorro de Santa, esfera y corona (`js/xmas.js`, opción «Decoración»). Todavía no se ha elegido ninguna. Las imágenes para revisar están en `captures/home/06-10`.
+El propietario prefiere la línea de V3 (círculo) y quiere una actualización con temática navideña sutil. Hay tres variantes del botón «Iniciar turno»: gorro de Santa en el lado derecho y animado (la que el propietario pidió concretar), esfera y corona (`js/xmas.js`, opción «Decoración»). Todavía no se ha elegido ninguna. Las imágenes están en `captures/home/06-10`. Los vídeos del gorro animado están en `captures/home/11-13*.mp4` y se regeneran con `node tools/capture-hat-video.cjs` (necesita ffmpeg).
 
 ## Cómo continuar
 
