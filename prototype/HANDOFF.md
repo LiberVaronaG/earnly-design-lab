@@ -33,6 +33,10 @@
 
 **El trabajo se centra solo en Inicio**, que es la base de la app. No se diseñan más pantallas por ahora. Cuando haya una propuesta de Inicio convincente, se adaptará al resto. Las demás pantallas del prototipo quedan como contexto y no son prioridad. Las imágenes de Inicio para revisar en el teléfono están en `captures/home/` y se regeneran con `node tools/capture-home.cjs`.
 
+### Navidad (25 oct)
+
+El propietario prefiere la línea de V3 (círculo) y quiere una actualización con temática navideña sutil. Hay tres variantes del botón «Iniciar turno»: gorro de Santa, esfera y corona (`js/xmas.js`, opción «Decoración»). Todavía no se ha elegido ninguna. Las imágenes para revisar están en `captures/home/06-10`.
+
 ## Cómo continuar
 
 1. Abre `index.html`, elige la vista «Las cuatro» y recorre la lista «Pantalla».

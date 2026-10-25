@@ -63,6 +63,29 @@ async function sheet(browser, file, title, cells, cols) {
   for (const [id, name] of FAMS) open.push([name, await shot(page, `family=${id}&screen=homeBreakdown&scenario=partial`, true)]);
   await sheet(browser, '05-inicio-desglose-abierto.png', 'Inicio · desglose del cobro abierto', open, 2);
 
+  // Christmas variety (lab option): V3 base plus one pill example.
+  const XMAS = [['xmas-hat', 'Gorro de Santa'], ['xmas-ornament', 'Esfera'], ['xmas-wreath', 'Corona']];
+  const grid = [];
+  for (const [deco, label] of XMAS) grid.push([`V3 · ${label}`, await shot(page, `family=v3&screen=home&scenario=partial&deco=${deco}`, false)]);
+  grid.push(['V1 · Gorro en botón píldora', await shot(page, 'family=v1&screen=home&scenario=partial&deco=xmas-hat', false)]);
+  await sheet(browser, '06-navidad-variedad.png', 'Navidad · pequeña variedad para Inicio', grid, 2);
+  n = 7;
+  for (const [deco, label] of XMAS) {
+    const light = await shot(page, `family=v3&screen=home&scenario=partial&deco=${deco}`, true);
+    const dark = await shot(page, `family=v3&screen=home&scenario=partial&deco=${deco}&theme=dark`, true);
+    await sheet(browser, `${String(n++).padStart(2, '0')}-navidad-${deco.slice(5)}-v3.png`, `V3 Estudio · Navidad · ${label}`, [['Claro', light], ['Oscuro', dark]], 2);
+  }
+  // Close-ups of the decorated button at 3x.
+  const cu = await browser.newPage({ viewport: { width: W, height: 844 }, deviceScaleFactor: 3 });
+  const crops = [];
+  for (const [deco, label] of XMAS) {
+    await cu.goto(`${INDEX}#solo=1&lang=es&family=v3&screen=home&deco=${deco}`);
+    await cu.waitForTimeout(250);
+    crops.push([label, (await (await cu.$('.start-wrap')).screenshot()).toString('base64')]);
+  }
+  await cu.close();
+  await sheet(browser, '10-navidad-detalle-boton.png', 'Detalle del botón «Iniciar turno»', crops, 1);
+
   await browser.close();
   console.log('written to', OUT);
 })();

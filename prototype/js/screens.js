@@ -231,6 +231,10 @@
 
   function startBlock(ctx) {
     const s = ctx.fam.start;
+    if (s === 'circle' || s === 'ring') {
+      const xmas = E.xmas.startDecor(ctx);
+      if (xmas) return xmas;
+    }
     if (s === 'circle') return `<div class="start-wrap"><button class="start-circle" ${act('startShift')}><span>${esc(ctx.t('startShift'))}</span></button></div>`;
     if (s === 'ring') return `<div class="start-wrap start-wrap-ring">${E.hourRing()}<button class="start-circle start-ring" ${act('startShift')}><span>${esc(ctx.t('startShift'))}</span></button></div>`;
     return '';
@@ -238,7 +242,7 @@
 
   function startFooter(ctx) {
     const s = ctx.fam.start;
-    if (s === 'pill' || s === 'bar') return `<div class="footer-bar">${button(ctx.t('startShift'), 'startShift', undefined, { cls: s === 'pill' ? 'btn-pill' : 'btn-bar' })}</div>`;
+    if (s === 'pill' || s === 'bar') return `<div class="footer-bar ${ctx.lab.deco === 'xmas-hat' ? 'footer-xmas' : ''}">${button(ctx.t('startShift'), 'startShift', undefined, { cls: s === 'pill' ? 'btn-pill' : 'btn-bar' })}${E.xmas.pillHat(ctx)}</div>`;
     return '';
   }
 

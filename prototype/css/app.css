@@ -404,3 +404,32 @@
 .app[data-ax="true"] .row-icon { display: none; }
 .app[data-ax="true"] .period-more { flex-wrap: wrap; }
 .choice > span:last-child { min-width: 0; }
+
+/* ---------- Christmas preview (lab option, off by default) ---------- */
+.hero { position: relative; isolation: isolate; }
+.app[data-deco^="xmas"] .hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit; opacity: .55;
+  background-image: radial-gradient(circle, rgba(255,255,255,.7) 1.1px, transparent 1.7px), radial-gradient(circle, rgba(255,255,255,.45) 1.4px, transparent 2.2px);
+  background-size: 44px 44px, 71px 71px; background-position: 9px 13px, 31px 27px;
+}
+.start-xmas { padding: 64px 0 var(--space-lg); }
+.start-holder { position: relative; display: grid; place-items: center; }
+.start-holder .start-circle { position: relative; z-index: 1; }
+.xmas-hat { position: absolute; z-index: 2; left: -5%; top: -37.5%; width: 115%; height: auto; overflow: visible; pointer-events: none; transform: rotate(-6deg); transform-origin: 50% 100%; }
+.xmas-cap { position: absolute; z-index: 2; left: 38%; top: -17%; width: 24%; overflow: visible; pointer-events: none; }
+.xmas-sparkles { position: absolute; inset: -14%; width: 128%; height: 128%; pointer-events: none; }
+.xmas-wreath { position: absolute; z-index: 2; overflow: visible; width: calc(max(var(--control-start-diameter), 6.4em) + 56px); aspect-ratio: 1; pointer-events: none; }
+.start-ornament {
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255,255,255,.55) 0, rgba(255,255,255,.16) 16%, transparent 36%),
+    radial-gradient(circle at 70% 80%, rgba(0,0,0,.28) 0, transparent 55%),
+    var(--color-action) !important;
+  box-shadow: inset -10px -14px 26px rgba(0,0,0,.22), inset 6px 8px 16px rgba(255,255,255,.12), 0 10px 24px rgba(19,74,56,.3) !important;
+}
+.start-ornament::after { content: ""; position: absolute; inset: 14%; border-radius: 50%; border: 2px dotted rgba(246,217,138,.45); pointer-events: none; }
+.start-xmas-ornament { padding-top: 48px; }
+.footer-xmas { position: relative; }
+.footer-xmas .xmas-hat { left: 6px; top: -14px; width: 74px; transform: rotate(-18deg); }
+/* With very large text the label wins: button decorations step aside, only the snow stays. */
+.app[data-ax="true"] :is(.xmas-sparkles, .xmas-hat, .xmas-cap, .xmas-wreath) { display: none; }
+.app[data-ax="true"] .start-xmas { padding-top: var(--space-md); }

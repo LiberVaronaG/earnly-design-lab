@@ -79,6 +79,30 @@ async function run() {
       if (a.tiny.length) fail(`${label}: targets under 24px ${a.tiny.join('; ')}`);
     }
   }
+  // Christmas start-button variants on Home: same audit, every family, 320/390 px and 200 % text.
+  for (const deco of ['xmas-hat', 'xmas-ornament', 'xmas-wreath']) for (const family of FAMILIES) {
+    for (const [width, text, theme] of [[390, 1, 'light'], [320, 1, 'dark'], [320, 2, 'light']]) {
+      await page.setViewportSize({ width, height: 700 });
+      const label = `${family}/${deco}/${theme}/${width}px/text${text}/home`;
+      logs.length = 0;
+      await page.goto(`${INDEX}#solo=1&family=${family}&theme=${theme}&lang=es&screen=home&width=${width === 320 ? 320 : 390}&text=${text}&deco=${deco}`);
+      await page.waitForSelector('.app .scroll');
+      const a = await audit(page, label);
+      checked++;
+      if (logs.length) fail(`${label}: console ${logs.join(' | ')}`);
+      if (a.overflow.length) fail(`${label}: horizontal overflow ${a.overflow.join('; ')}`);
+      if (a.unnamed.length) fail(`${label}: controls without a name ${a.unnamed.join('; ')}`);
+      // The decoration must not cover the button label.
+      const covered = await page.evaluate(() => {
+        const label = document.querySelector('[data-action="startShift"] span');
+        label.scrollIntoView({ block: 'center' });
+        const r = label.getBoundingClientRect();
+        const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        return !(hit && hit.closest('[data-action="startShift"]'));
+      });
+      if (covered) fail(`${label}: decoration covers the Start label`);
+    }
+  }
   info.push(`${checked} screen renders audited; ${small} control instances between 24 and 44 px tall (segments/inline links; see PRUEBAS.md)`);
 
   // 2. Flows (each in V0 and V1, EN and ES).
