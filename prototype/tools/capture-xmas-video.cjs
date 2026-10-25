@@ -56,5 +56,7 @@ async function render(browser, name, hash, { selector, scale, width, height }) {
   await render(browser, '12-navidad-duende.mp4', 'family=v3&screen=home&deco=xmas-elf', { scale: 2, width: 390, height: 844 });
   await render(browser, '13-navidad-nevada.mp4', 'family=v3&screen=home&deco=xmas-snow', { scale: 2, width: 390, height: 844 });
   await render(browser, '14-navidad-luces-oscuro.mp4', 'family=v3&screen=home&deco=xmas-lights&theme=dark', { scale: 2, width: 390, height: 844 });
+  await render(browser, '17-navidad-elegida.mp4', 'family=v0&screen=home&deco=xmas-gorrito', { scale: 2, width: 390, height: 844 });
+  await render(browser, '18-navidad-elegida-detalle.mp4', 'family=v0&screen=home&deco=xmas-gorrito', { selector: '.start-wrap', scale: 3, width: 390, height: 844 });
   await browser.close();
 })();

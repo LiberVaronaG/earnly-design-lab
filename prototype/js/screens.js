@@ -242,7 +242,7 @@
 
   function startFooter(ctx) {
     const s = ctx.fam.start;
-    if (s === 'pill' || s === 'bar') return `<div class="footer-bar ${ctx.lab.deco === 'xmas-elf' ? 'footer-xmas' : ''}">${button(ctx.t('startShift'), 'startShift', undefined, { cls: s === 'pill' ? 'btn-pill' : 'btn-bar' })}${E.xmas.pillDecor(ctx)}</div>`;
+    if (s === 'pill' || s === 'bar') return `<div class="footer-bar ${['xmas-elf', 'xmas-gorrito'].includes(ctx.lab.deco) ? 'footer-xmas' : ''}">${button(ctx.t('startShift'), 'startShift', undefined, { cls: s === 'pill' ? 'btn-pill' : 'btn-bar' })}${E.xmas.pillDecor(ctx)}</div>`;
     return '';
   }
 

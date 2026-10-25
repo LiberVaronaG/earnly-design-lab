@@ -40,6 +40,8 @@ El propietario prefiere la línea de V3 (círculo) y quiere encontrar un buen **
 - Imágenes: `captures/home/06-10`; se regeneran con `node tools/capture-home.cjs`.
 - Vídeos: `captures/home/11-14*.mp4`; se regeneran con `node tools/capture-xmas-video.cjs` (necesita ffmpeg).
 
+**Decisión del propietario:** Inicio actual (V0) + solo el gorrito de duende pequeño, sin aro, nieve, luces ni cambios de color (`deco=xmas-gorrito`). Imágenes: `captures/home/15-16`. Vídeos: `captures/home/17-18*.mp4`. Para la versión real, el gorrito interactivo se diseñaría con herramientas de animación o 3D.
+
 ## Cómo continuar
 
 1. Abre `index.html`, elige la vista «Las cuatro» y recorre la lista «Pantalla».

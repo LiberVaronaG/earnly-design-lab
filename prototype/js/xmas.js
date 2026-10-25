@@ -254,11 +254,13 @@
     if (!deco.startsWith('xmas')) return null;
     const uid = ctx.famId;
     const m = motionFor(ctx, uid + deco);
-    const ring = deco === 'xmas-wreath' ? wreath(uid)
+    // The chosen design (xmas-gorrito) is the hat alone: no ring, no other decoration.
+    const ring = deco === 'xmas-gorrito' ? ''
+      : deco === 'xmas-wreath' ? wreath(uid)
       : deco === 'xmas-lights' ? lightsRing(uid, m)
         : ctx.fam.start === 'ring' ? E.hourRing() : '';
     const before = deco === 'xmas-ornament' ? ornamentCap(uid) + sparkles() : '';
-    const after = deco === 'xmas-elf' ? elfHat(uid, m) : deco === 'xmas-snow' ? snowCap(uid, m) : '';
+    const after = deco === 'xmas-elf' || deco === 'xmas-gorrito' ? elfHat(uid, m) : deco === 'xmas-snow' ? snowCap(uid, m) : '';
     const cls = deco === 'xmas-ornament' ? 'start-ornament' : '';
     return `<div class="start-wrap start-wrap-ring start-xmas start-${deco}">${ring}
       <div class="start-holder">${before}<button class="start-circle ${ctx.fam.start === 'ring' ? 'start-ring' : ''} ${cls}" ${E.act('startShift')}><span>${E.esc(ctx.t('startShift'))}</span></button>${after}</div>
@@ -268,7 +270,7 @@
   // Small elf hat on the right end of the pill/bar start buttons (V1, V2).
   function pillDecor(ctx) {
     const uid = ctx.famId + '-pill';
-    return ctx.lab.deco === 'xmas-elf' ? elfHat(uid, motionFor(ctx, uid)) : '';
+    return ['xmas-elf', 'xmas-gorrito'].includes(ctx.lab.deco) ? elfHat(uid, motionFor(ctx, uid)) : '';
   }
 
   // Decorations above the hero (lights garland) and inside it (snow drift).

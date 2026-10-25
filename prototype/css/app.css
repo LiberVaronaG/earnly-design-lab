@@ -415,6 +415,8 @@
   animation: xmas-snowfall 9s linear infinite;
 }
 .app[data-deco="xmas-snow"] .hero::before { opacity: .8; animation-duration: 7s; }
+/* The chosen design keeps the hero exactly as today: no snowfall. */
+.app[data-deco="xmas-gorrito"] .hero::before { content: none; }
 @keyframes xmas-snowfall { to { background-position: 18px 57px, 24px 98px; } }
 .app[data-motion="reduced"] .hero::before { animation: none; }
 @media (prefers-reduced-motion: reduce) { .app .hero::before { animation: none; } }

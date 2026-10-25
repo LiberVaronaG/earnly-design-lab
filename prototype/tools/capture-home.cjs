@@ -93,6 +93,23 @@ async function sheet(browser, file, title, cells, cols) {
   await cu.close();
   await sheet(browser, '10-navidad-detalle-boton.png', 'Detalle del botón «Iniciar turno»', crops, 1);
 
+  // Chosen design: today's Home (V0) plus only the small elf hat.
+  const finalLight = await shot(page, 'family=v0&screen=home&scenario=partial&deco=xmas-gorrito', true);
+  const finalDark = await shot(page, 'family=v0&screen=home&scenario=partial&deco=xmas-gorrito&theme=dark', true);
+  await sheet(browser, '15-navidad-elegida-gorrito.png', 'Elegida · Inicio actual + gorrito de duende', [['Claro', finalLight], ['Oscuro', finalDark]], 2);
+  const fc = await browser.newPage({ viewport: { width: W, height: 844 }, deviceScaleFactor: 3 });
+  const fcrops = [];
+  for (const [theme, label] of [['light', 'Claro'], ['dark', 'Oscuro']]) {
+    await fc.goto(`${INDEX}#solo=1&lang=es&family=v0&screen=home&deco=xmas-gorrito&theme=${theme}`);
+    await fc.waitForTimeout(250);
+    await settle(fc);
+    const el = await fc.$('.start-wrap');
+    await el.scrollIntoViewIfNeeded();
+    fcrops.push([label, (await el.screenshot()).toString('base64')]);
+  }
+  await fc.close();
+  await sheet(browser, '16-navidad-elegida-detalle.png', 'Elegida · detalle del gorrito', fcrops, 1);
+
   await browser.close();
   console.log('written to', OUT);
 })();
