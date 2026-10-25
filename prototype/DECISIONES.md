@@ -31,13 +31,13 @@ Las cuatro familias comparten datos, textos, navegación y componentes. Cada una
 11. **Mapas.** Son SVG local inventado (costa, calles y nombres ficticios) y llevan siempre el rótulo «Mapa ficticio». No usan servicios ni coordenadas reales.
 12. **Textos nuevos.** La etiqueta «Cobrado este mes» (V1/V3) aclara el periodo de la cifra que la referencia rotula solo «Paid/Cobrado». Es una propuesta de redacción. Las cadenas ES sin captura en español son traducciones del laboratorio.
 13. **Texto grande.** Al 200 % (`data-ax`) los pares etiqueta/valor, las filas, el triple de V0, las columnas de la tabla de V2 y los segmentos se apilan o se envuelven en lugar de recortarse. Las cifras grandes se limitan al ancho del teléfono con unidades de contenedor (`cqi`).
-15. **Navidad en el botón de Inicio (pedido del propietario, 25 oct).** Hay tres variantes, todas sobre el círculo de V3 (también funcionan en V0):
+14. **Navidad en el botón de Inicio (pedido del propietario, 25 oct).** Hay tres variantes, todas sobre el círculo de V3 (también funcionan en V0):
     - **gorro de Santa** con ala de pelo, pompón y sombra sobre el botón;
     - **esfera** de árbol con tapa dorada;
     - **corona** de pino con bayas y lazo.
 
     En V1/V2 el gorro va pequeño en la esquina de la píldora. El resto de Inicio solo lleva una nevada muy suave en la tarjeta. Las piezas son SVG locales, decorativas (`aria-hidden`, sin eventos) y nunca tapan el texto del botón; hay una prueba que lo comprueba. Con texto muy grande se ocultan para no competir con la etiqueta. Se eligen en «Decoración» y están apagadas por defecto.
-14. **Decoración estacional.** Son dos SVG pequeños en la cabecera de las pestañas raíz, con `pointer-events: none` y `aria-hidden`. Están apagados por defecto y no se activan por calendario.
+15. **Decoración estacional.** Son dos SVG pequeños en la cabecera de las pestañas raíz, con `pointer-events: none` y `aria-hidden`. Están apagados por defecto y no se activan por calendario.
 
 ## Recomendación
 
