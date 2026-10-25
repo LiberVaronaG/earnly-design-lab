@@ -1,0 +1,194 @@
+{
+  "$description": "Master editable token file for the Earnly design lab prototype. `base` reproduces TOKENS-BASE.json (V0) plus documented lab-only roles; each family stores only its differences. Run `node prototype/tools/build-tokens.mjs` after editing to regenerate css/tokens.css. Values are CSS px approximating iOS points.",
+  "$sourceReference": "../TOKENS-BASE.json",
+  "base": {
+    "color": {
+      "bg": { "light": "#F5EFE6", "dark": "#1A1614", "$from": "backgroundPrimary" },
+      "surface": { "light": "#EDE4D3", "dark": "#2A2420", "$from": "backgroundSecondary" },
+      "sheet": { "light": "#F5EFE6", "dark": "#1A1614", "$from": "backgroundPrimary" },
+      "text": { "light": "#2A1F1A", "dark": "#F5EFE6", "$from": "textPrimary" },
+      "textMuted": { "light": "#6B5847", "dark": "#A8907A", "$from": "textSecondary" },
+      "cardBorder": { "light": "#7A1F1F", "dark": "#A0413B", "$from": "brandBorder" },
+      "cardBorderSubtle": { "light": "rgba(122,31,31,0.3)", "dark": "rgba(160,65,59,0.3)", "$from": "derived.brandBorderSubtle" },
+      "separator": { "light": "rgba(122,31,31,0.3)", "dark": "rgba(160,65,59,0.3)", "$from": "derived.brandBorderSubtle" },
+      "hero": { "light": "#134A38", "dark": "#0F3D2E", "$from": "heroCardBackground" },
+      "onHero": { "light": "#FFFFFF", "dark": "#FFFFFF", "$from": "onAction" },
+      "onHeroMuted": { "light": "rgba(255,255,255,0.82)", "dark": "rgba(255,255,255,0.80)", "$lab": "approximation of secondary text on hero" },
+      "heroDivider": { "light": "rgba(255,255,255,0.18)", "dark": "rgba(255,255,255,0.16)", "$lab": "approximation" },
+      "action": { "light": "#2D6B30", "dark": "#3F9442", "$from": "actionPositive" },
+      "onAction": { "light": "#FFFFFF", "dark": "#FFFFFF", "$from": "onAction" },
+      "accentPositive": { "light": "#96C5A9", "dark": "#A8DD95", "$from": "accentPositive" },
+      "link": { "light": "#2D6B30", "dark": "#A8DD95", "$lab": "reference uses pale accentPositive for links on cream (~1.8:1); lab keeps the hue family but meets 4.5:1" },
+      "tabActive": { "light": "#2D6B30", "dark": "#A8DD95", "$lab": "same contrast correction as link" },
+      "tabInactive": { "light": "#6B5847", "dark": "#A8907A", "$from": "textSecondary" },
+      "tabBar": { "light": "#FBF8F3", "dark": "#1F1A17", "$lab": "approximation of the system bar material" },
+      "segmentSelected": { "light": "#134A38", "dark": "#0F3D2E", "$from": "heroCardBackground" },
+      "onSegmentSelected": { "light": "#FFFFFF", "dark": "#FFFFFF", "$from": "onAction" },
+      "destructive": { "light": "#7A1F1F", "dark": "#E8857C", "$lab": "light = actionDestructive; dark text lightened because #A0413B on the dark background is ~2.9:1" },
+      "destructiveFill": { "light": "#7A1F1F", "dark": "#A0413B", "$from": "actionDestructive" },
+      "caution": { "light": "#B26A00", "dark": "#E8A23C", "$from": "actionCaution" },
+      "error": { "light": "#7A1F1F", "dark": "#E8857C", "$lab": "inline validation text" },
+      "focus": { "light": "#2D6B30", "dark": "#A8DD95", "$lab": "keyboard focus ring" },
+      "inputBg": { "light": "transparent", "dark": "transparent", "$lab": "fields sit on the card surface" },
+      "inputBorder": { "light": "#7A1F1F", "dark": "#A0413B", "$from": "brandBorder" },
+      "chipBg": { "light": "rgba(42,31,26,0.08)", "dark": "rgba(245,239,230,0.10)", "$lab": "neutral status chip" },
+      "mapWater": { "light": "#9CCBE8", "dark": "#22445A", "$lab": "fictional SVG map" },
+      "mapLand": { "light": "#EEE8DC", "dark": "#2B2723", "$lab": "fictional SVG map" },
+      "mapPark": { "light": "#C9DFB8", "dark": "#2E3B29", "$lab": "fictional SVG map" },
+      "mapRoad": { "light": "#FFFFFF", "dark": "#4A433D", "$lab": "fictional SVG map" },
+      "mapRoute": { "light": "#7A1F1F", "dark": "#E8857C", "$lab": "fictional SVG map" },
+      "mapStart": { "light": "#2D6B30", "dark": "#3F9442", "$from": "actionPositive" },
+      "mapEnd": { "light": "#7A1F1F", "dark": "#A0413B", "$from": "actionDestructive" },
+      "hour1": { "light": "#7D2F2B", "dark": "#A0413B", "$from": "hourProgress1" },
+      "hour2": { "light": "#B05A28", "dark": "#D97441", "$from": "hourProgress2" },
+      "hour3": { "light": "#B87E1E", "dark": "#E8A745", "$from": "hourProgress3" },
+      "hour4": { "light": "#3D6B66", "dark": "#5C8D89", "$from": "hourProgress4" },
+      "hour5": { "light": "#2E5062", "dark": "#4A6D7C", "$from": "hourProgress5" },
+      "hour6": { "light": "#253040", "dark": "#3D4F66", "$from": "hourProgress6" },
+      "platformAmazonFlex": { "light": "#5E9E86", "dark": "#7FBFA6", "$lab": "reference shows a generic teal cube for this platform; no source token exists" },
+      "platformDoorDash": { "light": "#E23745", "dark": "#FF5A5F", "$from": "platformDoorDash" },
+      "platformGrubHub": { "light": "#F8721E", "dark": "#FF9A4D", "$from": "platformGrubHub" },
+      "platformInstacart": { "light": "#00857A", "dark": "#2BB5A8", "$from": "platformInstacart" },
+      "platformLyft": { "light": "#E70B81", "dark": "#FF4FB0", "$from": "platformLyft" },
+      "platformSpark": { "light": "#0071DC", "dark": "#4DA3F0", "$from": "platformSpark" },
+      "platformUber": { "light": "#5B47CE", "dark": "#8B79E5", "$from": "platformUber" }
+    },
+    "font": {
+      "text": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Inter\", system-ui, \"Segoe UI\", Roboto, sans-serif",
+      "display": "-apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Inter Display\", \"Inter\", system-ui, sans-serif",
+      "numeric": "-apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Inter Display\", \"Inter\", system-ui, sans-serif"
+    },
+    "size": {
+      "largeTitle": 34, "title1": 28, "title2": 22, "title3": 20, "headline": 17, "body": 17,
+      "callout": 16, "subhead": 15, "footnote": 13, "caption": 12, "heroFigure": 34, "resultFigure": 26
+    },
+    "weight": { "regular": 400, "medium": 500, "semibold": 600, "bold": 700, "heroFigure": 500, "title": 600 },
+    "space": { "xxs": 4, "xs": 8, "sm": 12, "md": 16, "lg": 24, "xl": 32, "xxl": 48, "$from": "spacing.standard=16, spacing.large=24" },
+    "radius": { "card": 12, "input": 10, "map": 12, "button": 16, "segment": 10, "sheet": 12, "chip": 999, "$from": "radius.*" },
+    "stroke": { "card": 1, "hairline": 1, "input": 1, "focus": 3 },
+    "shadow": { "card": "none", "sheet": "0 -1px 0 rgba(0,0,0,0.04)", "button": "none" },
+    "motion": { "fast": "120ms", "base": "220ms", "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)" },
+    "control": { "minTarget": 44, "buttonHeight": 52, "startDiameter": 160 }
+  },
+  "families": {
+    "v0": {
+      "name": { "es": "V0 Actual", "en": "V0 Current" },
+      "summary": { "es": "Reconstruccion reconocible de la referencia.", "en": "Recognizable rebuild of the reference." },
+      "composition": {
+        "hero": "triple", "start": "circle", "notice": "card", "period": "segmented6",
+        "rows": "card", "options": "collapsible", "export": "twoPrimary", "settingsText": "full",
+        "hourStripe": false, "weekChart": false, "resultLayout": "lines"
+      },
+      "override": {}
+    },
+    "v1": {
+      "name": { "es": "V1 Esencial", "en": "V1 Essential" },
+      "summary": { "es": "Menos peso visual, aire y una accion principal evidente.", "en": "Lighter, airier, one obvious primary action." },
+      "composition": {
+        "hero": "focus", "start": "pill", "notice": "inline", "period": "segmented3more",
+        "rows": "list", "options": "menu", "export": "single", "settingsText": "progressive",
+        "hourStripe": false, "weekChart": false, "resultLayout": "equation"
+      },
+      "override": {
+        "color": {
+          "surface": { "light": "#EFE8DC", "dark": "#24201C" },
+          "action": { "light": "#2D6B30", "dark": "#337F38" },
+          "cardBorder": { "light": "transparent", "dark": "transparent" },
+          "cardBorderSubtle": { "light": "rgba(42,31,26,0.10)", "dark": "rgba(245,239,230,0.10)" },
+          "separator": { "light": "rgba(42,31,26,0.12)", "dark": "rgba(245,239,230,0.12)" },
+          "hero": { "light": "#E3ECDF", "dark": "#1C2A21" },
+          "onHero": { "light": "#16331F", "dark": "#E6F2E3" },
+          "onHeroMuted": { "light": "#4A5E4D", "dark": "#A9C2AB" },
+          "heroDivider": { "light": "rgba(22,51,31,0.14)", "dark": "rgba(230,242,227,0.14)" },
+          "inputBorder": { "light": "rgba(42,31,26,0.35)", "dark": "rgba(245,239,230,0.35)" },
+          "segmentSelected": { "light": "#2A1F1A", "dark": "#F5EFE6" },
+          "onSegmentSelected": { "light": "#F5EFE6", "dark": "#1A1614" }
+        },
+        "radius": { "card": 18, "button": 999, "input": 12, "segment": 999 },
+        "size": { "heroFigure": 48, "largeTitle": 30 },
+        "weight": { "heroFigure": 300 }
+      }
+    },
+    "v2": {
+      "name": { "es": "V2 Claridad", "en": "V2 Clarity" },
+      "summary": { "es": "Herramienta financiera sobria: cifras, periodos y cobertura legibles.", "en": "Sober finance tool: figures, periods and coverage at a glance." },
+      "composition": {
+        "hero": "ledger", "start": "bar", "notice": "inline", "period": "stepper",
+        "rows": "table", "options": "collapsible", "export": "single", "settingsText": "progressive",
+        "hourStripe": false, "weekChart": true, "resultLayout": "ledger"
+      },
+      "override": {
+        "color": {
+          "bg": { "light": "#F6F5F2", "dark": "#111312" },
+          "surface": { "light": "#FFFFFF", "dark": "#1A1D1B" },
+          "sheet": { "light": "#F6F5F2", "dark": "#111312" },
+          "text": { "light": "#1B1C1A", "dark": "#ECEDE9" },
+          "textMuted": { "light": "#5B5D57", "dark": "#A3A69F" },
+          "cardBorder": { "light": "#D8D6CF", "dark": "#2D322F" },
+          "cardBorderSubtle": { "light": "#E6E4DE", "dark": "#252927" },
+          "separator": { "light": "#E2E0DA", "dark": "#2A2E2C" },
+          "hero": { "light": "#FFFFFF", "dark": "#1A1D1B" },
+          "onHero": { "light": "#1B1C1A", "dark": "#ECEDE9" },
+          "onHeroMuted": { "light": "#5B5D57", "dark": "#A3A69F" },
+          "heroDivider": { "light": "#E2E0DA", "dark": "#2A2E2C" },
+          "action": { "light": "#1F5C3A", "dark": "#2F7A45" },
+          "link": { "light": "#1F5C3A", "dark": "#8FD0A6" },
+          "tabActive": { "light": "#1F5C3A", "dark": "#8FD0A6" },
+          "tabInactive": { "light": "#5B5D57", "dark": "#A3A69F" },
+          "tabBar": { "light": "#FFFFFF", "dark": "#161917" },
+          "focus": { "light": "#1F5C3A", "dark": "#8FD0A6" },
+          "inputBorder": { "light": "#B9B6AD", "dark": "#4A504C" },
+          "segmentSelected": { "light": "#1B1C1A", "dark": "#ECEDE9" },
+          "onSegmentSelected": { "light": "#FFFFFF", "dark": "#111312" },
+          "chipBg": { "light": "#EEEDE8", "dark": "#252927" },
+          "destructive": { "light": "#9B2C25", "dark": "#F08F84" },
+          "error": { "light": "#9B2C25", "dark": "#F08F84" },
+          "mapLand": { "light": "#F1F0EC", "dark": "#1E2120" },
+          "mapWater": { "light": "#BFD8E6", "dark": "#1F3746" }
+        },
+        "font": {
+          "numeric": "\"SF Mono\", ui-monospace, \"Inter\", system-ui, sans-serif"
+        },
+        "radius": { "card": 8, "input": 6, "button": 10, "segment": 8, "map": 8 },
+        "size": { "heroFigure": 30, "largeTitle": 28 },
+        "weight": { "heroFigure": 600 }
+      }
+    },
+    "v3": {
+      "name": { "es": "V3 Estudio", "en": "V3 Studio" },
+      "summary": { "es": "Mas personal y cuidada, superficies propias, sin parecer un juego.", "en": "More personal and crafted, own surfaces, never game-like." },
+      "composition": {
+        "hero": "studio", "start": "ring", "notice": "soft", "period": "segmented3more",
+        "rows": "card", "options": "menu", "export": "single", "settingsText": "progressive",
+        "hourStripe": true, "weekChart": false, "resultLayout": "equation"
+      },
+      "override": {
+        "color": {
+          "bg": { "light": "#F2E8D8", "dark": "#15110E" },
+          "surface": { "light": "#FBF6EC", "dark": "#231C17" },
+          "sheet": { "light": "#F7F0E3", "dark": "#1B1612" },
+          "action": { "light": "#2D6B30", "dark": "#337F38" },
+          "cardBorder": { "light": "transparent", "dark": "transparent" },
+          "cardBorderSubtle": { "light": "rgba(125,47,43,0.14)", "dark": "rgba(232,167,69,0.14)" },
+          "separator": { "light": "rgba(125,47,43,0.16)", "dark": "rgba(232,167,69,0.16)" },
+          "hero": { "light": "linear-gradient(150deg, #134A38 0%, #2E5062 100%)", "dark": "linear-gradient(150deg, #0F3D2E 0%, #253040 100%)" },
+          "inputBorder": { "light": "rgba(125,47,43,0.45)", "dark": "rgba(232,167,69,0.45)" },
+          "segmentSelected": { "light": "#7D2F2B", "dark": "#E8A745" },
+          "onSegmentSelected": { "light": "#FFFFFF", "dark": "#15110E" },
+          "tabBar": { "light": "#FBF6EC", "dark": "#1B1612" },
+          "chipBg": { "light": "rgba(125,47,43,0.09)", "dark": "rgba(232,167,69,0.12)" }
+        },
+        "font": {
+          "display": "ui-serif, \"New York\", Georgia, \"DejaVu Serif\", serif"
+        },
+        "radius": { "card": 22, "input": 14, "button": 28, "segment": 999, "map": 18, "sheet": 24 },
+        "shadow": {
+          "card": "0 1px 2px rgba(60,30,10,0.06), 0 6px 18px rgba(60,30,10,0.07)",
+          "button": "0 6px 18px rgba(19,74,56,0.28)"
+        },
+        "size": { "heroFigure": 38, "largeTitle": 32 },
+        "weight": { "heroFigure": 500, "title": 600 }
+      }
+    }
+  }
+}
