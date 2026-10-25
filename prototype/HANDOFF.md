@@ -29,6 +29,10 @@
 - 20 capturas reales en `captures/`.
 - Documentación: `PANTALLAS.md`, `DECISIONES.md` (incluye la recomendación) y `PRUEBAS.md`.
 
+## Dirección actual (25 oct, del propietario)
+
+**El trabajo se centra solo en Inicio**, que es la base de la app. No se diseñan más pantallas por ahora. Cuando haya una propuesta de Inicio convincente, se adaptará al resto. Las demás pantallas del prototipo quedan como contexto y no son prioridad. Las imágenes de Inicio para revisar en el teléfono están en `captures/home/` y se regeneran con `node tools/capture-home.cjs`.
+
 ## Cómo continuar
 
 1. Abre `index.html`, elige la vista «Las cuatro» y recorre la lista «Pantalla».
