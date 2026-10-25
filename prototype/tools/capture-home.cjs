@@ -9,7 +9,10 @@ const OUT = path.resolve(__dirname, '..', 'captures', 'home');
 const FAMS = [['v0', 'V0 Actual'], ['v1', 'V1 Esencial'], ['v2', 'V2 Claridad'], ['v3', 'V3 Estudio']];
 const W = 390;
 // Stills are taken at a resting moment of the hat animation (after the drop-in).
-const settle = (page) => page.evaluate(() => document.querySelectorAll('svg.xmas-hat').forEach((s) => { s.pauseAnimations(); s.setCurrentTime(3); }));
+const settle = (page) => page.evaluate(() => {
+  document.querySelectorAll('svg').forEach((s) => { if (s.pauseAnimations) { s.pauseAnimations(); s.setCurrentTime(3); } });
+  document.getAnimations().forEach((a) => { a.pause(); a.currentTime = 3000; });
+});
 
 // Renders Home in solo mode and returns a PNG tall enough to show the whole scroll content.
 async function shot(page, hash, full) {
@@ -66,17 +69,17 @@ async function sheet(browser, file, title, cells, cols) {
   for (const [id, name] of FAMS) open.push([name, await shot(page, `family=${id}&screen=homeBreakdown&scenario=partial`, true)]);
   await sheet(browser, '05-inicio-desglose-abierto.png', 'Inicio · desglose del cobro abierto', open, 2);
 
-  // Christmas variety (lab option): V3 base plus one pill example.
-  const XMAS = [['xmas-hat', 'Gorro de Santa (lado derecho, animado)'], ['xmas-ornament', 'Esfera'], ['xmas-wreath', 'Corona']];
+  // Christmas Home concepts (lab option), on the V3 base the owner preferred.
+  const XMAS = [['xmas-elf', 'Duende'], ['xmas-snow', 'Nevada'], ['xmas-lights', 'Luces']];
   const grid = [];
-  for (const [deco, label] of XMAS) grid.push([`V3 · ${label}`, await shot(page, `family=v3&screen=home&scenario=partial&deco=${deco}`, false)]);
-  grid.push(['V1 · Gorro pequeño en botón píldora', await shot(page, 'family=v1&screen=home&scenario=partial&deco=xmas-hat', false)]);
-  await sheet(browser, '06-navidad-variedad.png', 'Navidad · pequeña variedad para Inicio', grid, 2);
+  for (const [deco, label] of XMAS) grid.push([label, await shot(page, `family=v3&screen=home&scenario=partial&deco=${deco}`, false)]);
+  grid.push(['Luces · oscuro', await shot(page, 'family=v3&screen=home&scenario=partial&deco=xmas-lights&theme=dark', false)]);
+  await sheet(browser, '06-navidad-3-propuestas.png', 'Inicio navideño · 3 propuestas', grid, 2);
   n = 7;
   for (const [deco, label] of XMAS) {
     const light = await shot(page, `family=v3&screen=home&scenario=partial&deco=${deco}`, true);
     const dark = await shot(page, `family=v3&screen=home&scenario=partial&deco=${deco}&theme=dark`, true);
-    await sheet(browser, `${String(n++).padStart(2, '0')}-navidad-${deco.slice(5)}-v3.png`, `V3 Estudio · Navidad · ${label}`, [['Claro', light], ['Oscuro', dark]], 2);
+    await sheet(browser, `${String(n++).padStart(2, '0')}-navidad-${label.toLowerCase()}.png`, `Inicio navideño · ${label}`, [['Claro', light], ['Oscuro', dark]], 2);
   }
   // Close-ups of the decorated button at 3x.
   const cu = await browser.newPage({ viewport: { width: W, height: 844 }, deviceScaleFactor: 3 });

@@ -31,12 +31,12 @@ Las cuatro familias comparten datos, textos, navegación y componentes. Cada una
 11. **Mapas.** Son SVG local inventado (costa, calles y nombres ficticios) y llevan siempre el rótulo «Mapa ficticio». No usan servicios ni coordenadas reales.
 12. **Textos nuevos.** La etiqueta «Cobrado este mes» (V1/V3) aclara el periodo de la cifra que la referencia rotula solo «Paid/Cobrado». Es una propuesta de redacción. Las cadenas ES sin captura en español son traducciones del laboratorio.
 13. **Texto grande.** Al 200 % (`data-ax`) los pares etiqueta/valor, las filas, el triple de V0, las columnas de la tabla de V2 y los segmentos se apilan o se envuelven en lugar de recortarse. Las cifras grandes se limitan al ancho del teléfono con unidades de contenedor (`cqi`).
-14. **Navidad en el botón de Inicio (pedido del propietario, 25 oct).** Hay tres variantes, todas sobre el círculo de V3 (también funcionan en V0):
-    - **gorro de Santa en el lado derecho, animado** (pedido del propietario: solo durará un mes). Al aparecer Inicio cae y rebota; en reposo la punta se balancea y el pompón la sigue con retraso, un brillo recorre la tela y destellan puntos del pelo; al pulsar el botón da un saltito. Es SVG con animación SMIL. Con «Movimiento: reducido» o con el ajuste del sistema activado queda quieto, y la caída solo se reproduce al entrar en Inicio, no en cada redibujado;
-    - **esfera** de árbol con tapa dorada;
-    - **corona** de pino con bayas y lazo.
+14. **Inicio navideño (pedido del propietario, 25 oct).** Hay tres propuestas sobre la base de V3, cada una con su adorno y su propio color de tarjeta. El texto se mantiene blanco con contraste ≥ 5:1.
+    - **Duende:** un gorrito de duende **pequeño, como un adorno** (no un gorro que use el círculo como cabeza), apoyado en el borde superior derecho del botón. Es rojo, con cuello dorado en zigzag, cascabeles, una ramita de acebo y un cascabel en la punta. Aparece con un pequeño salto al entrar en Inicio, se mece despacio, el cascabel oscila y da un saltito al pulsar. La tarjeta es rojo arándano con la fecha en dorado.
+    - **Nevada:** nieve acumulada sobre la tarjeta y sobre el botón, con destellos. La tarjeta es azul noche de invierno.
+    - **Luces:** guirnalda bajo el título y anillo de bombillas alrededor del botón que parpadean en secuencia. La tarjeta mantiene el verde.
 
-    En V1/V2 el gorro va pequeño en la esquina de la píldora. El resto de Inicio solo lleva una nevada muy suave en la tarjeta. Las piezas son SVG locales, decorativas (`aria-hidden`, sin eventos) y nunca tapan el texto del botón; hay una prueba que lo comprueba. Con texto muy grande se ocultan para no competir con la etiqueta. Se eligen en «Decoración» y están apagadas por defecto.
+    Las tres comparten una nevada lenta dentro de la tarjeta. Todo es SVG/CSS local y decorativo (`aria-hidden`, sin eventos). Hay una prueba que verifica que ningún adorno tapa el texto del botón. Con «Movimiento: reducido» o con el ajuste del sistema activado todo queda quieto, y con texto muy grande los adornos del botón se ocultan. La esfera y la corona anteriores siguen disponibles en «Decoración». El gorro grande se retiró.
 15. **Decoración estacional.** Son dos SVG pequeños en la cabecera de las pestañas raíz, con `pointer-events: none` y `aria-hidden`. Están apagados por defecto y no se activan por calendario.
 
 ## Recomendación

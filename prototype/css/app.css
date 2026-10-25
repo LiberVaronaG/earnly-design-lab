@@ -353,7 +353,7 @@
 .sheet-backdrop, .dialog-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.38); z-index: 20; display: flex; }
 .sheet { margin-top: 56px; flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--color-sheet); border-radius: var(--radius-sheet) var(--radius-sheet) 0 0; min-height: 0; box-shadow: 0 -8px 30px rgba(0,0,0,.2); animation: sheet-in var(--motion-base) var(--motion-easing); }
 @keyframes sheet-in { from { transform: translateY(30px); opacity: .6; } }
-@media (prefers-reduced-motion: reduce) { .sheet { animation: none; } .app * { transition: none !important; } .start-circle:active ~ .xmas-hat-right { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .sheet { animation: none; } .app * { transition: none !important; } .xmas-elf { transition: none; } }
 .sheet-body { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-xs) var(--space-md) var(--space-lg); display: flex; flex-direction: column; gap: var(--space-sm); }
 .sheet-center { align-items: center; justify-content: center; text-align: center; gap: var(--space-md); }
 .sheet-center .btn { max-width: 320px; }
@@ -407,19 +407,49 @@
 
 /* ---------- Christmas preview (lab option, off by default) ---------- */
 .hero { position: relative; isolation: isolate; }
+/* Gentle snowfall inside the hero card: two tiling dot layers drifting down. */
 .app[data-deco^="xmas"] .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit; opacity: .55;
-  background-image: radial-gradient(circle, rgba(255,255,255,.7) 1.1px, transparent 1.7px), radial-gradient(circle, rgba(255,255,255,.45) 1.4px, transparent 2.2px);
+  background-image: radial-gradient(circle, rgba(255,255,255,.75) 1.1px, transparent 1.7px), radial-gradient(circle, rgba(255,255,255,.5) 1.5px, transparent 2.3px);
   background-size: 44px 44px, 71px 71px; background-position: 9px 13px, 31px 27px;
+  animation: xmas-snowfall 9s linear infinite;
 }
-.start-xmas { padding: 64px 0 var(--space-lg); }
+.app[data-deco="xmas-snow"] .hero::before { opacity: .8; animation-duration: 7s; }
+@keyframes xmas-snowfall { to { background-position: 18px 57px, 24px 98px; } }
+.app[data-motion="reduced"] .hero::before { animation: none; }
+@media (prefers-reduced-motion: reduce) { .app .hero::before { animation: none; } }
+
+.start-xmas { padding: 40px 0 var(--space-lg); }
 .start-holder { position: relative; display: grid; place-items: center; }
 .start-holder .start-circle { position: relative; z-index: 1; }
-.xmas-hat { position: absolute; z-index: 2; overflow: visible; pointer-events: none; }
-.xmas-hat-right { inset: 0; width: 100%; height: 100%; transition: transform var(--motion-fast) var(--motion-easing); }
-/* Pressing the button makes the hat hop. */
-.start-circle:active ~ .xmas-hat-right { transform: translate(2px, -7px) rotate(3deg); }
-.start-xmas-hat { padding-top: 60px; }
+
+/* Each Christmas concept also gives the hero card its own festive colour (white text kept). */
+.app[data-deco="xmas-elf"] :is(.hero-studio, .hero-triple) { background: linear-gradient(150deg, #9A2A33 0%, #5C1622 100%); }
+.app[data-deco="xmas-elf"][data-theme="dark"] :is(.hero-studio, .hero-triple) { background: linear-gradient(150deg, #7E1F2A 0%, #3F0E17 100%); }
+.app[data-deco="xmas-elf"] .hero-date { color: #F3CF7A; }
+.app[data-deco="xmas-snow"] :is(.hero-studio, .hero-triple) { background: linear-gradient(160deg, #24496B 0%, #142A44 100%); }
+.app[data-deco="xmas-snow"][data-theme="dark"] :is(.hero-studio, .hero-triple) { background: linear-gradient(160deg, #1C3A57 0%, #0E1E33 100%); }
+
+/* Elf hat: a small ornament resting on the button's top-right edge. */
+.xmas-elf {
+  position: absolute; z-index: 2; left: 58%; top: -22%; width: 40%; overflow: visible; pointer-events: none;
+  transform-origin: 50% 83%; transform: rotate(30deg) translateY(var(--elf-hop, 0px));
+  transition: transform var(--motion-fast) var(--motion-easing);
+}
+.start-circle:active ~ .xmas-elf { --elf-hop: -6px; }
+.footer-xmas { position: relative; }
+.footer-xmas .xmas-elf { left: auto; right: 12px; top: -30px; width: 52px; transform: rotate(18deg) translateY(var(--elf-hop, 0px)); }
+.footer-xmas .btn:active ~ .xmas-elf { --elf-hop: -5px; }
+
+/* Snow resting on the button and along the top of the hero card. */
+.xmas-snowcap { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.xmas-drift { position: absolute; z-index: 1; left: 0; right: 0; top: 0; width: 100%; height: 16px; pointer-events: none; }
+.hero-drift { padding-top: 30px !important; overflow: hidden; }
+
+/* Lights: garland under the title and a ring around the button. */
+.xmas-garland { display: block; width: calc(100% + 2 * var(--space-md)); margin: -6px calc(-1 * var(--space-md)) -4px; height: auto; pointer-events: none; overflow: visible; }
+.xmas-lights-ring { position: absolute; width: calc(max(var(--control-start-diameter), 6.4em) + 52px); aspect-ratio: 1; overflow: visible; pointer-events: none; }
+
 .xmas-cap { position: absolute; z-index: 2; left: 38%; top: -17%; width: 24%; overflow: visible; pointer-events: none; }
 .xmas-sparkles { position: absolute; inset: -14%; width: 128%; height: 128%; pointer-events: none; }
 .xmas-wreath { position: absolute; z-index: 2; overflow: visible; width: calc(max(var(--control-start-diameter), 6.4em) + 56px); aspect-ratio: 1; pointer-events: none; }
@@ -432,8 +462,6 @@
 }
 .start-ornament::after { content: ""; position: absolute; inset: 14%; border-radius: 50%; border: 2px dotted rgba(246,217,138,.45); pointer-events: none; }
 .start-xmas-ornament { padding-top: 48px; }
-.footer-xmas { position: relative; }
-.footer-xmas .xmas-hat-pill { right: 10px; top: -18px; width: 72px; transform: rotate(16deg); }
 /* With very large text the label wins: button decorations step aside, only the snow stays. */
-.app[data-ax="true"] :is(.xmas-sparkles, .xmas-hat, .xmas-cap, .xmas-wreath) { display: none; }
+.app[data-ax="true"] :is(.xmas-sparkles, .xmas-elf, .xmas-cap, .xmas-wreath, .xmas-snowcap, .xmas-lights-ring) { display: none; }
 .app[data-ax="true"] .start-xmas { padding-top: var(--space-md); }

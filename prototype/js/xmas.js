@@ -1,7 +1,7 @@
-// Christmas start-button decorations (lab preview only, off by default).
+// Christmas decorations for Home (lab preview only, off by default).
 // All pieces are decorative: aria-hidden, pointer-events: none, and they never cover the label.
-// Geometry: the start circle is the unit box 0..200 with centre (100,175) in the hat's
-// coordinates, so the hat scales with the button at any text size.
+// Button pieces use the button's own box (0..200, centre 100,175 for overlays, or 100,100
+// for rings), so they scale with the button at any text size.
 (function () {
   const E = window.E;
   const r2 = (n) => Math.round(n * 10) / 10;
@@ -9,113 +9,172 @@
   // Deterministic jitter so every render (and every frame in compare view) is identical.
   const jit = (i, k = 1) => (Math.sin(i * 12.9898 + k * 78.233) * 43758.5453) % 1;
 
-  // Santa hat worn on the right side of the start circle, with SMIL animation:
-  // drop-in when Home appears, a soft sway of the tip with a lagging pompom, a sheen
-  // across the fabric and small glints on the fur. `motion` false renders it still.
-  // mode 'circle': viewBox equals the button box and the hat is rotated around the
-  // circle centre, so the brim keeps hugging the button's edge.
-  // mode 'pill': same drawing, unrotated, for the small corner hat on pill buttons.
-  function hat(uid, { mode = 'circle', motion = true, entrance = true } = {}) {
-    const u = `hat-${uid}`;
-    const a0 = -152;
-    const a1 = -28;
-    const [ox0, oy0] = P(113, a0);
-    const [ox1, oy1] = P(113, a1);
-    const [ix1, iy1] = P(89, a1);
-    const [ix0, iy0] = P(89, a0);
-    const brim = `M${ox0} ${oy0}A113 113 0 0 1 ${ox1} ${oy1}L${ix1} ${iy1}A89 89 0 0 0 ${ix0} ${iy0}Z`;
-    const fluff = [];
-    for (let d = a0; d <= a1; d += 6.5) {
-      const [x, y] = P(112 + jit(d) * 2, d);
-      fluff.push(`<circle cx="${x}" cy="${y}" r="${r2(6.4 + Math.abs(jit(d, 2)) * 1.6)}"/>`);
-      const [x2, y2] = P(90 - jit(d, 3) * 2, d + 3);
-      fluff.push(`<circle cx="${x2}" cy="${y2}" r="${r2(5.6 + Math.abs(jit(d, 4)) * 1.4)}"/>`);
+  // Smooth closed/open path through points (Catmull-Rom → cubic Bézier).
+  function smooth(pts, close = true) {
+    const n = pts.length;
+    const at = (i) => pts[close ? (i + n) % n : Math.max(0, Math.min(n - 1, i))];
+    let d = `M${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 0; i < (close ? n : n - 1); i++) {
+      const [p0, p1, p2, p3] = [at(i - 1), at(i), at(i + 1), at(i + 2)];
+      const c1 = [r2(p1[0] + (p2[0] - p0[0]) / 6), r2(p1[1] + (p2[1] - p0[1]) / 6)];
+      const c2 = [r2(p2[0] - (p3[0] - p1[0]) / 6), r2(p2[1] - (p3[1] - p1[1]) / 6)];
+      d += `C${c1[0]} ${c1[1]} ${c2[0]} ${c2[1]} ${p2[0]} ${p2[1]}`;
     }
-    for (const d of [a0, a1]) {
-      for (const r of [94, 101, 108]) {
-        const [x, y] = P(r, d);
-        fluff.push(`<circle cx="${x}" cy="${y}" r="7"/>`);
-      }
-    }
-    const texture = [];
-    for (let d = a0 + 5; d < a1 - 3; d += 7.5) {
-      const [x, y] = P(96 + Math.abs(jit(d, 5)) * 13, d + jit(d, 6) * 2);
-      texture.push(`<path d="M${x} ${y}l1.6 -1.2"/>`);
-    }
-    const pomFluff = [];
-    for (let d = 0; d < 360; d += 30) {
-      const [x, y] = P(16, d, 196, 66);
-      pomFluff.push(`<circle cx="${x}" cy="${y}" r="${r2(5 + Math.abs(jit(d, 7)) * 1.5)}"/>`);
-    }
-    const [sx0, sy0] = P(96, a0 + 4);
-    const [sx1, sy1] = P(96, a1 - 4);
-    const ease = (n) => Array(n).fill('0.45 0 0.55 1').join(';');
-    const spin = (vals, cx, cy, dur, begin, kt) => (motion
-      ? `<animateTransform attributeName="transform" type="rotate" values="${vals.map((v) => `${v} ${cx} ${cy}`).join(';')}" keyTimes="${kt}" calcMode="spline" keySplines="${ease(vals.length - 1)}" dur="${dur}" begin="${begin}" repeatCount="indefinite"/>`
-      : '');
-    const glint = (x, y, begin) => `<path d="M${x} ${y - 5}L${x + 1.3} ${y - 1.3}L${x + 5} ${y}L${x + 1.3} ${y + 1.3}L${x} ${y + 5}L${x - 1.3} ${y + 1.3}L${x - 5} ${y}L${x - 1.3} ${y - 1.3}Z" fill="#fff" opacity="${motion ? 0 : 0.7}">${motion ? `<animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;.42;.5;.58;1" dur="4.2s" begin="${begin}" repeatCount="indefinite"/>` : ''}</path>`;
+    return d + (close ? 'Z' : '');
+  }
+  const ease = (n) => Array(n).fill('0.45 0 0.55 1').join(';');
+  const swing = (motion, vals, cx, cy, dur, begin) => (motion
+    ? `<animateTransform attributeName="transform" type="rotate" values="${vals.map((v) => `${v} ${cx} ${cy}`).join(';')}" keyTimes="${vals.map((_, i) => r2(i / (vals.length - 1) * 100) / 100).join(';')}" calcMode="spline" keySplines="${ease(vals.length - 1)}" dur="${dur}" begin="${begin}" repeatCount="indefinite"/>`
+    : '');
+  const glint = (motion, x, y, s, begin, dur = '4.2s') => `<path d="M${x} ${y - s}L${r2(x + s * 0.26)} ${r2(y - s * 0.26)}L${x + s} ${y}L${r2(x + s * 0.26)} ${r2(y + s * 0.26)}L${x} ${y + s}L${r2(x - s * 0.26)} ${r2(y + s * 0.26)}L${x - s} ${y}L${r2(x - s * 0.26)} ${r2(y - s * 0.26)}Z" fill="#fff" opacity="${motion ? 0 : 0.8}">${motion ? `<animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;.42;.5;.58;1" dur="${dur}" begin="${begin}" repeatCount="indefinite"/>` : ''}</path>`;
 
-    const body = 'M14 120C16 70 52 26 108 14C130 10 146 14 156 22C150 34 146 44 146 52C160 70 174 92 186 120Z';
-    const tip = 'M148 15C172 12 190 26 198 50C201 58 197 66 190 68C180 54 162 46 146 52C145 40 146 27 148 15Z';
-    const drop = motion && entrance
-      ? `<animateTransform attributeName="transform" type="translate" values="0 -70;0 3;0 -6;0 0" keyTimes="0;.55;.8;1" calcMode="spline" keySplines="0.55 0 0.9 0.55;0.2 0.6 0.4 1;0.45 0 0.55 1" dur="1.1s" fill="freeze"/>
-         <animate attributeName="opacity" values="0;1" dur=".25s" fill="freeze"/>`
+  // Small elf hat: a decoration placed on the button's top-right edge, not a hat the
+  // button "wears". Red cone with a curled tip and a swinging gold bell, gold zigzag
+  // cuff with tiny bells, and a holly sprig. Pops in when Home appears, then sways.
+  function elfHat(uid, { motion = true, entrance = true } = {}) {
+    const u = `elf-${uid}`;
+    const cuffTop = [[2, 86], [26, 80], [50, 78], [74, 81], [98, 89]];
+    const zig = [[99, 103], [91, 98], [84, 108], [76, 100], [68, 109], [60, 101], [52, 110], [44, 101], [36, 109], [28, 100], [20, 107], [12, 98], [3, 102]];
+    const cuff = `M${cuffTop.map((p) => p.join(' ')).join('L')}L${zig.map((p) => p.join(' ')).join('L')}Z`;
+    const bells = zig.filter((_, i) => i % 2 === 0).slice(1, -1).map(([x, y]) => `<circle cx="${x}" cy="${y + 1.6}" r="2.4" fill="url(#${u}-bell)"/>`).join('');
+    const pop = motion && entrance
+      ? `<animateTransform attributeName="transform" type="scale" values="0.2;1.14;0.95;1" keyTimes="0;.55;.8;1" calcMode="spline" keySplines="0.3 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1" dur=".8s" begin=".15s" fill="freeze"/>
+         <animate attributeName="opacity" values="0;1" dur=".2s" begin=".15s" fill="freeze"/>`
       : '';
-    const art = `
-      <g clip-path="url(#${u}-clip)"><path d="M${sx0} ${sy0 + 8}A96 96 0 0 1 ${sx1} ${sy1 + 8}" stroke="#000" stroke-opacity=".38" stroke-width="12" fill="none" filter="url(#${u}-blur)"/></g>
-      <g filter="url(#${u}-drop)">
-        <g clip-path="url(#${u}-above)">
-          <path d="${body}" fill="url(#${u}-red)"/>
-          <path d="M146 52C160 70 174 92 186 120L152 120C151 96 148 72 146 52Z" fill="#5E0C0C" opacity=".32"/>
-          <path d="M30 108C34 74 58 40 96 26" stroke="#fff" stroke-opacity=".24" stroke-width="6" stroke-linecap="round" fill="none"/>
-          <path d="M120 40C118 62 121 86 128 112" stroke="#6E1010" stroke-opacity=".38" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-          <path d="M78 34C69 58 65 84 67 112" stroke="#6E1010" stroke-opacity=".24" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <g clip-path="url(#${u}-bodyclip)"><rect x="-90" y="0" width="46" height="150" fill="url(#${u}-sheen)" transform="skewX(-18)">${motion ? '<animate attributeName="x" values="-90;-90;250" keyTimes="0;.72;1" dur="6.5s" begin="1.6s" repeatCount="indefinite"/>' : ''}</rect></g>
-        </g>
-        <g class="hat-tip">
-          ${spin([0, 7, 0, -3.5, 0], 150, 34, '3.8s', '1.1s', '0;.3;.55;.8;1')}
-          <path d="${tip}" fill="url(#${u}-red)"/>
-          <path d="M148 15C172 12 190 26 198 50C186 34 166 24 150 26Z" fill="#fff" opacity=".16"/>
-          <path d="M150 55C158 50 170 52 182 62" stroke="#5E0C0C" stroke-opacity=".35" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M146 52C162 46 180 54 190 68" stroke="#4A0909" stroke-opacity=".3" stroke-width="3" fill="none"/>
-          <g class="hat-pom">
-            ${spin([0, -10, 0, 6, 0], 189, 60, '3.8s', '1.3s', '0;.3;.55;.8;1')}
-            <ellipse cx="198" cy="86" rx="12" ry="3.2" fill="#000" opacity=".14" filter="url(#${u}-blur)"/>
-            <g fill="url(#${u}-pom)">${pomFluff.join('')}<circle cx="196" cy="66" r="17"/></g>
-            <circle cx="190" cy="60" r="4.5" fill="#fff" opacity=".9"/>
-            <g fill="#D3CABC" opacity=".7"><circle cx="201" cy="72" r="1.3"/><circle cx="192" cy="74" r="1.1"/><circle cx="204" cy="63" r="1"/></g>
-            ${glint(204, 56, '3.6s')}
+    return `<svg class="xmas-elf" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="${u}-red" gradientUnits="userSpaceOnUse" x1="14" y1="20" x2="110" y2="100">
+          <stop offset="0" stop-color="#EE5A45"/><stop offset=".5" stop-color="#C72C25"/><stop offset="1" stop-color="#861719"/>
+        </linearGradient>
+        <linearGradient id="${u}-gold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FBE08A"/><stop offset=".55" stop-color="#DDAA3E"/><stop offset="1" stop-color="#9A6B1B"/>
+        </linearGradient>
+        <radialGradient id="${u}-bell" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#FFF6CF"/><stop offset=".45" stop-color="#E9B94C"/><stop offset="1" stop-color="#8A5E12"/></radialGradient>
+        <filter id="${u}-drop" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="1.8" flood-color="#1d0806" flood-opacity=".32"/></filter>
+      </defs>
+      <g transform="translate(50 100)"><g ${motion && entrance ? 'opacity="0"' : ''}>${pop}<g transform="translate(-50 -100)">
+        <g filter="url(#${u}-drop)">
+          ${swing(motion, [0, 3, 0, -2, 0], 50, 100, '4.2s', '1s')}
+          <path d="M14 92C20 62 38 36 64 24C79 17 95 15 104 20C111 24 113 33 107 38C100 33 91 34 85 40C77 49 77 70 86 98Z" fill="url(#${u}-red)"/>
+          <path d="M85 40C77 49 77 70 86 98L70 98C66 74 72 52 85 40Z" fill="#4A0A0A" opacity=".3"/>
+          <path d="M24 84C28 62 42 42 62 30" stroke="#fff" stroke-opacity=".3" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M56 36C50 52 48 70 52 88" stroke="#6E1010" stroke-opacity=".32" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <path d="M70 26C88 18 100 18 106 24" stroke="#fff" stroke-opacity=".22" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          <g>
+            ${swing(motion, [0, 16, 0, -12, 0], 106, 39, '2.4s', '1.1s')}
+            <circle cx="106" cy="40.5" r="2" fill="none" stroke="#C99A33" stroke-width="1.4"/>
+            <path d="M99.4 53C99.8 47.5 101 42.4 106 42.4C111 42.4 112.2 47.5 112.6 53Z" fill="url(#${u}-bell)"/>
+            <ellipse cx="106" cy="53" rx="7.2" ry="1.7" fill="#B5862B"/>
+            <path d="M103 49.5H109" stroke="#7A5310" stroke-width=".9" stroke-linecap="round"/>
+            <circle cx="106" cy="55" r="1.6" fill="#6B4A0E"/>
+            <circle cx="103.6" cy="46" r="1.3" fill="#fff" opacity=".8"/>
+          </g>
+          <path d="${cuff}" fill="url(#${u}-gold)" stroke="#8A5E12" stroke-opacity=".45" stroke-width=".8" stroke-linejoin="round"/>
+          <path d="M4 88C30 81 60 79 96 92" stroke="#fff" stroke-opacity=".55" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          ${bells}
+          <g transform="translate(22 84) rotate(-12)">
+            <path d="M0 0C-4 -6 -12 -6 -16 -2C-12 -1 -11 3 -14 5C-8 6 -3 4 0 0Z" fill="#2E7D4F" stroke="#1E5A36" stroke-width=".6"/>
+            <path d="M0 0C3 -7 11 -8 15 -5C11 -3 11 1 13 3C7 5 2 4 0 0Z" fill="#3A8F5C" stroke="#1E5A36" stroke-width=".6"/>
+            <circle cx="-1" cy="-2" r="2.6" fill="#D32F2F"/><circle cx="2.6" cy="-0.6" r="2.4" fill="#B71C1C"/><circle cx="0.6" cy="1.8" r="2.3" fill="#E53935"/>
+            <circle cx="-1.8" cy="-2.8" r=".8" fill="#fff" opacity=".8"/>
           </g>
         </g>
-        <g fill="url(#${u}-fur)">${fluff.join('')}<path d="${brim}"/></g>
-        <g stroke="#D8D0C3" stroke-width=".9" stroke-linecap="round" fill="none" opacity=".45">${texture.join('')}</g>
-        <path d="M${P(111, -144).join(' ')}A111 111 0 0 1 ${P(111, -36).join(' ')}" stroke="#fff" stroke-opacity=".9" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        ${glint(...P(108, -120), '2.2s')}${glint(...P(104, -72), '3s')}${glint(...P(110, -48), '4.4s')}
-      </g>`;
-    const defs = `<defs>
-        <linearGradient id="${u}-red" gradientUnits="userSpaceOnUse" x1="10" y1="10" x2="200" y2="120">
-          <stop offset="0" stop-color="#E9503F"/><stop offset=".45" stop-color="#C62B25"/><stop offset="1" stop-color="#8A1616"/>
-        </linearGradient>
-        <linearGradient id="${u}-sheen" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".32"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="${u}-fur" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#F6F2EB"/><stop offset="1" stop-color="#E2DBCF"/>
-        </linearGradient>
-        <radialGradient id="${u}-pom" cx=".38" cy=".34" r=".72">
-          <stop offset="0" stop-color="#FFFFFF"/><stop offset=".65" stop-color="#F3EEE6"/><stop offset="1" stop-color="#D6CDBF"/>
-        </radialGradient>
-        <clipPath id="${u}-clip"><circle cx="100" cy="175" r="100"/></clipPath>
-        <clipPath id="${u}-above"><path clip-rule="evenodd" d="M-40 -40H260V220H-40Z M5 175A95 95 0 1 0 195 175A95 95 0 1 0 5 175Z"/></clipPath>
-        <clipPath id="${u}-bodyclip"><path d="${body}"/></clipPath>
-        <filter id="${u}-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.2"/></filter>
-        <filter id="${u}-drop" x="-15%" y="-15%" width="135%" height="140%"><feDropShadow dx="0" dy="2.5" stdDeviation="2.4" flood-color="#2a0a06" flood-opacity=".28"/></filter>
-      </defs>`;
-    if (mode === 'pill') {
-      return `<svg class="xmas-hat xmas-hat-pill" viewBox="-10 0 230 150" aria-hidden="true" focusable="false">${defs}<g>${drop}${art}</g></svg>`;
+        ${glint(motion, 116, 46, 4, '2.4s')}${glint(motion, 40, 74, 3.2, '3.6s')}
+      </g></g></g>
+    </svg>`;
+  }
+
+  // Snow resting on the top of the start button (button box coordinates, centre 100,175).
+  function snowCap(uid, { motion = true } = {}) {
+    const u = `cap-${uid}`;
+    const outer = [];
+    const inner = [];
+    for (let d = -164; d <= -16; d += 4) {
+      const taper = Math.sin(Math.PI * (d + 164) / 148);
+      const lump = 0.7 + 0.3 * Math.sin(d * 0.37) * Math.cos(d * 0.11);
+      outer.push(P(100 + 1.5 + 8 * taper * lump, d));
     }
-    return `<svg class="xmas-hat xmas-hat-right" viewBox="0 75 200 200" aria-hidden="true" focusable="false">${defs}
-      <g transform="rotate(34 100 175)"><g>${drop}${art}</g></g></svg>`;
+    for (let d = -16; d >= -164; d -= 4) {
+      const taper = Math.sin(Math.PI * (d + 164) / 148);
+      const drip = [-128, -96, -62, -40].reduce((a, c) => a + 7 * Math.exp(-((d - c) ** 2) / 18), 0) * taper;
+      inner.push(P(100 - 1 - 7 * taper - drip, d));
+    }
+    const shape = smooth([...outer, ...inner]);
+    const shadow = smooth(inner.map(([x, y]) => [x, r2(y + 4)]), false);
+    return `<svg class="xmas-snowcap" viewBox="0 75 200 200" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="${u}-snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".7" stop-color="#F2F6FA"/><stop offset="1" stop-color="#D9E4EE"/></linearGradient>
+        <clipPath id="${u}-clip"><circle cx="100" cy="175" r="100"/></clipPath>
+        <filter id="${u}-blur"><feGaussianBlur stdDeviation="2.5"/></filter>
+      </defs>
+      <g clip-path="url(#${u}-clip)"><path d="${shadow}" stroke="#0B2A1C" stroke-opacity=".35" stroke-width="6" fill="none" filter="url(#${u}-blur)"/></g>
+      <path d="${shape}" fill="url(#${u}-snow)"/>
+      <path d="${smooth(outer, false)}" stroke="#fff" stroke-width="1.5" fill="none" opacity=".9"/>
+      ${glint(motion, ...P(104, -120), 3.5, '1.6s', '5s')}${glint(motion, ...P(106, -78), 3, '3.1s', '5s')}${glint(motion, ...P(104, -46), 3.2, '4.2s', '5s')}
+    </svg>`;
+  }
+
+  // Lumpy snow drift along the top edge of the hero card.
+  function heroDrift(uid) {
+    const pts = [[0, 0], [360, 0]];
+    for (let x = 360; x >= 0; x -= 12) {
+      const drip = [60, 150, 255, 330].reduce((a, c) => a + 7 * Math.exp(-((x - c) ** 2) / 60), 0);
+      pts.push([x, r2(6 + 3 * Math.abs(Math.sin(x * 0.07)) + 2 * Math.abs(Math.cos(x * 0.031)) + drip)]);
+    }
+    return `<svg class="xmas-drift" viewBox="0 0 360 22" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="drift-${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCE7F0"/></linearGradient></defs>
+      <path d="M0 0H360V${pts[2][1]}${pts.slice(2).map(([x, y]) => `L${x} ${y}`).join('')}Z" fill="url(#drift-${uid})"/>
+    </svg>`;
+  }
+
+  const BULBS = ['#E5483E', '#F2C14E', '#3FA34D', '#4DA3F0'];
+  function bulb(u, x, y, angle, color, i, motion, size = 1) {
+    const tw = motion ? `<animate attributeName="opacity" values=".25;1;.25" dur="2.4s" begin="${r2(i * 0.2)}s" repeatCount="indefinite"/>` : '';
+    return `<g transform="translate(${x} ${y}) rotate(${r2(angle)}) scale(${size})">
+      <circle cx="0" cy="8" r="9" fill="${color}" opacity=".55" filter="url(#${u}-glow)">${tw}</circle>
+      <rect x="-2.4" y="-1" width="4.8" height="4.4" rx="1" fill="#3C3A36"/>
+      <ellipse cx="0" cy="8.4" rx="4.2" ry="5.8" fill="${color}"/>
+      <ellipse cx="-1.3" cy="6.6" rx="1.2" ry="2.2" fill="#fff" opacity=".65"/>
+    </g>`;
+  }
+
+  // String of lights sagging under the title.
+  function garland(uid, { motion = true } = {}) {
+    const u = `gar-${uid}`;
+    const halves = [[[-6, 4], [90, 32], [180, 6]], [[180, 6], [270, 32], [366, 4]]];
+    const q = ([a, b, c], t) => [0, 1].map((k) => r2((1 - t) ** 2 * a[k] + 2 * (1 - t) * t * b[k] + t * t * c[k]));
+    let i = 0;
+    const bulbs = [];
+    for (const h of halves) {
+      for (const t of [0.14, 0.32, 0.5, 0.68, 0.86]) {
+        const [x, y] = q(h, t);
+        const [x2, y2] = q(h, t + 0.01);
+        const slope = (Math.atan2(y2 - y, x2 - x) * 180) / Math.PI;
+        bulbs.push(bulb(u, x, y, slope * 0.35, BULBS[i % 4], i, motion));
+        i++;
+      }
+    }
+    return `<svg class="xmas-garland" viewBox="0 0 360 46" aria-hidden="true" focusable="false">
+      <defs><filter id="${u}-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+      <path d="M-6 4Q90 32 180 6Q270 32 366 4" stroke="var(--color-text-muted)" stroke-opacity=".6" stroke-width="1.4" fill="none"/>
+      ${bulbs.join('')}
+    </svg>`;
+  }
+
+  // Ring of lights around the start button (replaces the hour ring).
+  function lightsRing(uid, { motion = true } = {}) {
+    const u = `ring-${uid}`;
+    const bulbs = [];
+    for (let k = 0; k < 16; k++) {
+      const deg = -90 + k * 22.5;
+      const [x, y] = P(94, deg, 100, 100);
+      bulbs.push(bulb(u, x, y, deg - 90, BULBS[k % 4], k, motion, 0.9));
+    }
+    return `<svg class="xmas-lights-ring" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+      <defs><filter id="${u}-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+      <circle cx="100" cy="100" r="94" stroke="var(--color-text-muted)" stroke-opacity=".55" stroke-width="1.2" fill="none"/>
+      ${bulbs.join('')}
+    </svg>`;
   }
 
   // Gold cap, loop and thread on top of the button: turns the circle into a tree ornament.
@@ -179,13 +238,13 @@
     </svg>`;
   }
 
-  // Motion follows the lab's Motion control and the OS reduced-motion setting. The drop-in
-  // plays when Home is newly shown, not on every re-render (typing, toasts).
+  // Motion follows the lab's Motion control and the OS reduced-motion setting. Entrances
+  // play when Home is newly shown, not on every re-render (typing, toasts).
   const lastNav = {};
-  function hatMotion(ctx, uid) {
+  function motionFor(ctx, key) {
     const reduced = ctx.lab.motion === 'reduced' || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-    const entrance = lastNav[uid] !== ctx.ui.nav;
-    lastNav[uid] = ctx.ui.nav;
+    const entrance = lastNav[key] !== ctx.ui.nav;
+    lastNav[key] = ctx.ui.nav;
     return { motion: !reduced, entrance };
   }
 
@@ -194,20 +253,31 @@
     const deco = ctx.lab.deco;
     if (!deco.startsWith('xmas')) return null;
     const uid = ctx.famId;
-    const ring = deco === 'xmas-wreath' ? wreath(uid) : ctx.fam.start === 'ring' ? E.hourRing() : '';
+    const m = motionFor(ctx, uid + deco);
+    const ring = deco === 'xmas-wreath' ? wreath(uid)
+      : deco === 'xmas-lights' ? lightsRing(uid, m)
+        : ctx.fam.start === 'ring' ? E.hourRing() : '';
     const before = deco === 'xmas-ornament' ? ornamentCap(uid) + sparkles() : '';
-    const after = deco === 'xmas-hat' ? hat(uid, hatMotion(ctx, uid)) : '';
+    const after = deco === 'xmas-elf' ? elfHat(uid, m) : deco === 'xmas-snow' ? snowCap(uid, m) : '';
     const cls = deco === 'xmas-ornament' ? 'start-ornament' : '';
     return `<div class="start-wrap start-wrap-ring start-xmas start-${deco}">${ring}
       <div class="start-holder">${before}<button class="start-circle ${ctx.fam.start === 'ring' ? 'start-ring' : ''} ${cls}" ${E.act('startShift')}><span>${E.esc(ctx.t('startShift'))}</span></button>${after}</div>
     </div>`;
   }
 
-  // Small hat on the corner of the pill/bar start buttons (V1, V2).
-  function pillHat(ctx) {
+  // Small elf hat on the right end of the pill/bar start buttons (V1, V2).
+  function pillDecor(ctx) {
     const uid = ctx.famId + '-pill';
-    return ctx.lab.deco === 'xmas-hat' ? hat(uid, { mode: 'pill', ...hatMotion(ctx, uid) }) : '';
+    return ctx.lab.deco === 'xmas-elf' ? elfHat(uid, motionFor(ctx, uid)) : '';
   }
 
-  Object.assign(E, { xmas: { hat, ornamentCap, wreath, startDecor, pillHat } });
+  // Decorations above the hero (lights garland) and inside it (snow drift).
+  function topDecor(ctx) {
+    return ctx.lab.deco === 'xmas-lights' ? garland(ctx.famId, motionFor(ctx, ctx.famId + 'gar')) : '';
+  }
+  function heroDecor(ctx) {
+    return ctx.lab.deco === 'xmas-snow' ? heroDrift(ctx.famId) : '';
+  }
+
+  Object.assign(E, { xmas: { elfHat, snowCap, garland, lightsRing, ornamentCap, wreath, startDecor, pillDecor, topDecor, heroDecor } });
 })();

@@ -80,7 +80,7 @@ async function run() {
     }
   }
   // Christmas start-button variants on Home: same audit, every family, 320/390 px and 200 % text.
-  for (const deco of ['xmas-hat', 'xmas-ornament', 'xmas-wreath']) for (const family of FAMILIES) {
+  for (const deco of ['xmas-elf', 'xmas-snow', 'xmas-lights', 'xmas-ornament', 'xmas-wreath']) for (const family of FAMILIES) {
     for (const [width, text, theme] of [[390, 1, 'light'], [320, 1, 'dark'], [320, 2, 'light']]) {
       await page.setViewportSize({ width, height: 700 });
       const label = `${family}/${deco}/${theme}/${width}px/text${text}/home`;

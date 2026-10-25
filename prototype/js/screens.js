@@ -242,7 +242,7 @@
 
   function startFooter(ctx) {
     const s = ctx.fam.start;
-    if (s === 'pill' || s === 'bar') return `<div class="footer-bar ${ctx.lab.deco === 'xmas-hat' ? 'footer-xmas' : ''}">${button(ctx.t('startShift'), 'startShift', undefined, { cls: s === 'pill' ? 'btn-pill' : 'btn-bar' })}${E.xmas.pillHat(ctx)}</div>`;
+    if (s === 'pill' || s === 'bar') return `<div class="footer-bar ${ctx.lab.deco === 'xmas-elf' ? 'footer-xmas' : ''}">${button(ctx.t('startShift'), 'startShift', undefined, { cls: s === 'pill' ? 'btn-pill' : 'btn-bar' })}${E.xmas.pillDecor(ctx)}</div>`;
     return '';
   }
 
@@ -267,9 +267,11 @@
       ledger: ['notice', 'hero', 'recent', 'personal', 'options'],
       studio: ['hero', 'start', 'notice', 'recent', 'personal', 'options']
     }[h];
+    const drift = E.xmas.heroDecor(ctx);
+    if (drift) parts.hero = parts.hero.replace(/(<section class="hero[^>]*>)/, `$1${drift}`).replace('class="hero ', 'class="hero hero-drift ');
     return {
       header: largeTitle(ctx, ctx.t('appName'), E.decoration(ctx)),
-      body: order.map((k) => parts[k]).join(''),
+      body: E.xmas.topDecor(ctx) + order.map((k) => parts[k]).join(''),
       footer: startFooter(ctx)
     };
   }

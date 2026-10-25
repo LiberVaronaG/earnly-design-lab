@@ -268,6 +268,7 @@
       app.style.setProperty('--text-scale', state.lab.textScale);
       app.dataset.ax = String(state.lab.textScale >= 1.6);
       app.dataset.deco = state.lab.deco;
+      app.dataset.motion = state.lab.motion;
       app.innerHTML = renderApp(slot.dataset.family);
     }
     slots.forEach((s, i) => {

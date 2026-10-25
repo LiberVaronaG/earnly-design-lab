@@ -1,5 +1,5 @@
-// Renders the animated Santa hat to MP4 (H.264, plays on iPhone) frame by frame,
-// driving the SVG timeline with setCurrentTime so every frame is exact.
+// Renders the animated Christmas Home concepts to MP4 (H.264, plays on iPhone) frame by
+// frame, driving SVG (SMIL) and CSS animation clocks so every frame is exact.
 // Usage: node prototype/tools/capture-hat-video.cjs   (needs ffmpeg)
 const { chromium } = require('playwright');
 const { execFileSync } = require('child_process');
@@ -11,7 +11,7 @@ const INDEX = 'file://' + path.resolve(__dirname, '..', 'index.html');
 const OUT = path.resolve(__dirname, '..', 'captures', 'home');
 const FPS = 30;
 const SECONDS = 8;
-// The press "hop" is a CSS transition in the app; here it is replayed at a fixed time.
+// The elf hat's press "hop" is a CSS transition in the app; here it is replayed at a fixed time.
 const HOP = { at: 6.0, up: 0.12, hold: 0.18, down: 0.2 };
 
 function hopAmount(t) {
@@ -32,11 +32,9 @@ async function render(browser, name, hash, { selector, scale, width, height }) {
   for (let i = 0; i < FPS * SECONDS; i++) {
     const t = i / FPS;
     await page.evaluate(([time, k]) => {
-      document.querySelectorAll('svg.xmas-hat').forEach((s) => { s.pauseAnimations(); s.setCurrentTime(time); });
-      document.querySelectorAll('.xmas-hat-right').forEach((h) => {
-        h.style.transition = 'none';
-        h.style.transform = k ? `translate(${2 * k}px, ${-7 * k}px) rotate(${3 * k}deg)` : '';
-      });
+      document.querySelectorAll('svg').forEach((s) => { if (s.pauseAnimations) { s.pauseAnimations(); s.setCurrentTime(time); } });
+      document.getAnimations().forEach((a) => { a.pause(); a.currentTime = time * 1000; });
+      document.querySelectorAll('.xmas-elf').forEach((h) => { h.style.transition = 'none'; h.style.setProperty('--elf-hop', `${-6 * k}px`); });
       document.querySelectorAll('.start-circle').forEach((b) => { b.style.transition = 'none'; b.style.transform = k ? `scale(${1 - 0.03 * k})` : ''; });
     }, [t, hopAmount(t)]);
     const file = path.join(dir, `f${String(i).padStart(4, '0')}.png`);
@@ -54,8 +52,9 @@ async function render(browser, name, hash, { selector, scale, width, height }) {
 (async () => {
   fs.mkdirSync(OUT, { recursive: true });
   const browser = await chromium.launch();
-  await render(browser, '11-navidad-gorro-animado-detalle.mp4', 'family=v3&screen=home&deco=xmas-hat', { selector: '.start-wrap', scale: 3, width: 390, height: 844 });
-  await render(browser, '12-navidad-gorro-animado-inicio.mp4', 'family=v3&screen=home&deco=xmas-hat', { scale: 2, width: 390, height: 844 });
-  await render(browser, '13-navidad-gorro-animado-inicio-oscuro.mp4', 'family=v3&screen=home&deco=xmas-hat&theme=dark', { scale: 2, width: 390, height: 844 });
+  await render(browser, '11-navidad-duende-detalle.mp4', 'family=v3&screen=home&deco=xmas-elf', { selector: '.start-wrap', scale: 3, width: 390, height: 844 });
+  await render(browser, '12-navidad-duende.mp4', 'family=v3&screen=home&deco=xmas-elf', { scale: 2, width: 390, height: 844 });
+  await render(browser, '13-navidad-nevada.mp4', 'family=v3&screen=home&deco=xmas-snow', { scale: 2, width: 390, height: 844 });
+  await render(browser, '14-navidad-luces-oscuro.mp4', 'family=v3&screen=home&deco=xmas-lights&theme=dark', { scale: 2, width: 390, height: 844 });
   await browser.close();
 })();
