@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Earnly Design Lab</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/lab.css">
+</head>
+<body>
+  <a class="skip" href="#stage">Saltar a la vista</a>
+  <header class="lab-bar" id="lab-bar">
+    <div class="lab-brand">
+      <strong>Earnly Design Lab</strong>
+      <span>Prototipo visual · datos sintéticos · no es la app real</span>
+    </div>
+    <form class="lab-controls" id="lab-controls" onsubmit="return false">
+      <label>Vista
+        <select id="c-view">
+          <option value="single">Una familia</option>
+          <option value="compare">Comparar dos</option>
+          <option value="gallery">Las cuatro</option>
+        </select>
+      </label>
+      <label>Familia
+        <select id="c-family"></select>
+      </label>
+      <label data-when="compare">Comparar con
+        <select id="c-familyB"></select>
+      </label>
+      <label>Tema
+        <select id="c-theme"><option value="light">Claro</option><option value="dark">Oscuro</option></select>
+      </label>
+      <label>Idioma
+        <select id="c-lang"><option value="en">EN</option><option value="es">ES</option></select>
+      </label>
+      <label>Escenario
+        <select id="c-scenario"></select>
+      </label>
+      <label>Pantalla
+        <select id="c-screen"></select>
+      </label>
+      <label>Ancho
+        <select id="c-width"><option value="320">320 px</option><option value="390">390 px</option><option value="430">430 px</option></select>
+      </label>
+      <label>Texto
+        <select id="c-text"><option value="1">100 %</option><option value="1.35">135 %</option><option value="2">200 % (AX aprox.)</option></select>
+      </label>
+      <label>Decoración
+        <select id="c-deco"><option value="none">Ninguna</option><option value="halloween">Halloween</option><option value="christmas">Navidad · ramita</option><option value="xmas-gorrito">Navidad · solo gorrito (elegida)</option><option value="xmas-elf">Navidad · Duende (gorrito)</option><option value="xmas-snow">Navidad · Nevada</option><option value="xmas-lights">Navidad · Luces</option><option value="xmas-ornament">Navidad · esfera (anterior)</option><option value="xmas-wreath">Navidad · corona (anterior)</option></select>
+      </label>
+      <label>Movimiento
+        <select id="c-motion"><option value="normal">Normal</option><option value="reduced">Reducido</option></select>
+      </label>
+    </form>
+  </header>
+  <div class="lab-info" id="lab-info" aria-live="polite"></div>
+  <main class="stage" id="stage" tabindex="-1"></main>
+
+  <script src="js/families.generated.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/fixtures.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/xmas.js"></script>
+  <script src="js/screens.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/lab.js"></script>
+</body>
+</html>
