@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. La comparación vigente está en `prototype/index.html#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. La comparación vigente es la de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -49,6 +49,14 @@ Liber quiere mejorar la elegancia de Inicio con un cambio cada vez, **manteniend
 - Hecho en este bloque: vista «Original y Sin título», control «Inicio» y parámetro `home=sintitulo`. Detalle, comprobaciones, límites y tres sugerencias **no implementadas** en [HOME-SIN-TITULO.md](HOME-SIN-TITULO.md). Capturas en `captures/home-sin-titulo/`.
 - En este bloque no se desarrollaron Navidad ni las familias V1–V3. Las decisiones anteriores (incluido el gorrito elegido) siguen siendo historial válido y no se borraron.
 - **Siguiente paso exacto:** Liber compara `captures/home-sin-titulo/06-original-claro-es.png` y `07-sin-titulo-claro-es.png` en el teléfono y decide si aprueba «Sin título». Si lo aprueba, elige el segundo detalle entre las sugerencias de `HOME-SIN-TITULO.md`. Nada pasa a SwiftUI hasta que se elija el diseño.
+
+### Tarjeta verde (27 oct): **seguimos decidiendo la tarjeta**
+
+Liber aprobó Inicio sin título en el laboratorio y ahora estudia solo la composición de la tarjeta verde. Prefiere C: importe y cobertura a la izquierda, millas de hoy y del mes a la derecha. Colores actuales, nada más de Inicio.
+
+- Hecho: C dentro de Inicio sin título, vista «Tarjeta verde» con la tarjeta actual al lado, controles «Tarjeta» y «Tarjetas», y dos escenarios de prueba de diseño (importe largo; cobrado $0 con negativo tras gasolina). Medidas, comprobaciones, alternativa probada y descartada, y recomendación en [HOME-TARJETA-VERDE.md](HOME-TARJETA-VERDE.md). Capturas en `captures/home-tarjeta-verde/`.
+- Medida clave: a 390 px C iguala la altura actual en la referencia y suma 19 px cuando la cobertura es corta. Gana mucho a 320 px, con texto grande y con importes largos, y nunca parte la cifra.
+- **Siguiente paso exacto:** Liber elige entre la tarjeta actual y C con las capturas `01`/`02` y `05`–`08`. Hasta entonces no se toca Opciones, Personal, bordes, icono ni otras pantallas, y nada pasa a SwiftUI.
 
 ## Cómo continuar
 

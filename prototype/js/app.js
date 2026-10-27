@@ -1,5 +1,5 @@
 // App core: one shared demo state rendered into one or more phone frames.
-// All frames show the same route and data; only the family or the Home title variant differs.
+// All frames show the same route and data; only the family or a Home variant (title, card) differs.
 (function () {
   const E = window.E;
   const { icon, esc } = E;
@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -177,11 +177,11 @@
 
   // ---------- rendering ----------
 
-  function ctxFor(famId, home) {
+  function ctxFor(famId, home, card) {
     const lang = state.lab.lang;
     const monthShifts = state.data.shifts.filter((s) => E.inPeriod(s.date, 'month'));
     return {
-      famId, fam: window.EARNLY_FAMILIES[famId].composition, home, lang,
+      famId, fam: window.EARNLY_FAMILIES[famId].composition, home, card, lang,
       t: (k, v) => E.t(lang, k, v), fmt: E.fmt, data: state.data, ui: state.ui,
       month: E.summarize(state.data, monthShifts), lab: state.lab
     };
@@ -226,8 +226,8 @@
     return '';
   };
 
-  function renderApp(famId, home) {
-    const ctx = ctxFor(famId, home);
+  function renderApp(famId, home, card) {
+    const ctx = ctxFor(famId, home, card);
     const route = current();
     const screen = E.screens[route.name];
     const out = screen.render(ctx, route.params || {});
@@ -244,6 +244,22 @@
       ${sheet ? `<div class="sheet-backdrop"><div class="sheet sheet-${state.ui.sheet}" role="dialog" aria-modal="true" aria-labelledby="sheet-title">${sheet}</div></div>` : ''}
       ${dialog(ctx)}
       ${t ? `<div class="toast" role="status">${icon('info')}<span>${esc(ctx.t(toastKey))}</span></div>` : ''}`;
+  }
+
+  // An amount wider than the whole card shrinks just enough to fit on one line
+  // (like SwiftUI's minimumScaleFactor). It never wraps and keeps every decimal.
+  function fitAmounts(app) {
+    for (const box of app.querySelectorAll('[data-fit]')) {
+      const fig = box.querySelector('.hero-figure');
+      const card = box.closest('.hero');
+      const cs = getComputedStyle(card);
+      const room = card.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const need = box.scrollWidth;
+      if (need <= room) continue;
+      const fixed = need - fig.getBoundingClientRect().width;
+      const size = parseFloat(getComputedStyle(fig).fontSize);
+      fig.style.fontSize = `${Math.floor((size * (room - fixed)) / (need - fixed))}px`;
+    }
   }
 
   // Render all frames, keeping focus and scroll stable across re-renders.
@@ -270,7 +286,9 @@
       app.dataset.deco = state.lab.deco;
       app.dataset.motion = state.lab.motion;
       app.dataset.home = slot.dataset.home || 'original';
-      app.innerHTML = renderApp(slot.dataset.family, app.dataset.home);
+      app.dataset.card = slot.dataset.card || 'actual';
+      app.innerHTML = renderApp(slot.dataset.family, app.dataset.home, app.dataset.card);
+      fitAmounts(app);
     }
     slots.forEach((s, i) => {
       if (isNav) return;

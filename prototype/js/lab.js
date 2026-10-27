@@ -9,6 +9,12 @@
     original: ['Original', 'con «Earnly Driver»'],
     sintitulo: ['Sin título', 'sin el rótulo ni su espacio']
   };
+  const CARD = {
+    actual: ['Tarjeta actual', 'tres columnas, como hoy'],
+    c: ['C · Dos zonas', 'dinero a la izquierda, millas a la derecha']
+  };
+  // «Tarjeta verde» view: which card variants sit side by side.
+  const CARD_SETS = { 'actual,c': ['actual', 'c'] };
 
   const SCREENS = [
     ['home', 'Inicio'], ['homeBreakdown', 'Inicio · desglose abierto'], ['homeOptions', 'Inicio · opciones'],
@@ -37,6 +43,8 @@
     if (FAMS[h.get('family')]) L.family = h.get('family');
     if (FAMS[h.get('b')]) L.familyB = h.get('b');
     if (HOME[h.get('home')]) L.home = h.get('home');
+    if (CARD[h.get('card')]) L.card = h.get('card');
+    if (CARD_SETS[h.get('cards')]) L.cards = h.get('cards');
     if (['light', 'dark'].includes(h.get('theme'))) L.theme = h.get('theme');
     if (['en', 'es'].includes(h.get('lang'))) L.lang = h.get('lang');
     if (E.SCENARIOS[h.get('scenario')]) L.scenario = h.get('scenario');
@@ -51,7 +59,7 @@
 
   function writeHash() {
     const L = S.lab;
-    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
+    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
     if (L.solo) h.set('solo', '1');
     if (L.tall) h.set('tall', '1');
     history.replaceState(null, '', '#' + h.toString());
@@ -63,6 +71,8 @@
     $('c-family').value = L.family;
     $('c-familyB').value = L.familyB;
     $('c-home').value = L.home;
+    $('c-card').value = L.card;
+    $('c-cards').value = L.cards;
     $('c-theme').value = L.theme;
     $('c-lang').value = L.lang;
     $('c-scenario').value = L.scenario;
@@ -73,24 +83,29 @@
     $('c-motion').value = L.motion;
     document.querySelectorAll('[data-when="compare"]').forEach((el) => { el.hidden = L.view !== 'compare'; });
     $('c-family').parentElement.hidden = L.view === 'gallery';
-    $('c-home').parentElement.hidden = L.view === 'sintitulo' && !L.solo;
+    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta'].includes(L.view) && !L.solo;
+    $('c-card').parentElement.hidden = L.view === 'tarjeta' && !L.solo;
+    $('c-cards').parentElement.hidden = L.view !== 'tarjeta';
   }
   E.syncLab = () => { syncControls(); writeHash(); };
 
   function buildStage() {
     const L = S.lab;
-    // «Original y Sin título» shows the same family twice; only the Home title differs.
+    // «Original y Sin título» and «Tarjeta verde» show the same family several times; only a Home variant differs.
     const homes = L.view === 'sintitulo' && !L.solo ? ['original', 'sintitulo'] : null;
-    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes ? [L.family, L.family] : [L.family];
+    const cards = L.view === 'tarjeta' && !L.solo ? CARD_SETS[L.cards] : null;
+    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes ? [L.family, L.family] : cards ? cards.map(() => L.family) : [L.family];
     document.body.classList.toggle('is-solo', L.solo);
     const stage = $('stage');
     stage.innerHTML = fams.map((f, i) => {
-      const home = homes ? homes[i] : L.home;
-      const [name, summary] = homes ? [HOME[home][0], `${FAMS[f].name.es}, ${HOME[home][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
+      const home = homes ? homes[i] : cards ? 'sintitulo' : L.home;
+      const card = cards ? cards[i] : L.card;
+      const [name, summary] = homes ? [HOME[home][0], `${FAMS[f].name.es}, ${HOME[home][1]}.`]
+        : cards ? [CARD[card][0], `${FAMS[f].name.es}, ${CARD[card][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
       return `
       <section class="frame-col" aria-label="${name}" style="--w:${L.width}px">
         ${L.solo ? '' : `<div class="frame-head"><strong>${name}</strong><span>${summary}</span></div>`}
-        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}">
+        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}">
           <div class="app" data-family="${f}" data-theme="${L.theme}"></div>
         </div>
       </section>`;
@@ -106,6 +121,7 @@
     $('lab-info').innerHTML = `<span>Vista actual: <strong>${i.name}</strong></span><span>${src}</span>
       <span>Escenario: ${sc.label.es}${sc.ref ? ` (<code>${sc.ref}</code>)` : ' <span class="tag tag-approx">aprox.</span>'}</span>
       ${S.lab.view === 'sintitulo' ? '<span>Original y Sin título: misma familia, datos, tamaño y estado; solo cambia el rótulo de Inicio.</span>' : ''}
+      ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
       <span class="lab-hint">Navegador ≠ iOS: fuentes, teclado y VoiceOver son aproximados.</span>`;
   }
   E.onRender = updateInfo;
@@ -118,6 +134,8 @@
     L.family = $('c-family').value;
     L.familyB = $('c-familyB').value;
     L.home = $('c-home').value;
+    L.card = $('c-card').value;
+    L.cards = $('c-cards').value;
     L.theme = $('c-theme').value;
     L.lang = $('c-lang').value;
     L.scenario = $('c-scenario').value;
@@ -130,7 +148,7 @@
       L.familyB = Object.keys(FAMS).find((f) => f !== L.family);
     }
     if (prev.scenario !== L.scenario || prevScreen !== screenId) E.jump(screenId);
-    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.width !== L.width) buildStage();
+    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.width !== L.width) buildStage();
     syncControls();
     writeHash();
     E.render();

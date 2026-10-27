@@ -13,9 +13,10 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 
 | Control | Qué hace |
 |---|---|
-| Vista | Muestra una familia, compara dos lado a lado, enseña las cuatro con la misma pantalla y los mismos datos, o «Original y Sin título»: la misma familia dos veces, con y sin el rótulo de Inicio |
+| Vista | Muestra una familia, compara dos lado a lado, enseña las cuatro con la misma pantalla y los mismos datos, «Original y Sin título»: la misma familia dos veces, con y sin el rótulo de Inicio, o «Tarjeta verde»: la tarjeta actual y C |
 | Familia / Comparar con | V0 Actual, V1 Esencial, V2 Claridad, V3 Estudio |
 | Inicio | Original o Sin título (sin «Earnly Driver» arriba). Solo afecta a Inicio; ver [HOME-SIN-TITULO.md](HOME-SIN-TITULO.md) |
+| Tarjeta / Tarjetas | Tarjeta verde de Inicio: la actual o C · Dos zonas (solo V0). La vista «Tarjeta verde» las pone lado a lado con Inicio sin título; ver [HOME-TARJETA-VERDE.md](HOME-TARJETA-VERDE.md) |
 | Tema, Idioma | Claro u oscuro; EN o ES. El idioma también se cambia desde Ajustes → Idioma, dentro de la app |
 | Escenario | Pago parcial (24 oct), pagos completos, cifras demasiado grandes, sin datos (aproximación) y turno sin cerrar |
 | Pantalla | Salta a uno de los 25 estados de ejemplo. Después se puede navegar normalmente por la app |
@@ -59,7 +60,8 @@ node prototype/tools/build-tokens.mjs --check  # falla si lo generado está desa
 node prototype/tools/check-contrast.mjs        # contraste WCAG de los pares de color usados, por familia y tema
 node prototype/tools/check-ui.cjs              # pruebas en Chromium (Playwright): 1000 renders + flujos
 node prototype/tools/capture.cjs               # regenera captures/
-swift prototype/tools/capture-home-sin-titulo.swift  # regenera captures/home-sin-titulo/ con WebKit de macOS (sin Playwright)
+swift prototype/tools/capture-home-webkit.swift sin-titulo     # regenera captures/home-sin-titulo/ con WebKit de macOS (sin Playwright)
+swift prototype/tools/capture-home-webkit.swift tarjeta-verde  # regenera captures/home-tarjeta-verde/
 ```
 
 `check-ui.cjs` y `capture.cjs` usan el paquete `playwright` con el Chromium que ya tenga instalado el entorno.
@@ -71,3 +73,4 @@ swift prototype/tools/capture-home-sin-titulo.swift  # regenera captures/home-si
 - [PRUEBAS.md](PRUEBAS.md): qué se ejecutó, qué falló y se corrigió, y qué no se pudo probar.
 - [HANDOFF.md](HANDOFF.md): estado por fases y cómo continuar.
 - [HOME-SIN-TITULO.md](HOME-SIN-TITULO.md): primer cambio de Inicio, comparación Original / Sin título.
+- [HOME-TARJETA-VERDE.md](HOME-TARJETA-VERDE.md): tarjeta verde, actual frente a C, con medidas.

@@ -187,6 +187,24 @@
       </section>`;
     }
 
+    // Lab card variants of the V0 card. Same data, labels and toggle; only the composition changes.
+    if (ctx.card === 'c') {
+      return `<section class="hero hero-c" aria-label="${esc(ctx.t('paid'))}">
+        <div class="c-zones">
+          <div class="c-money">
+            <span class="hero-mini-label">${esc(ctx.t('paid'))}</span>
+            <span class="c-amount" data-fit>${toggleBtn(`<span class="hero-figure">${paidText(ctx)}</span>`)}</span>
+            <span class="hero-status">${esc(st.text)}</span>
+          </div>
+          <dl class="c-miles">
+            <div class="c-mile"><dt class="hero-mini-label">${esc(ctx.t('today'))}</dt><dd class="c-mile-figure">${ctx.fmt.int(ctx.lang, today)}<small> mi</small></dd></div>
+            <div class="c-mile"><dt class="hero-mini-label">${esc(ctx.t('thisMonth'))}</dt><dd class="c-mile-figure">${ctx.fmt.int(ctx.lang, s.miles)}<small> mi</small></dd></div>
+          </dl>
+        </div>
+        ${open ? `<div class="hero-breakdown">${breakdownHtml(ctx)}</div>` : ''}
+      </section>`;
+    }
+
     // V0 triple, as in the 24 Oct reference.
     return `<section class="hero hero-triple" aria-label="${esc(ctx.t('paid'))}">
       <div class="triple">

@@ -110,13 +110,49 @@
       ],
       personal: personalDrives,
       trash: []
+    },
+    // Stress cases for the green card: presentation only, values are as synthetic as the rest.
+    longPay: {
+      label: { es: 'Importe largo (prueba de diseño)', en: 'Long amount (design test)' },
+      ref: null,
+      permission: 'always',
+      gasKnown: false,
+      gasPrice: null,
+      autoPersonal: true,
+      tooLarge: false,
+      orphan: false,
+      seState: 'under',
+      shifts: [
+        shift({ id: 'w1', platform: 'amazonFlex', date: '2026-10-24', start: '04:00', end: '16:00', miles: 312.4, deduction: 226.49, gas: null, main: 99999.99, route: 5 }),
+        shift({ id: 'w2', platform: 'uber', date: '2026-10-20', start: '05:00', end: '17:00', miles: 4790.6, deduction: 3473.19, gas: null, main: null, extras: [{ platform: 'uber', amount: 23456.79, tip: 0 }], route: 6 }),
+        shift({ id: 'w3', platform: 'amazonFlex', date: '2026-10-16', start: '05:00', end: '17:00', miles: 4773.0, deduction: 3460.43, gas: null, main: null, route: 7 })
+      ],
+      personal: personalDrives,
+      trash: []
+    },
+    zeroPay: {
+      label: { es: 'Cobrado $0, negativo tras gasolina (prueba de diseño)', en: 'Paid $0, negative after gas (design test)' },
+      ref: null,
+      permission: 'always',
+      gasKnown: true,
+      gasPrice: 3.20,
+      autoPersonal: false,
+      tooLarge: false,
+      orphan: false,
+      seState: 'under',
+      shifts: [
+        shift({ id: 'w1', platform: 'amazonFlex', date: '2026-10-24', start: '06:00', end: '07:00', miles: 18.0, deduction: 13.05, gas: 5.60, main: 0, route: 5 }),
+        shift({ id: 'w2', platform: 'doorDash', date: '2026-10-21', start: '18:00', end: '18:45', miles: 8.0, deduction: 5.80, gas: 2.40, main: 0, route: 6 })
+      ],
+      personal: [],
+      trash: []
     }
   };
 
   // The shift produced by the simulated close flow (matches the 03-cierre-laboral captures).
   const CLOSE_SHIFT = { id: 'wNew', platform: 'amazonFlex', date: '2026-10-23', start: '01:55', end: '04:55', miles: 40.0, deduction: 29.00, gasKnownCost: 8.00, route: 9 };
 
-  const WEEK_MILES = { partial: [0, 15, 0, 10, 20, 0, 0], complete: [18, 20, 6, 40, 0, 0, 0], tooLarge: [0, 0, 0, 0, 15, 20, 0], empty: [0, 0, 0, 0, 0, 0, 0], orphan: [0, 0, 6, 40, 0, 0, 0] };
+  const WEEK_MILES = { partial: [0, 15, 0, 10, 20, 0, 0], complete: [18, 20, 6, 40, 0, 0, 0], tooLarge: [0, 0, 0, 0, 15, 20, 0], empty: [0, 0, 0, 0, 0, 0, 0], orphan: [0, 0, 6, 40, 0, 0, 0], longPay: [0, 0, 4790.6, 0, 0, 0, 312.4], zeroPay: [0, 0, 0, 8, 0, 0, 18] };
 
   function load(id) {
     return JSON.parse(JSON.stringify(SCENARIOS[id]));

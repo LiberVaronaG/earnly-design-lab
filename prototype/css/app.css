@@ -186,6 +186,26 @@
 .app[data-ax="true"] .triple-col { align-items: flex-start; text-align: left; }
 .app[data-ax="true"] .triple-mid .hero-status { justify-content: flex-start; text-align: left; }
 
+/* C · Dos zonas (lab variant of the V0 card): pay and its coverage on the left, miles on the right.
+   flex-wrap moves the miles under the pay once both no longer fit side by side, and the miles
+   pair up in a row when they get the full width. Each separator sits half a gap outside its item
+   and the container clips it, so only the one between visible neighbours shows. */
+.c-zones { --c-gap: var(--space-lg); display: flex; flex-wrap: wrap; gap: var(--c-gap); overflow: hidden; padding: 6px; margin: -6px; }
+.c-money { flex: 1000 1 0; min-width: min-content; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; position: relative; }
+.c-money::before, .c-money::after, .c-mile + .c-mile::before, .c-mile + .c-mile::after { content: ""; position: absolute; background: var(--color-hero-divider); }
+.c-money::before { top: 0; bottom: 0; right: calc(var(--c-gap) / -2); width: 1px; }
+.c-money::after { left: 0; right: 0; bottom: calc(var(--c-gap) / -2); height: 1px; }
+.c-amount { white-space: nowrap; }
+.c-amount .hero-toggle { position: relative; }
+.c-amount .hero-toggle::after { content: ""; position: absolute; inset: -6px -8px; }
+.c-miles { --c-row: var(--space-sm); flex: 1 0 auto; width: min-content; display: flex; flex-wrap: wrap; align-content: flex-start; column-gap: var(--c-gap); row-gap: var(--c-row); overflow: hidden; }
+.c-mile { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; position: relative; }
+.c-mile dt { white-space: nowrap; }
+.c-mile + .c-mile::before { top: 0; bottom: 0; left: calc(var(--c-gap) / -2); width: 1px; }
+.c-mile + .c-mile::after { left: 0; right: 0; top: calc(var(--c-row) / -2); height: 1px; }
+.c-mile-figure { font-family: var(--font-numeric); font-size: var(--size-title2); font-weight: var(--weight-hero-figure); line-height: 1.1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.c-mile-figure small { font-size: var(--size-subhead); font-weight: 400; }
+
 .hero-focus { padding: var(--space-lg) var(--space-md); gap: 6px; }
 .hero-focus .hero-figure { font-size: min(var(--size-hero-figure), 17cqi); }
 .hero-pair { display: flex; gap: var(--space-lg); flex-wrap: wrap; margin-top: var(--space-xs); font-size: var(--size-subhead); }

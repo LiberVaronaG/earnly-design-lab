@@ -33,7 +33,7 @@ Efecto en el conjunto: todo sube 40 px a tamaño normal. Con aviso, bajo Recient
 - `js/app.js`: cada marco lleva su variante (`data-home`) al contexto de render.
 - `css/app.css`: una regla, `padding-top: var(--space-md)` en el desplazamiento de Inicio sin título.
 - `js/lab.js`, `index.html`: vista «Original y Sin título», control «Inicio» y parámetro `home` en la URL. Sin `home` el prototipo se comporta como antes.
-- `tools/capture-home-sin-titulo.swift`: capturas de este bloque (ver Límites).
+- `tools/capture-home-webkit.swift` (antes `capture-home-sin-titulo.swift`): capturas de este bloque (ver Límites).
 - `captures/home-sin-titulo/`: capturas nuevas. Las anteriores no se tocaron.
 
 No cambian tokens, colores, cifras, escenarios, textos de la app ni otras pantallas.
@@ -52,7 +52,7 @@ En el navegador del entorno (Chromium) y en WebKit de macOS para las capturas:
 
 ## Capturas
 
-Están en `captures/home-sin-titulo/`. Son renders reales del prototipo con el mismo viewport, escenario y estado en cada pareja, sin retoques. Se regeneran con `swift prototype/tools/capture-home-sin-titulo.swift`.
+Están en `captures/home-sin-titulo/`. Son renders reales del prototipo con el mismo viewport, escenario y estado en cada pareja, sin retoques. Se regeneran con `swift prototype/tools/capture-home-webkit.swift sin-titulo`.
 
 | Archivo | Qué muestra |
 |---|---|
