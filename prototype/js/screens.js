@@ -269,8 +269,12 @@
     }[h];
     const drift = E.xmas.heroDecor(ctx);
     if (drift) parts.hero = parts.hero.replace(/(<section class="hero[^>]*>)/, `$1${drift}`).replace('class="hero ', 'class="hero hero-drift ');
+    // «Sin título»: the visible name and its bar go away; the heading stays for screen readers and focus.
+    const header = ctx.home === 'sintitulo'
+      ? `<h1 class="sr-only" tabindex="-1" data-screen-heading>${esc(ctx.t('appName'))}</h1>`
+      : largeTitle(ctx, ctx.t('appName'), E.decoration(ctx));
     return {
-      header: largeTitle(ctx, ctx.t('appName'), E.decoration(ctx)),
+      header,
       body: E.xmas.topDecor(ctx) + order.map((k) => parts[k]).join(''),
       footer: startFooter(ctx)
     };

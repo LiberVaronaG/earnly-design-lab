@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `claude/prototype-design-lab`. Para abrirlo, `prototype/index.html`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. La comparación vigente está en `prototype/index.html#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -41,6 +41,14 @@ El propietario prefiere la línea de V3 (círculo) y quiere encontrar un buen **
 - Vídeos: `captures/home/11-14*.mp4`; se regeneran con `node tools/capture-xmas-video.cjs` (necesita ffmpeg).
 
 **Decisión del propietario:** Inicio actual (V0) + solo el gorrito de duende pequeño, sin aro, nieve, luces ni cambios de color (`deco=xmas-gorrito`). Imágenes: `captures/home/15-16`. Vídeos: `captures/home/17-18*.mp4`. Para la versión real, el gorrito interactivo se diseñaría con herramientas de animación o 3D. El propietario aclara que este gorrito es una **prueba de hasta dónde se puede animar con Claude**: en la app se usaría un gorro con gráficos más detallados y la animación incluida. Por ahora queda como «un gorro navideño».
+
+## Dirección vigente (27 oct): Inicio detalle a detalle
+
+Liber quiere mejorar la elegancia de Inicio con un cambio cada vez, **manteniendo los colores actuales y la V0**. El primer cambio elegido es quitar el rótulo «Earnly Driver» de arriba y su espacio, sin sustituirlo por nada. La identidad se trabajará más adelante con el icono de la app.
+
+- Hecho en este bloque: vista «Original y Sin título», control «Inicio» y parámetro `home=sintitulo`. Detalle, comprobaciones, límites y tres sugerencias **no implementadas** en [HOME-SIN-TITULO.md](HOME-SIN-TITULO.md). Capturas en `captures/home-sin-titulo/`.
+- En este bloque no se desarrollaron Navidad ni las familias V1–V3. Las decisiones anteriores (incluido el gorrito elegido) siguen siendo historial válido y no se borraron.
+- **Siguiente paso exacto:** Liber compara `captures/home-sin-titulo/06-original-claro-es.png` y `07-sin-titulo-claro-es.png` en el teléfono y decide si aprueba «Sin título». Si lo aprueba, elige el segundo detalle entre las sugerencias de `HOME-SIN-TITULO.md`. Nada pasa a SwiftUI hasta que se elija el diseño.
 
 ## Cómo continuar
 

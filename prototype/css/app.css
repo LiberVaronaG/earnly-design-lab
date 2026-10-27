@@ -57,6 +57,8 @@
 .large-title { font-family: var(--font-display); font-size: calc(var(--size-large-title) * 0.72); font-weight: var(--weight-title); letter-spacing: -0.01em; }
 .app[data-family="v1"] .large-title, .app[data-family="v3"] .large-title { font-size: var(--size-title1); }
 .app[data-family="v2"] .large-title { font-size: var(--size-title2); font-weight: 700; }
+/* Home «Sin título»: with no title bar the content starts at the safe area, inset like the side margins. */
+.app[data-home="sintitulo"] .screen-home .scroll { padding-top: var(--space-md); }
 .navbar, .sheet-bar { flex: none; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-xs); min-height: 50px; padding: 0 var(--space-xs); }
 .navbar-title { font-size: var(--size-headline); font-weight: var(--weight-semibold); text-align: center; overflow-wrap: anywhere; max-width: 60vw; }
 .navbar-right { justify-self: end; }

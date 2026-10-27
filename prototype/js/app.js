@@ -1,5 +1,5 @@
 // App core: one shared demo state rendered into one or more phone frames.
-// All frames show the same route and data; only the family differs.
+// All frames show the same route and data; only the family or the Home title variant differs.
 (function () {
   const E = window.E;
   const { icon, esc } = E;
@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -177,11 +177,11 @@
 
   // ---------- rendering ----------
 
-  function ctxFor(famId) {
+  function ctxFor(famId, home) {
     const lang = state.lab.lang;
     const monthShifts = state.data.shifts.filter((s) => E.inPeriod(s.date, 'month'));
     return {
-      famId, fam: window.EARNLY_FAMILIES[famId].composition, lang,
+      famId, fam: window.EARNLY_FAMILIES[famId].composition, home, lang,
       t: (k, v) => E.t(lang, k, v), fmt: E.fmt, data: state.data, ui: state.ui,
       month: E.summarize(state.data, monthShifts), lab: state.lab
     };
@@ -226,8 +226,8 @@
     return '';
   };
 
-  function renderApp(famId) {
-    const ctx = ctxFor(famId);
+  function renderApp(famId, home) {
+    const ctx = ctxFor(famId, home);
     const route = current();
     const screen = E.screens[route.name];
     const out = screen.render(ctx, route.params || {});
@@ -269,7 +269,8 @@
       app.dataset.ax = String(state.lab.textScale >= 1.6);
       app.dataset.deco = state.lab.deco;
       app.dataset.motion = state.lab.motion;
-      app.innerHTML = renderApp(slot.dataset.family);
+      app.dataset.home = slot.dataset.home || 'original';
+      app.innerHTML = renderApp(slot.dataset.family, app.dataset.home);
     }
     slots.forEach((s, i) => {
       if (isNav) return;
