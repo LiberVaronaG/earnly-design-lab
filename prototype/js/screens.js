@@ -45,11 +45,13 @@
     const s = ctx.month;
     const out = [];
     out.push({ k: ctx.t('paidLogged'), v: s.overflow || !s.withAnyPay ? '—' : money(ctx, s.paid) });
-    const notes = [];
-    if (s.extrasOnly) notes.push(ctx.t('extrasOnlyNote', { m: s.extrasOnly, n: s.n }));
-    if (s.noPay) notes.push(ctx.t('noPayNote', { m: s.noPay, n: s.n }));
-    if (!ctx.data.gasKnown && s.n) notes.push(ctx.t('gasUnknown'));
-    if (s.overflow) notes.push(ctx.t('tooLargeNote'));
+    // Notes keep their order; they are also split by what they explain (pay, gas, totals).
+    const payNotes = [];
+    if (s.extrasOnly) payNotes.push(ctx.t('extrasOnlyNote', { m: s.extrasOnly, n: s.n }));
+    if (s.noPay) payNotes.push(ctx.t('noPayNote', { m: s.noPay, n: s.n }));
+    const gasNotes = !ctx.data.gasKnown && s.n ? [ctx.t('gasUnknown')] : [];
+    const sumNotes = s.overflow ? [ctx.t('tooLargeNote')] : [];
+    const notes = [...payNotes, ...gasNotes, ...sumNotes];
     const gas = [];
     if (ctx.data.gasKnown && s.gas !== null && s.n && !s.overflow) {
       gas.push({ k: ctx.t('gasCostMonth'), v: money(ctx, -s.gas) });
@@ -58,7 +60,7 @@
     const platforms = Object.entries(s.byPlatform).map(([p, v]) => ({
       k: ctx.t(v.count === 1 ? 'blocks' : 'blocksPl', { p: pname(p), n: v.count }), v: money(ctx, v.amount)
     }));
-    return { paid: out, notes, gas, deduction: { k: ctx.t('deductionEstimate'), v: money(ctx, s.deduction), note: ctx.t('deductionNote') }, platforms };
+    return { paid: out, notes, payNotes, gasNotes, sumNotes, gas, deduction: { k: ctx.t('deductionEstimate'), v: money(ctx, s.deduction), note: ctx.t('deductionNote') }, platforms };
   }
 
   function breakdownHtml(ctx, cls = '') {
@@ -70,6 +72,29 @@
       <div class="breakdown-sep"></div>
       ${kv([b.deduction])}<p class="note">${esc(b.deduction.note)}</p>
       ${b.platforms.length ? `<div class="breakdown-sep"></div>${kv(b.platforms)}` : ''}
+    </div>`;
+  }
+
+  // «Propuesta» for the open C card: the same lines and conditions, grouped by meaning.
+  // Pay and gas read as a small statement ending in the result; the tax estimate leaves
+  // the money column so it is not read as one more step of the subtraction.
+  function breakdownGrouped(ctx) {
+    const b = breakdownLines(ctx);
+    const notes = (list) => list.map((n) => `<p class="note">${esc(n)}</p>`).join('');
+    const [gas, left] = b.gas;
+    return `<div class="breakdown bdp">
+      <div class="bdp-group">
+        ${kv(b.paid)}
+        ${b.payNotes.length ? `<div class="bdp-notes">${notes(b.payNotes)}</div>` : ''}
+        ${notes(b.gasNotes)}
+        ${gas ? kv([gas, left && { ...left, cls: 'bdp-result' }]) : ''}
+        ${notes(b.sumNotes)}
+      </div>
+      <div class="bdp-group bdp-tax">
+        <dl><dt>${esc(b.deduction.k)}</dt><dd>${b.deduction.v}</dd></dl>
+        <p class="note">${esc(b.deduction.note)}</p>
+      </div>
+      ${b.platforms.length ? `<div class="bdp-group">${kv(b.platforms)}</div>` : ''}
     </div>`;
   }
 
@@ -201,7 +226,7 @@
             <div class="c-mile"><dt class="hero-mini-label">${esc(ctx.t('thisMonth'))}</dt><dd class="c-mile-figure">${ctx.fmt.int(ctx.lang, s.miles)}<small> mi</small></dd></div>
           </dl>
         </div>
-        ${open ? `<div class="hero-breakdown">${breakdownHtml(ctx)}</div>` : ''}
+        ${open ? `<div class="hero-breakdown">${ctx.bd === 'propuesta' ? breakdownGrouped(ctx) : breakdownHtml(ctx)}</div>` : ''}
       </section>`;
     }
 

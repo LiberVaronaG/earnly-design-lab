@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -13,6 +13,8 @@ struct Shot {
   let hash: String
   let dark: Bool
   let solo: Bool
+  // Grow the phone so the whole Home scroll is visible (e.g. an open breakdown), instead of cutting it.
+  var full = false
 }
 
 // Same scenario, screen and size on every side of a comparison; only the lab variant differs.
@@ -40,6 +42,20 @@ let sets: [String: [Shot]] = [
     Shot(file: "08-comparar-cobertura-corta-en.png", hash: "view=tarjeta&cards=actual,c&\(common)&screen=home&theme=light&lang=en&scenario=complete&width=390&text=1", dark: false, solo: false),
     Shot(file: "09-comparar-cero-negativo-desglose-es.png", hash: "view=tarjeta&cards=actual,c&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=zeroPay&width=390&text=1", dark: false, solo: false),
     Shot(file: "10-comparar-sin-datos-es.png", hash: "view=tarjeta&cards=actual,c&\(common)&screen=home&theme=light&lang=es&scenario=empty&width=390&text=1", dark: false, solo: false)
+  ],
+  "tarjeta-abierta": [
+    Shot(file: "01-actual-claro-es.png", hash: "solo=1&home=sintitulo&card=c&desglose=actual&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "02-propuesta-claro-es.png", hash: "solo=1&home=sintitulo&card=c&desglose=propuesta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "03-comparar-pagos-completos-claro-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "04-comparar-pagos-completos-oscuro-en.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=dark&lang=en&scenario=complete&width=390&text=1", dark: true, solo: false, full: true),
+    Shot(file: "05-comparar-parcial-claro-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "06-comparar-cero-negativo-claro-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=zeroPay&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "07-comparar-320-texto-200-parcial-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=partial&width=320&text=2", dark: false, solo: false, full: true),
+    Shot(file: "08-comparar-320-texto-200-negativo-oscuro-en.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=dark&lang=en&scenario=zeroPay&width=320&text=2", dark: true, solo: false, full: true),
+    Shot(file: "09-comparar-gasolina-sin-resultado-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=orphan&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "10-comparar-importe-largo-en.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=en&scenario=longPay&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "11-comparar-sin-datos-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=empty&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "12-comparar-demasiado-grande-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=tooLarge&width=390&text=1", dark: false, solo: false, full: true)
   ]
 ]
 
@@ -106,11 +122,25 @@ for shot in shots {
     resize(NSSize(width: 390, height: 844))
     _ = js("document.documentElement.style.overflow = 'hidden'; location.hash = '\(shot.hash)'")
     spin(0.5)
-    try snapshot(NSRect(x: 0, y: 0, width: 390, height: 844), scale: 3, to: out.appendingPathComponent(shot.file))
+    var height = 844.0
+    if shot.full {
+      height += js("(() => { const s = document.querySelector('.scroll'); return s.scrollHeight - s.clientHeight; })()") as? Double ?? 0
+      resize(NSSize(width: 390, height: height))
+    }
+    try snapshot(NSRect(x: 0, y: 0, width: 390, height: height), scale: 3, to: out.appendingPathComponent(shot.file))
   } else {
     resize(NSSize(width: 960, height: 1200))
     _ = js("document.documentElement.style.overflow = ''; location.hash = '\(shot.hash)'")
     spin(0.5)
+    if shot.full {
+      // Every phone grows by the same amount, so both tab bars stay level.
+      _ = js("""
+        (() => { const phones = [...document.querySelectorAll('.phone')];
+          const extra = Math.max(0, ...phones.map((p) => { const s = p.querySelector('.scroll'); return s.scrollHeight - s.clientHeight; }));
+          phones.forEach((p) => p.style.setProperty('--h', (parseFloat(p.style.getPropertyValue('--h')) + extra) + 'px')); })()
+        """)
+      spin(0.2)
+    }
     // Lab bar and info line stay out of the image; the frame titles say which side is which.
     let box = js("""
       (() => { document.getElementById('lab-bar').style.display = 'none'; document.getElementById('lab-info').style.display = 'none';

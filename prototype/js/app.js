@@ -1,5 +1,5 @@
 // App core: one shared demo state rendered into one or more phone frames.
-// All frames show the same route and data; only the family or a Home variant (title, card) differs.
+// All frames show the same route and data; only the family or a Home variant (title, card, breakdown) differs.
 (function () {
   const E = window.E;
   const { icon, esc } = E;
@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -177,11 +177,11 @@
 
   // ---------- rendering ----------
 
-  function ctxFor(famId, home, card) {
+  function ctxFor(famId, variant) {
     const lang = state.lab.lang;
     const monthShifts = state.data.shifts.filter((s) => E.inPeriod(s.date, 'month'));
     return {
-      famId, fam: window.EARNLY_FAMILIES[famId].composition, home, card, lang,
+      famId, fam: window.EARNLY_FAMILIES[famId].composition, ...variant, lang,
       t: (k, v) => E.t(lang, k, v), fmt: E.fmt, data: state.data, ui: state.ui,
       month: E.summarize(state.data, monthShifts), lab: state.lab
     };
@@ -226,8 +226,8 @@
     return '';
   };
 
-  function renderApp(famId, home, card) {
-    const ctx = ctxFor(famId, home, card);
+  function renderApp(famId, variant) {
+    const ctx = ctxFor(famId, variant);
     const route = current();
     const screen = E.screens[route.name];
     const out = screen.render(ctx, route.params || {});
@@ -287,7 +287,8 @@
       app.dataset.motion = state.lab.motion;
       app.dataset.home = slot.dataset.home || 'original';
       app.dataset.card = slot.dataset.card || 'actual';
-      app.innerHTML = renderApp(slot.dataset.family, app.dataset.home, app.dataset.card);
+      app.dataset.bd = slot.dataset.bd || 'actual';
+      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd });
       fitAmounts(app);
     }
     slots.forEach((s, i) => {

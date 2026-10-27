@@ -178,6 +178,25 @@
 .breakdown { display: flex; flex-direction: column; gap: var(--space-xs); }
 .breakdown-sep { height: 1px; background: var(--color-separator); margin: 4px 0; }
 .hero .breakdown-sep { background: var(--color-hero-divider); }
+/* «Propuesta» for the open C card (lab variant): three groups split by hairlines. Pay and gas read
+   as a statement closed by a subtotal rule; the tax estimate leaves the money column; platforms
+   close as detail. Labels step back, amounts stay white; text sizes are today's. */
+.bdp { gap: 0; }
+.bdp-group { display: flex; flex-direction: column; gap: var(--space-xs); }
+.bdp-group + .bdp-group { border-top: 1px solid var(--color-hero-divider); margin-top: var(--space-md); padding-top: var(--space-md); }
+.bdp .kv { gap: var(--space-xs); }
+.bdp .kv-row dt { color: var(--color-on-hero-muted); }
+.bdp-notes { display: flex; flex-direction: column; gap: var(--space-xxs); padding-left: var(--space-sm); border-left: 1px solid var(--color-hero-divider); }
+.bdp .kv-row.bdp-result { border-top: 1px solid var(--color-hero-divider); padding-top: var(--space-xs); margin-top: 2px; }
+.bdp .bdp-result dt { color: var(--color-on-hero); }
+.bdp-result dt, .bdp-result dd { font-weight: 600; }
+.bdp-result strong { font-weight: inherit; }
+.bdp-result dd { font-size: var(--size-title3); }
+.bdp-tax dl { display: flex; flex-direction: column; gap: 2px; }
+.bdp-tax dt { color: var(--color-on-hero-muted); font-size: var(--size-subhead); }
+.bdp-tax dd { font-variant-numeric: tabular-nums; }
+/* Large text stacks each label over its amount: more room between rows than inside one keeps pairs clear. */
+.app[data-ax="true"] .bdp .kv { gap: var(--space-sm); }
 
 .triple { display: grid; grid-template-columns: auto 1fr auto; gap: var(--space-xs); align-items: start; }
 .triple-col { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; min-width: 0; }

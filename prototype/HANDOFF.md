@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título y con la tarjeta C (`#view=single&family=v0&home=sintitulo&card=c&lang=es&scenario=partial&screen=home`). La comparación de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título y con la tarjeta C cerrada (`#view=single&family=v0&home=sintitulo&card=c&lang=es&scenario=partial&screen=home`). Comparación vigente, la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -58,6 +58,14 @@ Liber aprobó Inicio sin título en el laboratorio y ahora estudia solo la compo
 - Medida clave: a 390 px C iguala la altura actual en la referencia y suma 19 px cuando la cobertura es corta. Gana mucho a 320 px, con texto grande y con importes largos, y nunca parte la cifra.
 - **Decisión de Liber (27 oct): C** para la tarjeta verde, aceptando sus 19 px extra cuando la cobertura cabe en una línea. En el laboratorio sigue accesible con `card=c`; la tarjeta actual queda como referencia.
 - **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Hasta entonces no se toca Opciones, Personal, bordes, icono ni otras pantallas, y nada pasa a SwiftUI.
+
+### Tarjeta C abierta (27 oct): **propuesta pendiente de elección**
+
+Con Inicio sin título y la C cerrada ya elegidos, Liber pidió estudiar solo el desglose que aparece al abrir C: jerarquía, alineaciones, separadores y espacio, sin tocar cifras, textos ni condiciones.
+
+- Hecho: vista «Tarjeta abierta» (desglose actual y propuesta bajo la misma C), control «Desglose» y parámetro `desglose`. La propuesta agrupa cobro y gasolina con raya de subtotal, saca la deducción de la columna de la resta y deja las plataformas como detalle. Texto idéntico y en el mismo orden. Medidas, comprobaciones y recomendación en [HOME-TARJETA-ABIERTA.md](HOME-TARJETA-ABIERTA.md); capturas en `captures/home-tarjeta-abierta/`.
+- Medida clave: con texto normal, la propuesta añade 8–36 px (ES) y hasta 58 px (EN). Con texto al 200 % queda igual o más corta.
+- **Siguiente paso exacto:** Liber elige entre el desglose actual y la propuesta. Hasta entonces no se toca el resto de Inicio, y nada pasa a SwiftUI.
 
 ## Cómo continuar
 
