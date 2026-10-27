@@ -1,6 +1,6 @@
 # Tarjeta verde de Inicio: actual y C
 
-Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Encargo: [briefs/home-tarjeta-verde/PROMPT-CLAUDE.md](../briefs/home-tarjeta-verde/PROMPT-CLAUDE.md). **Seguimos decidiendo la tarjeta verde.** Nada de esto está en la app.
+Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Encargo: [briefs/home-tarjeta-verde/PROMPT-CLAUDE.md](../briefs/home-tarjeta-verde/PROMPT-CLAUDE.md). **Decisión de Liber (27 oct): C.** Nada de esto está en la app.
 
 ![Tarjeta actual y C en Inicio sin título, claro, ES, 390 px](captures/home-tarjeta-verde/03-comparar-claro-es.png)
 
@@ -119,6 +119,6 @@ Es criterio de diseño con medidas del prototipo, no preferencia de clientes.
 1. **Periodo de «Cobrado».** Las millas dicen «Hoy» y «Este mes», pero el importe no dice su periodo, y en el prototipo es del mes. Una etiqueta como «Cobrado este mes» aclararía la lectura. Es un cambio de texto, y además la app real usa otra cifra («Tras gasolina» en C36), así que hay que decidirlo con esa diferencia delante.
 2. **Nombre accesible del importe.** En las dos tarjetas el botón del desglose se llama «Mostrar desglose», y un lector de pantalla puede no leer el importe que lleva dentro. Sería mejor anunciar «Cobrado, $70.00» como nombre y dejar el desglose como acción o pista. Es un cambio de función accesible: se decide aparte.
 
-## Siguiente paso
+## Decisión y siguiente paso
 
-Liber compara `01-actual-claro-es.png` y `02-c-claro-es.png` en el teléfono y mira las capturas 05 a 08, donde están los casos difíciles y el coste de C, antes de elegir la tarjeta. No se avanza a Opciones, Personal, bordes, icono ni otras pantallas hasta entonces.
+Liber eligió **C** tras ver las capturas, aceptando su coste de 19 px cuando la cobertura cabe en una línea. La tarjeta actual queda en el laboratorio como referencia. El siguiente detalle de Inicio lo elige Liber. Hasta entonces no se avanza a Opciones, Personal, bordes, icono ni otras pantallas, y nada pasa a SwiftUI.
