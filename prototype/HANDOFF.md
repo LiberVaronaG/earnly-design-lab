@@ -86,13 +86,19 @@ Con Inicio sin título, la tarjeta C, su desglose y Opciones ya elegidos, Liber 
 - Prueba descartada: Liber pidió ver A «Sin caja» (sin rectángulo, solo una línea inferior) en un PNG de 390 × 844 y la descartó sin guardarla.
 - **Decisión de Liber (27 oct): A**, con caja y en una fila. En el laboratorio sigue accesible con `personal=a`; la fila actual y B quedan como referencia.
 
-### Personal en marcha (27 oct): **línea en vivo, pendiente de revisión**
+### Personal en marcha (27 oct): **tres formas, pendientes de elección**
 
 Liber pidió ideas para la misma caja mientras conduce en personal y eligió la 1: la caja A con una línea en vivo. Esa línea sustituye al banner que hoy pone la app arriba del todo.
 
 - Hecho: `liveLine()` dentro de la caja A, con los cuatro estados de la app (trackeando, buscando ubicación, sin señal GPS, en pausa), sus textos y Detener. El único texto nuevo es «este viaje». Hay cuatro pantallas de laboratorio (`screen=homeLive`, `homeLiveAcquiring`, `homeLiveNoSignal`, `homeLivePaused`). Detalle, medidas y límites en [HOME-PERSONAL-EN-MARCHA.md](HOME-PERSONAL-EN-MARCHA.md). Capturas a 390 × 844 en `captures/home-personal-en-marcha/`.
 - Medidas a 390 px: la caja pasa de 56 a 118 px trackeando y a 157 px en pausa.
-- **Siguiente paso exacto:** Liber revisa las cuatro capturas. No se toca el resto de Inicio, y nada pasa a SwiftUI.
+- Liber pidió dos más «con cambios en la interfaz y otra perspectiva». Se construyeron:
+  - **2 · El viaje primero:** etiqueta de estado, millas en grande y Detener con fondo, encima de la fila A.
+  - **3 · Barra fija abajo:** la barra va sobre las pestañas y la caja A no cambia.
+  Vista «Personal en marcha» (`#view=enmarcha&family=v0&lang=es&scenario=partial&screen=homeLive`), control «En marcha» y parámetro `vivo`. Capturas lado a lado en `captures/home-personal-en-marcha-tres/`.
+- Medidas a 390 px, trackeando: 1 = 118 px, 2 = 166 px, 3 = caja de 56 px más una barra fija de 61 px. Con texto al 200 % a 320 px, la barra de la 3 deja solo 163 px visibles de Inicio.
+- Recomendación: la 2.
+- **Siguiente paso exacto:** Liber elige entre la 1, la 2 y la 3. No se toca el resto de Inicio, y nada pasa a SwiftUI.
 
 ## Cómo continuar
 

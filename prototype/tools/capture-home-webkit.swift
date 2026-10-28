@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -100,6 +100,13 @@ let sets: [String: [Shot]] = [
     Shot(file: "02-buscando-ubicacion-claro-es.png", hash: "\(chosen)&personal=a&screen=homeLiveAcquiring&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
     Shot(file: "03-sin-senal-claro-es.png", hash: "\(chosen)&personal=a&screen=homeLiveNoSignal&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
     Shot(file: "04-en-pausa-claro-es.png", hash: "\(chosen)&personal=a&screen=homeLivePaused&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true)
+  ],
+  // The three live presentations side by side, phones at their normal height (not grown).
+  "personal-en-marcha-tres": [
+    Shot(file: "01-comparar-trackeando-claro-es.png", hash: "view=enmarcha&family=v0&deco=none&motion=normal&screen=homeLive&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false),
+    Shot(file: "02-comparar-en-pausa-claro-es.png", hash: "view=enmarcha&family=v0&deco=none&motion=normal&screen=homeLivePaused&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false),
+    Shot(file: "03-comparar-sin-senal-oscuro-en.png", hash: "view=enmarcha&family=v0&deco=none&motion=normal&screen=homeLiveNoSignal&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false),
+    Shot(file: "04-comparar-320-texto-200-en-pausa-es.png", hash: "view=enmarcha&family=v0&deco=none&motion=normal&screen=homeLivePaused&theme=light&lang=es&scenario=partial&width=320&text=2", dark: false, solo: false)
   ]
 ]
 

@@ -274,19 +274,54 @@
   // A personal drive in progress (lab state), shown inside the chosen Personal box A instead of a
   // separate banner. Status titles and reasons are the app's own; «this drive» is new. The trip
   // is not in Today or This Month until it ends, as in the app.
-  function liveLine(ctx, trip) {
+  function liveInfo(ctx, trip) {
     const LIVE = {
       recording: { title: 'liveRecording', mark: '<span class="pv-live-dot"></span>' },
       acquiring: { title: 'liveAcquiring', why: 'liveWaitGps', mark: icon('location') },
       signalLost: { title: 'liveNoSignal', why: 'liveNoSignalWhy', mark: icon('signalOff') },
       paused: { title: 'livePaused', why: 'livePausedWhy', mark: icon('pause') }
     }[trip.status];
-    // The app joins the reason with « · »; here it gets its own line so the dot never hangs at a line end.
-    const why = LIVE.why ? ` <span class="pv-live-why">${esc(ctx.t(LIVE.why))}</span>` : '';
+    return {
+      mark: `<span class="pv-live-mark">${LIVE.mark}</span>`,
+      title: esc(ctx.t(LIVE.title)),
+      // The app joins the reason with « · »; here it gets its own line so the dot never hangs at a line end.
+      why: LIVE.why ? ` <span class="pv-live-why">${esc(ctx.t(LIVE.why))}</span>` : '',
+      miles: ctx.fmt.miles(ctx.lang, trip.miles),
+      stop: (cls = '') => `<button class="pv-stop ${cls}" ${act('stopPersonalTrip')} aria-description="${esc(ctx.t('liveStopHint'))}">${esc(ctx.t('liveStop'))}</button>`
+    };
+  }
+
+  // 1 · Live line: one quiet line under row A, on its columns.
+  function liveLine(ctx, trip) {
+    const L = liveInfo(ctx, trip);
     return `<div class="pv-live" data-status="${trip.status}">
-      <span class="pv-live-mark">${LIVE.mark}</span>
-      <span class="pv-live-text"><span class="pv-live-title">${esc(ctx.t(LIVE.title))}</span> <span class="pv-live-sub"><span class="pv-live-mi">${ctx.fmt.miles(ctx.lang, trip.miles)}<small> mi</small></span> ${esc(ctx.t('liveThisDrive'))}</span>${why}</span>
-      <button class="pv-stop" ${act('stopPersonalTrip')} aria-description="${esc(ctx.t('liveStopHint'))}">${esc(ctx.t('liveStop'))}</button>
+      ${L.mark}
+      <span class="pv-live-text"><span class="pv-live-title">${L.title}</span> <span class="pv-live-sub"><span class="pv-live-mi">${L.miles}<small> mi</small></span> ${esc(ctx.t('liveThisDrive'))}</span>${L.why}</span>
+      ${L.stop()}
+    </div>`;
+  }
+
+  // 2 · The drive first: the state as a chip, the drive's miles large and Stop as a button,
+  // above row A, which stays whole underneath.
+  function liveBoard(ctx, trip, rowA) {
+    const L = liveInfo(ctx, trip);
+    return `<div class="pv-box pv-board" data-status="${trip.status}">
+      <div class="pv-board-top">
+        <span class="pv-chip">${L.mark}<span>${L.title}</span></span>
+        <span class="pv-board-fig"><span class="pv-board-mi">${L.miles}<small> mi</small></span> <span class="pv-board-cap">${esc(ctx.t('liveThisDrive'))}</span>${L.why}</span>
+        ${L.stop('pv-stop-tinted')}
+      </div>
+      ${rowA}
+    </div>`;
+  }
+
+  // 3 · A bar docked above the tab bar: in view however far Home scrolls, Stop within thumb reach.
+  function liveDock(ctx, trip) {
+    const L = liveInfo(ctx, trip);
+    return `<div class="pv-dock" data-status="${trip.status}">
+      ${L.mark}
+      <span class="pv-live-text"><span class="pv-live-title">${L.title}</span> <span class="pv-live-sub"><span class="pv-live-mi">${L.miles}<small> mi</small></span> ${esc(ctx.t('liveThisDrive'))}</span>${L.why}</span>
+      ${L.stop('pv-stop-tinted')}
     </div>`;
   }
 
@@ -305,7 +340,9 @@
       const chevron = `<span class="pv-chevron">${icon('chevronRight')}</span>`;
       if (ctx.personal === 'b') return `<button class="pv pv-b" ${act('openPersonal')}><span class="pv-top">${lead} ${chevron}</span> ${metrics}</button>`;
       const rowA = `<button class="pv pv-a" id="personal-row" ${act('openPersonal')}><span class="pv-lead">${lead}</span> ${metrics} ${chevron}</button>`;
-      return ctx.ui.liveTrip ? `<div class="pv-box">${rowA}${liveLine(ctx, ctx.ui.liveTrip)}</div>` : rowA;
+      const trip = ctx.ui.liveTrip;
+      if (!trip || ctx.vivo === 'barra') return rowA;
+      return ctx.vivo === 'tablero' ? liveBoard(ctx, trip, rowA) : `<div class="pv-box">${rowA}${liveLine(ctx, trip)}</div>`;
     }
     if (ctx.famId === 'v0') {
       return `<button class="personal-row card" ${act('openPersonal')}>${icon('car')}<span class="pr-title">${esc(ctx.t('personal'))}</span>
@@ -362,7 +399,7 @@
     return {
       header,
       body: E.xmas.topDecor(ctx) + order.map((k) => parts[k]).join(''),
-      footer: startFooter(ctx)
+      footer: (ctx.famId === 'v0' && ctx.personal === 'a' && ctx.vivo === 'barra' && ctx.ui.liveTrip && ctx.data.autoPersonal ? liveDock(ctx, ctx.ui.liveTrip) : '') + startFooter(ctx)
     };
   }
 

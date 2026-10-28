@@ -307,7 +307,7 @@
 .pv-live-mark { display: inline-flex; justify-content: center; align-self: start; height: 1.45em; align-items: center; }
 .pv-live-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-action); }
 .app[data-theme="dark"] .pv-live-dot { background: var(--color-accent-positive); }
-.pv-live[data-status="signalLost"] .pv-live-mark { color: var(--color-destructive); }
+.app [data-status="signalLost"] .pv-live-mark { color: var(--color-destructive); }
 .pv-live-text { display: flex; flex-direction: column; min-width: 0; }
 .pv-live-title { font-weight: 500; line-height: 1.45; }
 .pv-live-sub { color: var(--color-text-muted); font-size: var(--size-subhead); line-height: 1.3; }
@@ -318,7 +318,30 @@
 .pv-stop { min-height: var(--control-min-target); min-width: var(--control-min-target); padding: 0 var(--space-xs); margin-inline-end: calc(-1 * var(--space-xs)); color: var(--color-action); font-weight: var(--weight-semibold); }
 .app[data-theme="dark"] .pv-stop { color: var(--color-accent-positive); }
 .app[data-ax="true"] .pv-live { grid-template-columns: 1.25em 1fr; }
-.app[data-ax="true"] .pv-stop { grid-column: 2; justify-self: start; margin-inline: calc(-1 * var(--space-xs)) 0; }
+.app[data-ax="true"] .pv-live .pv-stop { grid-column: 2; justify-self: start; margin-inline: calc(-1 * var(--space-xs)) 0; }
+
+/* Stop as a filled button (2 and 3): a clearer target when the line is not inside row A's columns. */
+.pv-stop-tinted { background: var(--color-chip-bg); border-radius: var(--radius-button); padding: 0 var(--space-md); margin-inline-end: 0; }
+
+/* 2 · The drive first: chip on top, the drive's miles at title2 size, row A below a hairline. */
+.pv-board-top { position: relative; display: grid; grid-template-columns: 1fr auto; grid-template-areas: "chip chip" "fig stop"; align-items: end; row-gap: var(--space-sm); column-gap: var(--space-sm); padding: var(--space-sm) var(--space-md); }
+.pv-board-top::after { content: ""; position: absolute; left: var(--space-md); right: var(--space-md); bottom: 0; height: var(--stroke-hairline); background: var(--color-separator); }
+.pv-chip { grid-area: chip; justify-self: start; display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 4px 12px 4px 10px; border-radius: var(--radius-chip); background: var(--color-chip-bg); font-size: var(--size-subhead); font-weight: var(--weight-semibold); }
+.pv-chip .pv-live-mark { height: auto; align-self: center; }
+.pv-chip .ic { width: 1.1em; height: 1.1em; }
+.pv-chip .pv-live-dot { width: 8px; height: 8px; }
+.pv-board-fig { grid-area: fig; display: flex; flex-direction: column; min-width: 0; }
+.pv-board-mi { font-family: var(--font-numeric); font-size: var(--size-title2); font-weight: var(--weight-semibold); line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pv-board-mi small { font-size: var(--size-subhead); font-weight: 400; color: var(--color-text-muted); }
+.pv-board-cap { color: var(--color-text-muted); font-size: var(--size-subhead); line-height: 1.3; }
+.pv-board .pv-stop { grid-area: stop; }
+.app[data-ax="true"] .pv-board-top { grid-template-columns: 1fr; grid-template-areas: "chip" "fig" "stop"; }
+.app[data-ax="true"] .pv-board .pv-stop { justify-self: start; }
+
+/* 3 · Docked above the tab bar, edge to edge; its columns line up with the boxes' icon and text. */
+.pv-dock { flex: none; display: grid; grid-template-columns: 1.25em 1fr auto; align-items: center; column-gap: var(--space-sm); padding: var(--space-xs) calc(2 * var(--space-md) + var(--stroke-card)); background: var(--color-surface); border-top: var(--stroke-card) solid var(--color-card-border-subtle); }
+.app[data-ax="true"] .pv-dock { grid-template-columns: 1.25em 1fr; }
+.app[data-ax="true"] .pv-dock .pv-stop { grid-column: 2; justify-self: start; }
 
 /* B: title and chevron on top; below, two equal columns from the title text to the edge, split by
    one hairline. Stacked, the hairline turns horizontal, like the miles in card C. */
