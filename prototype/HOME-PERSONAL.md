@@ -1,6 +1,6 @@
 # Personal en Inicio: actual, A y B
 
-Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Encargo: [briefs/home-personal/PROMPT-CLAUDE.md](../briefs/home-personal/PROMPT-CLAUDE.md). Se conserva todo lo elegido: Inicio sin título, tarjeta C con su desglose propuesto y Opciones agrupada. **Personal está pendiente de elección.** Nada de esto está en la app.
+Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Encargo: [briefs/home-personal/PROMPT-CLAUDE.md](../briefs/home-personal/PROMPT-CLAUDE.md). Se conserva todo lo elegido: Inicio sin título, tarjeta C con su desglose propuesto y Opciones agrupada. **Decisión de Liber (27 oct): A.** Nada de esto está en la app.
 
 ![Detalle: actual, A y B, claro, ES](captures/home-personal/06-detalle-actual-a-b-claro-es.png)
 
@@ -122,6 +122,6 @@ Es criterio de diseño con medidas del prototipo, no una predicción sobre el us
 - **Redondeo distinto, sin tocar.** Inicio muestra 9 mi (entero) e Historial → Personal 8.9 mi (un decimal). No se cambió.
 - **Etiquetas en inglés.** Hoy, en EN, la fila dice «mi today / mi mo.». Las propuestas usan las etiquetas existentes «Today / This Month» de la tarjeta C.
 
-## Siguiente paso
+## Decisión y siguiente paso
 
-Liber elige entre Personal actual, A y B con `04`, `05`, `06`, `07` y `08`. Hasta entonces no se avanza a otro bloque de Inicio ni a la app real.
+Liber eligió **A**, con caja y en una fila, tras ver las capturas. Antes vio una prueba de A «Sin caja» (sin rectángulo, solo una línea inferior) y la descartó; no se guardó. La fila actual y B quedan en el laboratorio como referencia. El siguiente detalle de Inicio lo elige Liber; hasta entonces no se toca el resto de Inicio ni la app real.

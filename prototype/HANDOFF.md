@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto y Opciones propuesta (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&lang=es&scenario=partial&screen=home`). Comparación vigente, Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta y Personal A (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&lang=es&scenario=partial&screen=home`). Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -77,13 +77,15 @@ Liber dio por cerrada la tarjeta verde (sin título, C y desglose propuesto) y p
 - **Decisión de Liber (27 oct): la propuesta** para Opciones, cerrada y abierta. En el laboratorio sigue accesible con `opciones=propuesta`; la versión actual queda como referencia. Las sugerencias del foco al volver y del nombre «Herramientas» siguen sin aplicar.
 - **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Hasta entonces no se toca el resto de Inicio, y nada pasa a SwiftUI.
 
-### Personal (27 oct): **A y B pendientes de elección**
+### Personal (27 oct): **elegida A**
 
 Con Inicio sin título, la tarjeta C, su desglose y Opciones ya elegidos, Liber pidió trabajar solo la fila Personal, con «creatividad y elegancia», manteniendo sus cifras y el acceso a Historial → Personal.
 
 - Hecho: vista «Personal» (actual, A y B con todo lo elegido), controles «Personal» y «Marcos», parámetros `personal` y `personales`, y escenario de prueba `personalLong` (1,248 / 12,486 mi). A es una fila de 56 px con Hoy y Este mes, periodo sobre valor, y flecha; pasa a dos niveles cuando no cabe. B tiene siempre dos niveles, con dos columnas iguales y una línea fina. Detalle, medidas, comprobaciones y recomendación (A) en [HOME-PERSONAL.md](HOME-PERSONAL.md). Capturas en `captures/home-personal/`.
 - Medidas a 390 px: actual 48, A 56 (+8), B 94 (+46). A 320 px o con texto grande, A y B miden lo mismo.
-- **Siguiente paso exacto:** Liber elige entre Personal actual, A y B con los PNG. No se adelanta otro bloque de Inicio ni nada pasa a SwiftUI.
+- Prueba descartada: Liber pidió ver A «Sin caja» (sin rectángulo, solo una línea inferior) en un PNG de 390 × 844 y la descartó sin guardarla.
+- **Decisión de Liber (27 oct): A**, con caja y en una fila. En el laboratorio sigue accesible con `personal=a`; la fila actual y B quedan como referencia.
+- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Hasta entonces no se toca el resto de Inicio, y nada pasa a SwiftUI.
 
 ## Cómo continuar
 
