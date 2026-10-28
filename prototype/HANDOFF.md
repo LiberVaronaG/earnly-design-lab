@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C y su desglose propuesto (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&lang=es&scenario=partial&screen=home`). Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C y su desglose propuesto (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&lang=es&scenario=partial&screen=home`). Comparación vigente, Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -67,6 +67,14 @@ Con Inicio sin título y la C cerrada ya elegidos, Liber pidió estudiar solo el
 - Medida clave: con texto normal, la propuesta añade 8–36 px (ES) y hasta 58 px (EN). Con texto al 200 % queda igual o más corta.
 - **Decisión de Liber (27 oct): la propuesta** para el desglose de C abierta, aceptando su altura extra con texto normal. En el laboratorio sigue accesible con `card=c&desglose=propuesta`; el desglose actual queda como referencia.
 - **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Hasta entonces no se toca el resto de Inicio, y nada pasa a SwiftUI.
+
+### Opciones (27 oct): **propuesta pendiente de elección**
+
+Liber dio por cerrada la tarjeta verde (sin título, C y desglose propuesto) y pidió trabajar solo Opciones, cerrada y abierta, conservando sus dos accesos, sus notas y su navegación.
+
+- Hecho: vista «Opciones» (actual y propuesta con todo lo elegido), control «Opciones», parámetro `opciones` y pantalla de laboratorio `homeBoth`. La propuesta es una sola pieza con el borde tenue existente, cabecera y las dos herramientas dentro, separadas por líneas finas, y columnas alineadas. Detalle, medidas, comprobaciones y recomendación en [HOME-OPCIONES.md](HOME-OPCIONES.md). Capturas en `captures/home-opciones/`.
+- Medidas: cerrada, misma altura (56 px); abierta, 27 px menos en todos los tamaños.
+- **Siguiente paso exacto:** Liber elige entre Opciones actual y la propuesta. No se adelanta otro bloque de Inicio ni nada pasa a SwiftUI.
 
 ## Cómo continuar
 

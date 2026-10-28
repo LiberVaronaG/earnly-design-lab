@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -56,6 +56,19 @@ let sets: [String: [Shot]] = [
     Shot(file: "10-comparar-importe-largo-en.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=en&scenario=longPay&width=390&text=1", dark: false, solo: false, full: true),
     Shot(file: "11-comparar-sin-datos-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=empty&width=390&text=1", dark: false, solo: false, full: true),
     Shot(file: "12-comparar-demasiado-grande-es.png", hash: "view=abierta&\(common)&screen=homeBreakdown&theme=light&lang=es&scenario=tooLarge&width=390&text=1", dark: false, solo: false, full: true)
+  ],
+  "opciones": [
+    Shot(file: "01-actual-cerrada-claro-es.png", hash: "solo=1&home=sintitulo&card=c&desglose=propuesta&opciones=actual&\(common)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "02-propuesta-cerrada-claro-es.png", hash: "solo=1&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&\(common)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "03-actual-abierta-claro-es.png", hash: "solo=1&home=sintitulo&card=c&desglose=propuesta&opciones=actual&\(common)&screen=homeOptions&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "04-propuesta-abierta-claro-es.png", hash: "solo=1&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&\(common)&screen=homeOptions&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "05-comparar-cerrada-claro-es.png", hash: "view=opciones&\(common)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "06-comparar-abierta-claro-es.png", hash: "view=opciones&\(common)&screen=homeOptions&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "07-comparar-abierta-oscuro-en.png", hash: "view=opciones&\(common)&screen=homeOptions&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false, full: true),
+    Shot(file: "08-comparar-320-texto-200-nota-larga-es.png", hash: "view=opciones&\(common)&screen=homeOptions&theme=light&lang=es&scenario=partial&width=320&text=2", dark: false, solo: false, full: true),
+    Shot(file: "09-comparar-sin-datos-es.png", hash: "view=opciones&\(common)&screen=homeOptions&theme=light&lang=es&scenario=empty&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "10-comparar-sin-estimar-es.png", hash: "view=opciones&\(common)&screen=homeOptions&theme=light&lang=es&scenario=tooLarge&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "11-comparar-desglose-y-opciones-es.png", hash: "view=opciones&\(common)&screen=homeBoth&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true)
   ]
 ]
 

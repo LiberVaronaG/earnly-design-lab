@@ -250,11 +250,23 @@
       </div></section>`;
     }
     const open = ctx.ui.optionsOpen;
+    const seButton = (cls) => `<button class="row ${cls} row-se" ${act('openSheet', 'seDetail')}><span class="row-icon">${icon('banknote')}</span><span class="row-main"><span class="row-title">${esc(ctx.t('seTitle'))}</span>${se.map((x) => `<span class="row-sub">${esc(x)}</span>`).join('')}</span><span class="row-chevron">${icon('chevronRight')}</span></button>`;
+    // «Propuesta» (lab variant for V0): one quiet container holding the header and both tools,
+    // split by hairlines instead of three bordered boxes. Same buttons, texts and destinations.
+    if (ctx.opts === 'propuesta' && ctx.famId === 'v0') {
+      return `<div class="opts">
+        <button class="opts-head" ${act('toggleOptions')} aria-expanded="${open}">${icon('sliders')}<span>${esc(ctx.t('options'))}</span>${icon(open ? 'chevronUp' : 'chevronDown')}</button>
+        ${open ? `<div class="opts-list">
+          ${row(ctx, { title: esc(ctx.t('worthIt')), iconName: 'dollar', action: 'push', arg: 'calc', cls: 'opts-row' })}
+          ${seButton('opts-row')}
+        </div>` : ''}
+      </div>`;
+    }
     return `<div class="options">
       <button class="options-toggle" ${act('toggleOptions')} aria-expanded="${open}">${icon('sliders')}<span>${esc(ctx.t('options'))}</span>${icon(open ? 'chevronUp' : 'chevronDown')}</button>
       ${open ? `<div class="options-body stack">
         ${row(ctx, { title: esc(ctx.t('worthIt')), iconName: 'dollar', action: 'push', arg: 'calc', cls: 'row-card' })}
-        <button class="row row-card row-se" ${act('openSheet', 'seDetail')}><span class="row-icon">${icon('banknote')}</span><span class="row-main"><span class="row-title">${esc(ctx.t('seTitle'))}</span>${se.map((x) => `<span class="row-sub">${esc(x)}</span>`).join('')}</span><span class="row-chevron">${icon('chevronRight')}</span></button>
+        ${seButton('row-card')}
       </div>` : ''}
     </div>`;
   }

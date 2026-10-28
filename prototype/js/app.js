@@ -1,5 +1,5 @@
 // App core: one shared demo state rendered into one or more phone frames.
-// All frames show the same route and data; only the family or a Home variant (title, card, breakdown) differs.
+// All frames show the same route and data; only the family or a Home variant (title, card, breakdown, options) differs.
 (function () {
   const E = window.E;
   const { icon, esc } = E;
@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -288,7 +288,8 @@
       app.dataset.home = slot.dataset.home || 'original';
       app.dataset.card = slot.dataset.card || 'actual';
       app.dataset.bd = slot.dataset.bd || 'actual';
-      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd });
+      app.dataset.opts = slot.dataset.opts || 'actual';
+      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts });
       fitAmounts(app);
     }
     slots.forEach((s, i) => {
@@ -369,6 +370,7 @@
     home: () => {},
     homeBreakdown: () => { state.ui.heroOpen = true; },
     homeOptions: () => { state.ui.optionsOpen = true; },
+    homeBoth: () => { state.ui.heroOpen = true; state.ui.optionsOpen = true; },
     active: () => { state.ui.active = { platform: 'amazonFlex' }; push('active'); },
     close: () => { startClose(); },
     closeResult: () => { startClose(); state.ui.f.payMain = '90'; },

@@ -255,6 +255,19 @@
 .app[data-theme="dark"] .options-toggle .ic:first-child { color: var(--color-accent-positive); }
 .options-body { margin-top: var(--space-sm); }
 .app[data-family="v2"] .options-toggle { background: var(--color-surface); }
+/* «Propuesta» for Options (lab variant): one container with the subtle border token; the header
+   and both tools share it, split by hairlines. Row text lines up with the header label, and the
+   closed height matches today's toggle (56 px). */
+.opts { border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); }
+.opts-head { display: flex; align-items: center; gap: var(--space-sm); width: 100%; min-height: 54px; padding: 0 var(--space-md); }
+.opts-head > span { flex: 1; }
+.opts-head .ic:first-child { color: var(--color-action); }
+.app[data-theme="dark"] .opts-head .ic:first-child { color: var(--color-accent-positive); }
+.opts-list { border-top: var(--stroke-hairline) solid var(--color-separator); }
+.opts-row { position: relative; align-items: flex-start; }
+.opts-row .row-chevron { align-self: center; }
+.opts-row + .opts-row::before { content: ""; position: absolute; top: 0; right: 0; left: calc(var(--space-md) + 1.25em + var(--space-sm)); height: var(--stroke-hairline); background: var(--color-separator); }
+.app[data-ax="true"] .opts-row + .opts-row::before { left: var(--space-md); }
 
 .personal-row { display: flex !important; flex-direction: row !important; align-items: center; gap: var(--space-sm) !important; padding: var(--space-sm) var(--space-md) !important; width: 100%; flex-wrap: wrap; }
 .pr-title { flex: 1; font-weight: 500; }

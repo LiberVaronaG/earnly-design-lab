@@ -17,11 +17,15 @@
     actual: ['Desglose actual', 'C abierta, como hoy'],
     propuesta: ['Propuesta', 'cobro y gasolina, deducción, plataformas']
   };
+  const OPTS = {
+    actual: ['Opciones actual', 'caja con dos tarjetas dentro'],
+    propuesta: ['Propuesta', 'una pieza, dos filas, líneas finas']
+  };
   // «Tarjeta verde» view: which card variants sit side by side.
   const CARD_SETS = { 'actual,c': ['actual', 'c'] };
 
   const SCREENS = [
-    ['home', 'Inicio'], ['homeBreakdown', 'Inicio · desglose abierto'], ['homeOptions', 'Inicio · opciones'],
+    ['home', 'Inicio'], ['homeBreakdown', 'Inicio · desglose abierto'], ['homeOptions', 'Inicio · opciones'], ['homeBoth', 'Inicio · desglose y opciones abiertos'],
     ['active', 'Turno en curso (aprox.)'], ['close', 'Cierre · vacío'], ['closeResult', 'Cierre · resultado ($90)'],
     ['closeInvalid', 'Cierre · cantidad inválida'], ['closeExtras', 'Cierre · otra plataforma'], ['recovery', 'Recuperar turno (hoja)'],
     ['historyWork', 'Historial · Trabajo'], ['historyPersonal', 'Historial · Personal'], ['day', 'Día personal'],
@@ -50,6 +54,7 @@
     if (CARD[h.get('card')]) L.card = h.get('card');
     if (CARD_SETS[h.get('cards')]) L.cards = h.get('cards');
     if (BD[h.get('desglose')]) L.bd = h.get('desglose');
+    if (OPTS[h.get('opciones')]) L.opts = h.get('opciones');
     if (['light', 'dark'].includes(h.get('theme'))) L.theme = h.get('theme');
     if (['en', 'es'].includes(h.get('lang'))) L.lang = h.get('lang');
     if (E.SCENARIOS[h.get('scenario')]) L.scenario = h.get('scenario');
@@ -64,7 +69,7 @@
 
   function writeHash() {
     const L = S.lab;
-    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
+    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
     if (L.solo) h.set('solo', '1');
     if (L.tall) h.set('tall', '1');
     history.replaceState(null, '', '#' + h.toString());
@@ -79,6 +84,7 @@
     $('c-card').value = L.card;
     $('c-cards').value = L.cards;
     $('c-bd').value = L.bd;
+    $('c-opts').value = L.opts;
     $('c-theme').value = L.theme;
     $('c-lang').value = L.lang;
     $('c-scenario').value = L.scenario;
@@ -89,9 +95,10 @@
     $('c-motion').value = L.motion;
     document.querySelectorAll('[data-when="compare"]').forEach((el) => { el.hidden = L.view !== 'compare'; });
     $('c-family').parentElement.hidden = L.view === 'gallery';
-    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta'].includes(L.view) && !L.solo;
-    $('c-card').parentElement.hidden = ['tarjeta', 'abierta'].includes(L.view) && !L.solo;
-    $('c-bd').parentElement.hidden = L.view === 'abierta' && !L.solo;
+    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones'].includes(L.view) && !L.solo;
+    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones'].includes(L.view) && !L.solo;
+    $('c-bd').parentElement.hidden = ['abierta', 'opciones'].includes(L.view) && !L.solo;
+    $('c-opts').parentElement.hidden = L.view === 'opciones' && !L.solo;
     $('c-cards').parentElement.hidden = L.view !== 'tarjeta';
   }
   E.syncLab = () => { syncControls(); writeHash(); };
@@ -102,20 +109,24 @@
     const homes = L.view === 'sintitulo' && !L.solo ? ['original', 'sintitulo'] : null;
     const cards = L.view === 'tarjeta' && !L.solo ? CARD_SETS[L.cards] : null;
     const bds = L.view === 'abierta' && !L.solo ? ['actual', 'propuesta'] : null;
-    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds ? [L.family, L.family] : cards ? cards.map(() => L.family) : [L.family];
+    // «Opciones» keeps every choice made so far (no title, card C, proposed breakdown).
+    const opts = L.view === 'opciones' && !L.solo ? ['actual', 'propuesta'] : null;
+    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards ? cards.map(() => L.family) : [L.family];
     document.body.classList.toggle('is-solo', L.solo);
     const stage = $('stage');
     stage.innerHTML = fams.map((f, i) => {
-      const home = homes ? homes[i] : cards || bds ? 'sintitulo' : L.home;
-      const card = cards ? cards[i] : bds ? 'c' : L.card;
-      const bd = bds ? bds[i] : L.bd;
+      const home = homes ? homes[i] : cards || bds || opts ? 'sintitulo' : L.home;
+      const card = cards ? cards[i] : bds || opts ? 'c' : L.card;
+      const bd = bds ? bds[i] : opts ? 'propuesta' : L.bd;
+      const opt = opts ? opts[i] : L.opts;
       const [name, summary] = homes ? [HOME[home][0], `${FAMS[f].name.es}, ${HOME[home][1]}.`]
         : cards ? [CARD[card][0], `${FAMS[f].name.es}, ${CARD[card][1]}.`]
-        : bds ? [BD[bd][0], `${FAMS[f].name.es}, ${BD[bd][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
+        : bds ? [BD[bd][0], `${FAMS[f].name.es}, ${BD[bd][1]}.`]
+        : opts ? [OPTS[opt][0], `${FAMS[f].name.es}, ${OPTS[opt][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
       return `
       <section class="frame-col" aria-label="${name}" style="--w:${L.width}px">
         ${L.solo ? '' : `<div class="frame-head"><strong>${name}</strong><span>${summary}</span></div>`}
-        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}">
+        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}">
           <div class="app" data-family="${f}" data-theme="${L.theme}"></div>
         </div>
       </section>`;
@@ -132,6 +143,7 @@
       <span>Escenario: ${sc.label.es}${sc.ref ? ` (<code>${sc.ref}</code>)` : ' <span class="tag tag-approx">aprox.</span>'}</span>
       ${S.lab.view === 'sintitulo' ? '<span>Original y Sin título: misma familia, datos, tamaño y estado; solo cambia el rótulo de Inicio.</span>' : ''}
       ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
+      ${S.lab.view === 'opciones' ? '<span>Opciones: Inicio sin título, tarjeta C y desglose propuesto en los dos marcos, mismos datos y estado; solo cambia Opciones.</span>' : ''}
       ${S.lab.view === 'abierta' ? '<span>Tarjeta abierta: Inicio sin título y tarjeta C en los dos marcos, mismos datos y estado; solo cambia la composición del desglose. Ábrelo con la flecha del importe.</span>' : ''}
       <span class="lab-hint">Navegador ≠ iOS: fuentes, teclado y VoiceOver son aproximados.</span>`;
   }
@@ -148,6 +160,7 @@
     L.card = $('c-card').value;
     L.cards = $('c-cards').value;
     L.bd = $('c-bd').value;
+    L.opts = $('c-opts').value;
     L.theme = $('c-theme').value;
     L.lang = $('c-lang').value;
     L.scenario = $('c-scenario').value;
@@ -160,7 +173,7 @@
       L.familyB = Object.keys(FAMS).find((f) => f !== L.family);
     }
     if (prev.scenario !== L.scenario || prevScreen !== screenId) E.jump(screenId);
-    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.width !== L.width) buildStage();
+    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.width !== L.width) buildStage();
     syncControls();
     writeHash();
     E.render();
