@@ -1,8 +1,8 @@
 # Personal en marcha: tres formas de mostrar el viaje
 
-Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Petición de Liber: la misma caja Personal, pero mientras conduce en personal. Eligió primero la idea 1, la misma caja con una línea en vivo. Después pidió dos más «con cambios en la interfaz y otra perspectiva»: la 2, «El viaje primero», y la 3, «Barra fija abajo». **Las tres están pendientes de elección.** Nada de esto está en la app.
+Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Petición de Liber: la misma caja Personal, pero mientras conduce en personal. Eligió primero la idea 1, la misma caja con una línea en vivo. Después pidió dos más «con cambios en la interfaz y otra perspectiva»: la 2, «El viaje primero», y la 3, «Barra fija abajo». **Decisión de Liber (27 oct): El viaje primero, `vivo=tablero`.** Nada de esto está en la app.
 
-![Las tres, trackeando, claro, ES](captures/home-personal-en-marcha-tres/01-comparar-trackeando-claro-es.png)
+![El viaje primero, trackeando, claro, ES](captures/home-personal-viaje-primero/01-trackeando-claro-es.png)
 
 ## Qué hace hoy la app real
 
@@ -161,6 +161,30 @@ La 1 es la más discreta, y la elegiría si se prefiere que el viaje no cambie e
 
 Es criterio de diseño con medidas del prototipo; no se probó en un viaje real.
 
+## Decisión
+
+Liber vio las tres composiciones en un PNG de Codex (`briefs/home-viaje-primero/tres-ideas-home.png`) y eligió **El viaje primero**: las millas del viaje como dato principal dentro de Personal, con el estado y Detener, y Hoy / Este mes debajo. Encargo: [briefs/home-viaje-primero/PROMPT-CLAUDE.md](../briefs/home-viaje-primero/PROMPT-CLAUDE.md).
+
+**Ojo con la numeración.** El PNG de Codex la llama «1 · El viaje primero» porque es su primera columna. En este laboratorio es la **2 · El viaje primero**: la hace `liveBoard()` y se activa con **`vivo=tablero`**. No se renumeró nada. «1 · Línea en vivo» (`vivo=linea`) y «3 · Barra fija abajo» (`vivo=barra`) se quedan como referencias, con sus capturas, pero no son la elección.
+
+Lo elegido:
+- **Durante un viaje personal:**
+  - arriba de la caja, el estado en una etiqueta;
+  - debajo, las millas del viaje en grande con «este viaje» y el motivo cuando lo hay;
+  - Detener como botón aparte;
+  - bajo una línea fina, la fila A (Personal, Hoy, Este mes y la flecha a Historial → Personal).
+- **Hoy y Este mes** solo suman viajes terminados: el viaje en curso no cuenta hasta que se cierra.
+- **Sin viaje,** Personal A sigue igual: con caja, en una fila, y en dos niveles cuando no cabe.
+- **Se mantiene lo de antes:** los cuatro estados, sus motivos y el Detener simulado, sin cambios.
+
+Para abrirla: `prototype/index.html#solo=1&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&lang=es&scenario=partial&screen=homeLive` (en pausa: `screen=homeLivePaused`).
+
+**Al registrar la elección no cambió el producto del laboratorio:**
+- solo se añadió el juego de capturas `personal-viaje-primero` a `tools/capture-home-webkit.swift`;
+- las dos capturas individuales están en `captures/home-personal-viaje-primero/`, a 390 × 844 sin alargar: `01-trackeando-claro-es.png` y `02-en-pausa-claro-es.png`;
+- valen las comprobaciones de la sección anterior (480 renders de las tres variantes) y no se repitieron;
+- se pasaron de nuevo las del repo: `build-tokens.mjs --check`, `check-contrast.mjs`, `shasum -a 256 -c SHA256SUMS` y `node --check`.
+
 ## Siguiente paso
 
-Liber elige entre la 1, la 2 y la 3 con las capturas lado a lado. Nada pasa a la app real sin otra decisión.
+El siguiente detalle de Inicio lo elige Liber. No se adelanta ningún bloque, y nada pasa a la app real sin otra decisión.

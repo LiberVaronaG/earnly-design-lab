@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta y Personal A (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&lang=es&scenario=partial&screen=home`). Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A y, durante un viaje personal, El viaje primero (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`). Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -86,7 +86,7 @@ Con Inicio sin título, la tarjeta C, su desglose y Opciones ya elegidos, Liber 
 - Prueba descartada: Liber pidió ver A «Sin caja» (sin rectángulo, solo una línea inferior) en un PNG de 390 × 844 y la descartó sin guardarla.
 - **Decisión de Liber (27 oct): A**, con caja y en una fila. En el laboratorio sigue accesible con `personal=a`; la fila actual y B quedan como referencia.
 
-### Personal en marcha (27 oct): **tres formas, pendientes de elección**
+### Personal en marcha (27 oct): **elegida El viaje primero (`vivo=tablero`)**
 
 Liber pidió ideas para la misma caja mientras conduce en personal y eligió la 1: la caja A con una línea en vivo. Esa línea sustituye al banner que hoy pone la app arriba del todo.
 
@@ -98,7 +98,12 @@ Liber pidió ideas para la misma caja mientras conduce en personal y eligió la 
   Vista «Personal en marcha» (`#view=enmarcha&family=v0&lang=es&scenario=partial&screen=homeLive`), control «En marcha» y parámetro `vivo`. Capturas lado a lado en `captures/home-personal-en-marcha-tres/`.
 - Medidas a 390 px, trackeando: 1 = 118 px, 2 = 166 px, 3 = caja de 56 px más una barra fija de 61 px. Con texto al 200 % a 320 px, la barra de la 3 deja solo 163 px visibles de Inicio.
 - Recomendación: la 2.
-- **Siguiente paso exacto:** Liber elige entre la 1, la 2 y la 3. No se toca el resto de Inicio, y nada pasa a SwiftUI.
+- **Decisión de Liber (27 oct): El viaje primero**, vista en el PNG de Codex `briefs/home-viaje-primero/tres-ideas-home.png`. Encargo: `briefs/home-viaje-primero/PROMPT-CLAUDE.md`.
+  - **Numeración:** en ese PNG es la «1»; en el laboratorio es la **2 · El viaje primero**, `liveBoard()`, `vivo=tablero`. No se renumeró nada.
+  - La 1 · Línea en vivo y la 3 · Barra fija abajo se quedan como referencias, con sus capturas.
+  - Al registrarla no cambió el producto: solo se añadieron dos capturas individuales, en `captures/home-personal-viaje-primero/`.
+  - Las comprobaciones de las tres variantes siguen valiendo; no se repitieron.
+- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Hasta entonces no se toca el resto de Inicio, y nada pasa a SwiftUI.
 
 ## Cómo continuar
 
