@@ -297,6 +297,29 @@
 .pv-a.pv-stacked .pv-metrics { grid-column: 1 / -1; flex: initial; margin-inline-start: calc(1.25em + var(--space-sm)); }
 .pv-a.pv-stacked .pv-chevron { grid-row: 1; grid-column: 2; }
 
+/* A with a personal drive in progress: the box moves to a wrapper holding the row and one live line.
+   The line starts on the title column (hairline included, like the Options rows); «Stop» ends on
+   the chevron's edge. */
+.pv-box { background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); }
+.pv-box > .pv { background: none; border: 0; border-radius: var(--radius-card) var(--radius-card) 0 0; }
+.pv-live { position: relative; display: grid; grid-template-columns: 1.25em 1fr auto; align-items: center; column-gap: var(--space-sm); padding: var(--space-xs) var(--space-md); }
+.pv-live::before { content: ""; position: absolute; top: 0; right: 0; left: calc(var(--space-md) + 1.25em + var(--space-sm)); height: var(--stroke-hairline); background: var(--color-separator); }
+.pv-live-mark { display: inline-flex; justify-content: center; align-self: start; height: 1.45em; align-items: center; }
+.pv-live-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-action); }
+.app[data-theme="dark"] .pv-live-dot { background: var(--color-accent-positive); }
+.pv-live[data-status="signalLost"] .pv-live-mark { color: var(--color-destructive); }
+.pv-live-text { display: flex; flex-direction: column; min-width: 0; }
+.pv-live-title { font-weight: 500; line-height: 1.45; }
+.pv-live-sub { color: var(--color-text-muted); font-size: var(--size-subhead); line-height: 1.3; }
+.pv-live-why { color: var(--color-text-muted); font-size: var(--size-subhead); line-height: 1.3; }
+.pv-live-why::first-letter { text-transform: uppercase; }
+.pv-live-mi { font-family: var(--font-numeric); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; color: var(--color-text); white-space: nowrap; }
+.pv-live-mi small { font-size: inherit; font-weight: 400; color: var(--color-text-muted); }
+.pv-stop { min-height: var(--control-min-target); min-width: var(--control-min-target); padding: 0 var(--space-xs); margin-inline-end: calc(-1 * var(--space-xs)); color: var(--color-action); font-weight: var(--weight-semibold); }
+.app[data-theme="dark"] .pv-stop { color: var(--color-accent-positive); }
+.app[data-ax="true"] .pv-live { grid-template-columns: 1.25em 1fr; }
+.app[data-ax="true"] .pv-stop { grid-column: 2; justify-self: start; margin-inline: calc(-1 * var(--space-xs)) 0; }
+
 /* B: title and chevron on top; below, two equal columns from the title text to the edge, split by
    one hairline. Stacked, the hairline turns horizontal, like the miles in card C. */
 /* A plain block: WebKit does not stretch the children of a column-flex button to its width. */

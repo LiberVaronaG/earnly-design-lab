@@ -85,7 +85,14 @@ Con Inicio sin título, la tarjeta C, su desglose y Opciones ya elegidos, Liber 
 - Medidas a 390 px: actual 48, A 56 (+8), B 94 (+46). A 320 px o con texto grande, A y B miden lo mismo.
 - Prueba descartada: Liber pidió ver A «Sin caja» (sin rectángulo, solo una línea inferior) en un PNG de 390 × 844 y la descartó sin guardarla.
 - **Decisión de Liber (27 oct): A**, con caja y en una fila. En el laboratorio sigue accesible con `personal=a`; la fila actual y B quedan como referencia.
-- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Hasta entonces no se toca el resto de Inicio, y nada pasa a SwiftUI.
+
+### Personal en marcha (27 oct): **línea en vivo, pendiente de revisión**
+
+Liber pidió ideas para la misma caja mientras conduce en personal y eligió la 1: la caja A con una línea en vivo. Esa línea sustituye al banner que hoy pone la app arriba del todo.
+
+- Hecho: `liveLine()` dentro de la caja A, con los cuatro estados de la app (trackeando, buscando ubicación, sin señal GPS, en pausa), sus textos y Detener. El único texto nuevo es «este viaje». Hay cuatro pantallas de laboratorio (`screen=homeLive`, `homeLiveAcquiring`, `homeLiveNoSignal`, `homeLivePaused`). Detalle, medidas y límites en [HOME-PERSONAL-EN-MARCHA.md](HOME-PERSONAL-EN-MARCHA.md). Capturas a 390 × 844 en `captures/home-personal-en-marcha/`.
+- Medidas a 390 px: la caja pasa de 56 a 118 px trackeando y a 157 px en pausa.
+- **Siguiente paso exacto:** Liber revisa las cuatro capturas. No se toca el resto de Inicio, y nada pasa a SwiftUI.
 
 ## Cómo continuar
 

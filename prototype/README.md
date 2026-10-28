@@ -22,7 +22,7 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 | Personal / Marcos | Fila Personal de Inicio: actual, A · Una fila o B · Dos niveles (solo V0). La vista «Personal» las pone lado a lado; ver [HOME-PERSONAL.md](HOME-PERSONAL.md) |
 | Tema, Idioma | Claro u oscuro; EN o ES. El idioma también se cambia desde Ajustes → Idioma, dentro de la app |
 | Escenario | Pago parcial (24 oct), pagos completos, cifras demasiado grandes, sin datos (aproximación), turno sin cerrar y tres pruebas de diseño: importe largo, cobrado $0 y millas personales largas |
-| Pantalla | Salta a uno de los 25 estados de ejemplo. Después se puede navegar normalmente por la app |
+| Pantalla | Salta a uno de los estados de ejemplo, incluidos los cuatro de viaje personal en marcha (con Personal A). Después se puede navegar normalmente por la app |
 | Ancho | 320, 390 o 430 px |
 | Texto | 100 %, 135 % o 200 %. Aproxima Dynamic Type/AX; no equivale a iOS |
 | Decoración | Muestra opcional de Halloween o Navidad. Está apagada por defecto y no tapa controles |
@@ -68,6 +68,7 @@ swift prototype/tools/capture-home-webkit.swift tarjeta-verde  # regenera captur
 swift prototype/tools/capture-home-webkit.swift tarjeta-abierta  # regenera captures/home-tarjeta-abierta/
 swift prototype/tools/capture-home-webkit.swift opciones         # regenera captures/home-opciones/
 swift prototype/tools/capture-home-webkit.swift personal         # regenera captures/home-personal/
+swift prototype/tools/capture-home-webkit.swift personal-en-marcha  # regenera captures/home-personal-en-marcha/
 ```
 
 `check-ui.cjs` y `capture.cjs` usan el paquete `playwright` con el Chromium que ya tenga instalado el entorno.
@@ -83,3 +84,4 @@ swift prototype/tools/capture-home-webkit.swift personal         # regenera capt
 - [HOME-TARJETA-ABIERTA.md](HOME-TARJETA-ABIERTA.md): desglose de C abierta, actual frente a propuesta.
 - [HOME-OPCIONES.md](HOME-OPCIONES.md): Opciones de Inicio, actual frente a propuesta.
 - [HOME-PERSONAL.md](HOME-PERSONAL.md): fila Personal de Inicio, actual frente a A y B.
+- [HOME-PERSONAL-EN-MARCHA.md](HOME-PERSONAL-EN-MARCHA.md): la caja Personal A durante un viaje personal, con una línea en vivo.

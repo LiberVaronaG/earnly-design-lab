@@ -83,6 +83,13 @@
       state.ui.historySeg = 'personal';
       navigated();
     },
+    // Lab approximation of Stop: the open drive closes and, if it has miles, joins today's personal drives.
+    stopPersonalTrip() {
+      const trip = state.ui.liveTrip;
+      state.ui.liveTrip = null;
+      if (trip.miles > 0) state.data.personal.push({ id: 'pLive', date: E.TODAY, start: '17:05', end: '17:14', mins: 9, miles: trip.miles, status: 'ok', route: 0 });
+      state.ui.focusTarget = 'personal-row';
+    },
     viewAll() { state.ui.tab = 'history'; state.ui.stacks.history = []; state.ui.historySeg = 'work'; navigated(); },
     startShift() { state.ui.active = { platform: null }; push('active'); },
     pickPlatform(arg) { state.ui.active.platform = arg; },
@@ -385,6 +392,10 @@
     homeBreakdown: () => { state.ui.heroOpen = true; },
     homeOptions: () => { state.ui.optionsOpen = true; },
     homeBoth: () => { state.ui.heroOpen = true; state.ui.optionsOpen = true; },
+    homeLive: () => { state.ui.liveTrip = { status: 'recording', miles: 3.2 }; },
+    homeLiveAcquiring: () => { state.ui.liveTrip = { status: 'acquiring', miles: 0 }; },
+    homeLiveNoSignal: () => { state.ui.liveTrip = { status: 'signalLost', miles: 3.2 }; },
+    homeLivePaused: () => { state.ui.liveTrip = { status: 'paused', miles: 3.2 }; },
     active: () => { state.ui.active = { platform: 'amazonFlex' }; push('active'); },
     close: () => { startClose(); },
     closeResult: () => { startClose(); state.ui.f.payMain = '90'; },

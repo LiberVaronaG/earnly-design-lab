@@ -14,6 +14,8 @@
     bag: '<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>',
     sliders: '<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
     locationOff: '<path d="M20 4 4 20"/><path d="M19 5 13.5 19l-2.2-5.1L6.2 11.7 13 9"/>',
+    pause: '<circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/>',
+    signalOff: '<path d="M8.6 8.6a4.8 4.8 0 0 0 0 6.8M15.4 8.6a4.8 4.8 0 0 1 0 6.8M5.6 5.6a9 9 0 0 0 0 12.8M18.4 5.6a9 9 0 0 1 0 12.8"/><circle cx="12" cy="12" r="1.2"/><path d="M4 4l16 16"/>',
     location: '<path d="M20 4 13.5 20l-2.5-7-7-2.5z"/>',
     dollar: '<circle cx="12" cy="12" r="9"/><path d="M14.8 9.2c-.5-1-1.6-1.6-2.8-1.6-1.6 0-2.8.9-2.8 2.1 0 2.9 5.8 1.6 5.8 4.6 0 1.2-1.3 2.1-3 2.1-1.3 0-2.5-.6-3-1.7M12 6v1.6M12 16.4V18"/>',
     banknote: '<rect x="2.5" y="6.5" width="19" height="11" rx="1.5"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9.5v5M18 9.5v5"/>',

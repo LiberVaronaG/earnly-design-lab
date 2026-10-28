@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -93,6 +93,13 @@ let sets: [String: [Shot]] = [
     Shot(file: "10-comparar-320-es.png", hash: "\(personalView)&personales=actual,a,b&screen=home&theme=light&lang=es&scenario=partial&width=320&text=1", dark: false, solo: false, full: true),
     Shot(file: "11-comparar-ceros-es.png", hash: "\(personalView)&personales=actual,a,b&screen=home&theme=light&lang=es&scenario=empty&width=390&text=1", dark: false, solo: false, full: true, setup: personalOn),
     Shot(file: "12-comparar-opciones-abierta-es.png", hash: "\(personalView)&personales=actual,a,b&screen=homeOptions&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true)
+  ],
+  // A personal drive in progress, inside the chosen Personal box A: one normal 390 × 844 viewport per state.
+  "personal-en-marcha": [
+    Shot(file: "01-trackeando-claro-es.png", hash: "\(chosen)&personal=a&screen=homeLive&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "02-buscando-ubicacion-claro-es.png", hash: "\(chosen)&personal=a&screen=homeLiveAcquiring&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "03-sin-senal-claro-es.png", hash: "\(chosen)&personal=a&screen=homeLiveNoSignal&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "04-en-pausa-claro-es.png", hash: "\(chosen)&personal=a&screen=homeLivePaused&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true)
   ]
 ]
 

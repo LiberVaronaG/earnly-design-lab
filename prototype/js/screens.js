@@ -271,6 +271,25 @@
     </div>`;
   }
 
+  // A personal drive in progress (lab state), shown inside the chosen Personal box A instead of a
+  // separate banner. Status titles and reasons are the app's own; «this drive» is new. The trip
+  // is not in Today or This Month until it ends, as in the app.
+  function liveLine(ctx, trip) {
+    const LIVE = {
+      recording: { title: 'liveRecording', mark: '<span class="pv-live-dot"></span>' },
+      acquiring: { title: 'liveAcquiring', why: 'liveWaitGps', mark: icon('location') },
+      signalLost: { title: 'liveNoSignal', why: 'liveNoSignalWhy', mark: icon('signalOff') },
+      paused: { title: 'livePaused', why: 'livePausedWhy', mark: icon('pause') }
+    }[trip.status];
+    // The app joins the reason with « · »; here it gets its own line so the dot never hangs at a line end.
+    const why = LIVE.why ? ` <span class="pv-live-why">${esc(ctx.t(LIVE.why))}</span>` : '';
+    return `<div class="pv-live" data-status="${trip.status}">
+      <span class="pv-live-mark">${LIVE.mark}</span>
+      <span class="pv-live-text"><span class="pv-live-title">${esc(ctx.t(LIVE.title))}</span> <span class="pv-live-sub"><span class="pv-live-mi">${ctx.fmt.miles(ctx.lang, trip.miles)}<small> mi</small></span> ${esc(ctx.t('liveThisDrive'))}</span>${why}</span>
+      <button class="pv-stop" ${act('stopPersonalTrip')} aria-description="${esc(ctx.t('liveStopHint'))}">${esc(ctx.t('liveStop'))}</button>
+    </div>`;
+  }
+
   function personalRow(ctx) {
     if (!ctx.data.autoPersonal) return '';
     const p = ctx.data.personal;
@@ -284,9 +303,9 @@
       const metrics = `<span class="pv-metrics">${metric(ctx.t('today'), today)} ${metric(ctx.t('thisMonth'), month)}</span>`;
       const lead = `<span class="pv-icon">${icon('car')}</span> <span class="pv-title">${esc(ctx.t('personal'))}</span>`;
       const chevron = `<span class="pv-chevron">${icon('chevronRight')}</span>`;
-      return ctx.personal === 'a'
-        ? `<button class="pv pv-a" ${act('openPersonal')}><span class="pv-lead">${lead}</span> ${metrics} ${chevron}</button>`
-        : `<button class="pv pv-b" ${act('openPersonal')}><span class="pv-top">${lead} ${chevron}</span> ${metrics}</button>`;
+      if (ctx.personal === 'b') return `<button class="pv pv-b" ${act('openPersonal')}><span class="pv-top">${lead} ${chevron}</span> ${metrics}</button>`;
+      const rowA = `<button class="pv pv-a" id="personal-row" ${act('openPersonal')}><span class="pv-lead">${lead}</span> ${metrics} ${chevron}</button>`;
+      return ctx.ui.liveTrip ? `<div class="pv-box">${rowA}${liveLine(ctx, ctx.ui.liveTrip)}</div>` : rowA;
     }
     if (ctx.famId === 'v0') {
       return `<button class="personal-row card" ${act('openPersonal')}>${icon('car')}<span class="pr-title">${esc(ctx.t('personal'))}</span>

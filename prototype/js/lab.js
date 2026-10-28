@@ -32,6 +32,8 @@
 
   const SCREENS = [
     ['home', 'Inicio'], ['homeBreakdown', 'Inicio · desglose abierto'], ['homeOptions', 'Inicio · opciones'], ['homeBoth', 'Inicio · desglose y opciones abiertos'],
+    ['homeLive', 'Inicio · viaje personal: trackeando'], ['homeLiveAcquiring', 'Inicio · viaje personal: buscando ubicación'],
+    ['homeLiveNoSignal', 'Inicio · viaje personal: sin señal GPS'], ['homeLivePaused', 'Inicio · viaje personal: en pausa'],
     ['active', 'Turno en curso (aprox.)'], ['close', 'Cierre · vacío'], ['closeResult', 'Cierre · resultado ($90)'],
     ['closeInvalid', 'Cierre · cantidad inválida'], ['closeExtras', 'Cierre · otra plataforma'], ['recovery', 'Recuperar turno (hoja)'],
     ['historyWork', 'Historial · Trabajo'], ['historyPersonal', 'Historial · Personal'], ['day', 'Día personal'],
