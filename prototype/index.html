@@ -25,6 +25,7 @@
           <option value="tarjeta">Tarjeta verde</option>
           <option value="abierta">Tarjeta abierta</option>
           <option value="opciones">Opciones</option>
+          <option value="personal">Personal</option>
         </select>
       </label>
       <label>Familia
@@ -42,8 +43,14 @@
       <label>Opciones
         <select id="c-opts"><option value="actual">Actual</option><option value="propuesta">Propuesta</option></select>
       </label>
+      <label>Personal
+        <select id="c-personal"><option value="actual">Actual</option><option value="a">A · Una fila</option><option value="b">B · Dos niveles</option></select>
+      </label>
       <label>Tarjetas
         <select id="c-cards"><option value="actual,c">Actual y C</option></select>
+      </label>
+      <label>Marcos
+        <select id="c-personals"><option value="actual,a,b">Actual, A y B</option><option value="actual,a">Actual y A</option><option value="a,b">A y B</option></select>
       </label>
       <label data-when="compare">Comparar con
         <select id="c-familyB"></select>

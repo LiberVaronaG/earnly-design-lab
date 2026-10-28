@@ -149,10 +149,21 @@
     }
   };
 
+  // Stress case for the Personal row: same work data as «partial», only the personal drives have more digits.
+  SCENARIOS.personalLong = {
+    ...SCENARIOS.partial,
+    label: { es: 'Millas personales largas (prueba de diseño)', en: 'Long personal miles (design test)' },
+    ref: null,
+    personal: [
+      { id: 'p1', date: '2026-10-24', start: '05:10', end: '17:40', mins: 750, miles: 1248.4, status: 'ok', route: 3 },
+      { id: 'p2', date: '2026-10-20', start: '04:00', end: '23:50', mins: 1190, miles: 11237.6, status: 'ok', route: 4 }
+    ]
+  };
+
   // The shift produced by the simulated close flow (matches the 03-cierre-laboral captures).
   const CLOSE_SHIFT = { id: 'wNew', platform: 'amazonFlex', date: '2026-10-23', start: '01:55', end: '04:55', miles: 40.0, deduction: 29.00, gasKnownCost: 8.00, route: 9 };
 
-  const WEEK_MILES = { partial: [0, 15, 0, 10, 20, 0, 0], complete: [18, 20, 6, 40, 0, 0, 0], tooLarge: [0, 0, 0, 0, 15, 20, 0], empty: [0, 0, 0, 0, 0, 0, 0], orphan: [0, 0, 6, 40, 0, 0, 0], longPay: [0, 0, 4790.6, 0, 0, 0, 312.4], zeroPay: [0, 0, 0, 8, 0, 0, 18] };
+  const WEEK_MILES = { partial: [0, 15, 0, 10, 20, 0, 0], complete: [18, 20, 6, 40, 0, 0, 0], tooLarge: [0, 0, 0, 0, 15, 20, 0], empty: [0, 0, 0, 0, 0, 0, 0], orphan: [0, 0, 6, 40, 0, 0, 0], longPay: [0, 0, 4790.6, 0, 0, 0, 312.4], zeroPay: [0, 0, 0, 8, 0, 0, 18], personalLong: [0, 15, 0, 10, 20, 0, 0] };
 
   function load(id) {
     return JSON.parse(JSON.stringify(SCENARIOS[id]));

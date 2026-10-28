@@ -21,8 +21,14 @@
     actual: ['Opciones actual', 'caja con dos tarjetas dentro'],
     propuesta: ['Propuesta', 'una pieza, dos filas, líneas finas']
   };
-  // «Tarjeta verde» view: which card variants sit side by side.
+  const PERSONAL = {
+    actual: ['Personal actual', 'una línea, borde fuerte'],
+    a: ['A · Una fila', 'periodo sobre valor, flecha al final'],
+    b: ['B · Dos niveles', 'título y flecha arriba, cifras debajo']
+  };
+  // «Tarjeta verde» and «Personal» views: which variants sit side by side.
   const CARD_SETS = { 'actual,c': ['actual', 'c'] };
+  const PERSONAL_SETS = { 'actual,a,b': ['actual', 'a', 'b'], 'actual,a': ['actual', 'a'], 'a,b': ['a', 'b'] };
 
   const SCREENS = [
     ['home', 'Inicio'], ['homeBreakdown', 'Inicio · desglose abierto'], ['homeOptions', 'Inicio · opciones'], ['homeBoth', 'Inicio · desglose y opciones abiertos'],
@@ -55,6 +61,8 @@
     if (CARD_SETS[h.get('cards')]) L.cards = h.get('cards');
     if (BD[h.get('desglose')]) L.bd = h.get('desglose');
     if (OPTS[h.get('opciones')]) L.opts = h.get('opciones');
+    if (PERSONAL[h.get('personal')]) L.personal = h.get('personal');
+    if (PERSONAL_SETS[h.get('personales')]) L.personals = h.get('personales');
     if (['light', 'dark'].includes(h.get('theme'))) L.theme = h.get('theme');
     if (['en', 'es'].includes(h.get('lang'))) L.lang = h.get('lang');
     if (E.SCENARIOS[h.get('scenario')]) L.scenario = h.get('scenario');
@@ -69,7 +77,7 @@
 
   function writeHash() {
     const L = S.lab;
-    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
+    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
     if (L.solo) h.set('solo', '1');
     if (L.tall) h.set('tall', '1');
     history.replaceState(null, '', '#' + h.toString());
@@ -85,6 +93,8 @@
     $('c-cards').value = L.cards;
     $('c-bd').value = L.bd;
     $('c-opts').value = L.opts;
+    $('c-personal').value = L.personal;
+    $('c-personals').value = L.personals;
     $('c-theme').value = L.theme;
     $('c-lang').value = L.lang;
     $('c-scenario').value = L.scenario;
@@ -95,11 +105,13 @@
     $('c-motion').value = L.motion;
     document.querySelectorAll('[data-when="compare"]').forEach((el) => { el.hidden = L.view !== 'compare'; });
     $('c-family').parentElement.hidden = L.view === 'gallery';
-    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones'].includes(L.view) && !L.solo;
-    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones'].includes(L.view) && !L.solo;
-    $('c-bd').parentElement.hidden = ['abierta', 'opciones'].includes(L.view) && !L.solo;
-    $('c-opts').parentElement.hidden = L.view === 'opciones' && !L.solo;
+    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal'].includes(L.view) && !L.solo;
+    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal'].includes(L.view) && !L.solo;
+    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal'].includes(L.view) && !L.solo;
+    $('c-opts').parentElement.hidden = ['opciones', 'personal'].includes(L.view) && !L.solo;
+    $('c-personal').parentElement.hidden = L.view === 'personal' && !L.solo;
     $('c-cards').parentElement.hidden = L.view !== 'tarjeta';
+    $('c-personals').parentElement.hidden = L.view !== 'personal' || L.solo;
   }
   E.syncLab = () => { syncControls(); writeHash(); };
 
@@ -111,22 +123,26 @@
     const bds = L.view === 'abierta' && !L.solo ? ['actual', 'propuesta'] : null;
     // «Opciones» keeps every choice made so far (no title, card C, proposed breakdown).
     const opts = L.view === 'opciones' && !L.solo ? ['actual', 'propuesta'] : null;
-    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards ? cards.map(() => L.family) : [L.family];
+    // «Personal» keeps everything chosen before it, Options proposal included.
+    const pers = L.view === 'personal' && !L.solo ? PERSONAL_SETS[L.personals] : null;
+    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards || pers ? (cards || pers).map(() => L.family) : [L.family];
     document.body.classList.toggle('is-solo', L.solo);
     const stage = $('stage');
     stage.innerHTML = fams.map((f, i) => {
-      const home = homes ? homes[i] : cards || bds || opts ? 'sintitulo' : L.home;
-      const card = cards ? cards[i] : bds || opts ? 'c' : L.card;
-      const bd = bds ? bds[i] : opts ? 'propuesta' : L.bd;
-      const opt = opts ? opts[i] : L.opts;
+      const home = homes ? homes[i] : cards || bds || opts || pers ? 'sintitulo' : L.home;
+      const card = cards ? cards[i] : bds || opts || pers ? 'c' : L.card;
+      const bd = bds ? bds[i] : opts || pers ? 'propuesta' : L.bd;
+      const opt = opts ? opts[i] : pers ? 'propuesta' : L.opts;
+      const per = pers ? pers[i] : L.personal;
       const [name, summary] = homes ? [HOME[home][0], `${FAMS[f].name.es}, ${HOME[home][1]}.`]
         : cards ? [CARD[card][0], `${FAMS[f].name.es}, ${CARD[card][1]}.`]
         : bds ? [BD[bd][0], `${FAMS[f].name.es}, ${BD[bd][1]}.`]
-        : opts ? [OPTS[opt][0], `${FAMS[f].name.es}, ${OPTS[opt][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
+        : opts ? [OPTS[opt][0], `${FAMS[f].name.es}, ${OPTS[opt][1]}.`]
+        : pers ? [PERSONAL[per][0], `${FAMS[f].name.es}, ${PERSONAL[per][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
       return `
       <section class="frame-col" aria-label="${name}" style="--w:${L.width}px">
         ${L.solo ? '' : `<div class="frame-head"><strong>${name}</strong><span>${summary}</span></div>`}
-        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}">
+        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}">
           <div class="app" data-family="${f}" data-theme="${L.theme}"></div>
         </div>
       </section>`;
@@ -143,6 +159,7 @@
       <span>Escenario: ${sc.label.es}${sc.ref ? ` (<code>${sc.ref}</code>)` : ' <span class="tag tag-approx">aprox.</span>'}</span>
       ${S.lab.view === 'sintitulo' ? '<span>Original y Sin título: misma familia, datos, tamaño y estado; solo cambia el rótulo de Inicio.</span>' : ''}
       ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
+      ${S.lab.view === 'personal' ? '<span>Personal: Inicio sin título, tarjeta C, desglose y Opciones propuestos en todos los marcos, mismos datos y estado; solo cambia la fila Personal. Aparece cuando el seguimiento personal está activo.</span>' : ''}
       ${S.lab.view === 'opciones' ? '<span>Opciones: Inicio sin título, tarjeta C y desglose propuesto en los dos marcos, mismos datos y estado; solo cambia Opciones.</span>' : ''}
       ${S.lab.view === 'abierta' ? '<span>Tarjeta abierta: Inicio sin título y tarjeta C en los dos marcos, mismos datos y estado; solo cambia la composición del desglose. Ábrelo con la flecha del importe.</span>' : ''}
       <span class="lab-hint">Navegador ≠ iOS: fuentes, teclado y VoiceOver son aproximados.</span>`;
@@ -161,6 +178,8 @@
     L.cards = $('c-cards').value;
     L.bd = $('c-bd').value;
     L.opts = $('c-opts').value;
+    L.personal = $('c-personal').value;
+    L.personals = $('c-personals').value;
     L.theme = $('c-theme').value;
     L.lang = $('c-lang').value;
     L.scenario = $('c-scenario').value;
@@ -173,7 +192,7 @@
       L.familyB = Object.keys(FAMS).find((f) => f !== L.family);
     }
     if (prev.scenario !== L.scenario || prevScreen !== screenId) E.jump(screenId);
-    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.width !== L.width) buildStage();
+    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.width !== L.width) buildStage();
     syncControls();
     writeHash();
     E.render();

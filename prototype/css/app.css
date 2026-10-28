@@ -274,6 +274,41 @@
 .pr-val { color: var(--color-text-muted); }
 .pr-val strong { color: var(--color-text); }
 
+/* Personal A and B (V0 lab variants): one quiet surface with the existing subtle border, and the
+   whole row is the button. Each period sits above its value; a value never breaks from its unit. */
+.pv { width: 100%; padding: var(--space-sm) var(--space-md); background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); }
+.pv-icon { display: inline-flex; color: var(--color-action); }
+.app[data-theme="dark"] .pv-icon { color: var(--color-accent-positive); }
+.pv-title { font-weight: var(--weight-semibold); }
+.pv-chevron { display: inline-flex; color: var(--color-text-muted); }
+.pv-metrics { display: flex; flex-wrap: wrap; column-gap: var(--space-lg); row-gap: var(--space-xs); }
+.pv-metric { display: flex; flex-direction: column; }
+.pv-label { color: var(--color-text-muted); font-size: var(--size-subhead); line-height: 1.2; }
+.pv-value { font-family: var(--font-numeric); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; line-height: 1.2; white-space: nowrap; }
+.pv-value small { font-size: var(--size-subhead); font-weight: 400; color: var(--color-text-muted); }
+
+/* A: one row, the measures at the end beside the chevron. When they don't fit (fitPersonal in
+   app.js), title and chevron go on top and the measures below, aligned with the title text. */
+.pv-a { display: flex; align-items: center; gap: var(--space-sm); min-height: 56px; padding-block: var(--space-xs); }
+.pv-lead { flex: 1 0 auto; display: flex; align-items: center; gap: var(--space-sm); }
+.pv-a .pv-metrics { flex: none; margin-inline-start: var(--space-sm); }
+.pv-measure, .pv-measure * { flex-wrap: nowrap !important; white-space: nowrap !important; }
+.pv-a.pv-stacked { display: grid; grid-template-columns: 1fr auto; row-gap: var(--space-xs); padding-block: var(--space-sm); }
+.pv-a.pv-stacked .pv-metrics { grid-column: 1 / -1; flex: initial; margin-inline-start: calc(1.25em + var(--space-sm)); }
+.pv-a.pv-stacked .pv-chevron { grid-row: 1; grid-column: 2; }
+
+/* B: title and chevron on top; below, two equal columns from the title text to the edge, split by
+   one hairline. Stacked, the hairline turns horizontal, like the miles in card C. */
+/* A plain block: WebKit does not stretch the children of a column-flex button to its width. */
+.pv-b { display: block; }
+.pv-top { display: flex; align-items: center; gap: var(--space-sm); }
+.pv-top .pv-title { flex: 1; }
+.pv-b .pv-metrics { margin-block-start: var(--space-xs); margin-inline-start: calc(1.25em + var(--space-sm)); overflow: hidden; }
+.pv-b .pv-metric { flex: 1 1 0; min-width: fit-content; position: relative; }
+.pv-b .pv-metric + .pv-metric::before, .pv-b .pv-metric + .pv-metric::after { content: ""; position: absolute; background: var(--color-separator); }
+.pv-b .pv-metric + .pv-metric::before { top: 0; bottom: 0; left: calc(var(--space-lg) / -2); width: var(--stroke-hairline); }
+.pv-b .pv-metric + .pv-metric::after { left: 0; right: 0; top: calc(var(--space-xs) / -2); height: var(--stroke-hairline); }
+
 .notice { display: flex; align-items: flex-start; gap: var(--space-sm); width: 100%; padding: var(--space-md); border-radius: var(--radius-card); }
 .notice-card { background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border) !important; }
 .notice-card .notice-icon { color: var(--color-destructive); }

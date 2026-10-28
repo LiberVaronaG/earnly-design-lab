@@ -276,6 +276,18 @@
     const p = ctx.data.personal;
     const today = p.filter((x) => x.date === E.TODAY).reduce((a, x) => a + x.miles, 0);
     const month = p.reduce((a, x) => a + x.miles, 0);
+    // Personal proposals (V0 only): the existing «Today» / «This Month» labels sit above their
+    // value, and a chevron says the whole row opens History → Personal. Same figures and action.
+    // The spaces between spans keep the button's accessible name readable: «Personal Today 0 mi This Month 9 mi».
+    if (ctx.famId === 'v0' && (ctx.personal === 'a' || ctx.personal === 'b')) {
+      const metric = (label, n) => `<span class="pv-metric"><span class="pv-label">${esc(label)}</span> <span class="pv-value">${ctx.fmt.int(ctx.lang, n)}<small> mi</small></span></span>`;
+      const metrics = `<span class="pv-metrics">${metric(ctx.t('today'), today)} ${metric(ctx.t('thisMonth'), month)}</span>`;
+      const lead = `<span class="pv-icon">${icon('car')}</span> <span class="pv-title">${esc(ctx.t('personal'))}</span>`;
+      const chevron = `<span class="pv-chevron">${icon('chevronRight')}</span>`;
+      return ctx.personal === 'a'
+        ? `<button class="pv pv-a" ${act('openPersonal')}><span class="pv-lead">${lead}</span> ${metrics} ${chevron}</button>`
+        : `<button class="pv pv-b" ${act('openPersonal')}><span class="pv-top">${lead} ${chevron}</span> ${metrics}</button>`;
+    }
     if (ctx.famId === 'v0') {
       return `<button class="personal-row card" ${act('openPersonal')}>${icon('car')}<span class="pr-title">${esc(ctx.t('personal'))}</span>
         <span class="pr-val"><strong>${ctx.fmt.int(ctx.lang, today)}</strong> ${esc(ctx.t('personalToday', { a: '' }).trim())}</span>

@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -15,7 +15,17 @@ struct Shot {
   let solo: Bool
   // Grow the phone so the whole Home scroll is visible (e.g. an open breakdown), instead of cutting it.
   var full = false
+  // JavaScript run after the hash loads, for lab states that have no scenario of their own.
+  var setup = ""
+  // Crop a comparison to the top of Home (frame titles down to the notice), at 3x, to judge alignments.
+  var detail = false
 }
+
+// «Sin datos» with personal tracking switched on: both personal figures are zero.
+let personalOn = "E.state.data.autoPersonal = true; E.render();"
+let personalView = "view=personal&family=v0&deco=none&motion=normal"
+let chosen = "solo=1&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&family=v0&deco=none&motion=normal"
+
 
 // Same scenario, screen and size on every side of a comparison; only the lab variant differs.
 let common = "family=v0&deco=none&motion=normal"
@@ -69,6 +79,20 @@ let sets: [String: [Shot]] = [
     Shot(file: "09-comparar-sin-datos-es.png", hash: "view=opciones&\(common)&screen=homeOptions&theme=light&lang=es&scenario=empty&width=390&text=1", dark: false, solo: false, full: true),
     Shot(file: "10-comparar-sin-estimar-es.png", hash: "view=opciones&\(common)&screen=homeOptions&theme=light&lang=es&scenario=tooLarge&width=390&text=1", dark: false, solo: false, full: true),
     Shot(file: "11-comparar-desglose-y-opciones-es.png", hash: "view=opciones&\(common)&screen=homeBoth&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true)
+  ],
+  "personal": [
+    Shot(file: "01-actual-claro-es.png", hash: "\(chosen)&personal=actual&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "02-a-claro-es.png", hash: "\(chosen)&personal=a&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "03-b-claro-es.png", hash: "\(chosen)&personal=b&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true, full: true),
+    Shot(file: "04-comparar-actual-a-claro-es.png", hash: "\(personalView)&personales=actual,a&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "05-comparar-a-b-claro-es.png", hash: "\(personalView)&personales=a,b&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "06-detalle-actual-a-b-claro-es.png", hash: "\(personalView)&personales=actual,a,b&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, detail: true),
+    Shot(file: "07-comparar-actual-a-b-oscuro-en.png", hash: "\(personalView)&personales=actual,a,b&screen=home&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false, full: true),
+    Shot(file: "08-comparar-320-texto-200-cifras-largas-es.png", hash: "\(personalView)&personales=actual,a,b&screen=home&theme=light&lang=es&scenario=personalLong&width=320&text=2", dark: false, solo: false, full: true),
+    Shot(file: "09-comparar-cifras-largas-en.png", hash: "\(personalView)&personales=actual,a,b&screen=home&theme=light&lang=en&scenario=personalLong&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "10-comparar-320-es.png", hash: "\(personalView)&personales=actual,a,b&screen=home&theme=light&lang=es&scenario=partial&width=320&text=1", dark: false, solo: false, full: true),
+    Shot(file: "11-comparar-ceros-es.png", hash: "\(personalView)&personales=actual,a,b&screen=home&theme=light&lang=es&scenario=empty&width=390&text=1", dark: false, solo: false, full: true, setup: personalOn),
+    Shot(file: "12-comparar-opciones-abierta-es.png", hash: "\(personalView)&personales=actual,a,b&screen=homeOptions&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true)
   ]
 ]
 
@@ -135,6 +159,7 @@ for shot in shots {
     resize(NSSize(width: 390, height: 844))
     _ = js("document.documentElement.style.overflow = 'hidden'; location.hash = '\(shot.hash)'")
     spin(0.5)
+    if !shot.setup.isEmpty { _ = js(shot.setup); spin(0.2) }
     var height = 844.0
     if shot.full {
       height += js("(() => { const s = document.querySelector('.scroll'); return s.scrollHeight - s.clientHeight; })()") as? Double ?? 0
@@ -145,6 +170,7 @@ for shot in shots {
     resize(NSSize(width: 960, height: 1200))
     _ = js("document.documentElement.style.overflow = ''; location.hash = '\(shot.hash)'")
     spin(0.5)
+    if !shot.setup.isEmpty { _ = js(shot.setup); spin(0.2) }
     if shot.full {
       // Every phone grows by the same amount, so both tab bars stay level.
       _ = js("""
@@ -163,6 +189,15 @@ for shot in shots {
       """) as? [Double] ?? [960, 1200]
     let size = NSSize(width: box[0], height: box[1])
     resize(size)
-    try snapshot(NSRect(origin: .zero, size: size), scale: 2, to: out.appendingPathComponent(shot.file))
+    if shot.detail {
+      let r = js("""
+        (() => { const top = Math.min(...[...document.querySelectorAll('.frame-head')].map((e) => e.getBoundingClientRect().top));
+          const bottom = Math.max(...[...document.querySelectorAll('.app .notice')].map((e) => e.getBoundingClientRect().bottom));
+          return [Math.floor(top), Math.ceil(bottom + 16)]; })()
+        """) as? [Double] ?? [0, size.height]
+      try snapshot(NSRect(x: 0, y: r[0], width: size.width, height: r[1] - r[0]), scale: 3, to: out.appendingPathComponent(shot.file))
+    } else {
+      try snapshot(NSRect(origin: .zero, size: size), scale: 2, to: out.appendingPathComponent(shot.file))
+    }
   }
 }

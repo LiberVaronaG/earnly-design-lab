@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -263,6 +263,18 @@
   }
 
   // Render all frames, keeping focus and scroll stable across re-renders.
+  // Personal A: one row when both measures fit beside the title; otherwise title and chevron on
+  // top and the measures below (like SwiftUI's ViewThatFits). Measured with nothing allowed to wrap.
+  function fitPersonal(app) {
+    app.querySelectorAll('.pv-a').forEach((row) => {
+      row.classList.remove('pv-stacked');
+      row.classList.add('pv-measure');
+      const fits = row.scrollWidth <= row.clientWidth;
+      row.classList.remove('pv-measure');
+      row.classList.toggle('pv-stacked', !fits);
+    });
+  }
+
   let lastNav = -1;
   function render() {
     const slots = [...document.querySelectorAll('[data-slot]')];
@@ -289,8 +301,10 @@
       app.dataset.card = slot.dataset.card || 'actual';
       app.dataset.bd = slot.dataset.bd || 'actual';
       app.dataset.opts = slot.dataset.opts || 'actual';
-      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts });
+      app.dataset.personal = slot.dataset.personal || 'actual';
+      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal });
       fitAmounts(app);
+      fitPersonal(app);
     }
     slots.forEach((s, i) => {
       if (isNav) return;
