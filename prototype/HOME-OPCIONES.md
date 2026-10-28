@@ -1,6 +1,6 @@
 # Opciones de Inicio: actual y propuesta
 
-Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Encargo: [briefs/home-opciones/PROMPT-CLAUDE.md](../briefs/home-opciones/PROMPT-CLAUDE.md). Se conservan Inicio sin título, la tarjeta C y su desglose propuesto. **Opciones está pendiente de elección.** Nada de esto está en la app.
+Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Encargo: [briefs/home-opciones/PROMPT-CLAUDE.md](../briefs/home-opciones/PROMPT-CLAUDE.md). Se conservan Inicio sin título, la tarjeta C y su desglose propuesto. **Decisión de Liber (27 oct): la propuesta.** Nada de esto está en la app.
 
 ![Opciones abierta, actual y propuesta, claro, ES](captures/home-opciones/06-comparar-abierta-claro-es.png)
 
@@ -116,6 +116,6 @@ No hice una segunda alternativa. Lo que valoré tenía costes claros:
 - **Foco al volver.** Al volver de la calculadora o cerrar la hoja, el foco va al encabezado de Inicio, no a la fila que se pulsó. Pasa igual en la versión actual, porque es la lógica general de navegación del prototipo. En iOS, VoiceOver suele volver al elemento anterior. Si se quiere replicar en la maqueta, es un cambio de navegación global y queda como sugerencia, no aplicada.
 - **Nombre.** «Opciones» describe poco lo que contiene: una calculadora y una estimación fiscal. «Herramientas» lo describiría mejor. Es solo una sugerencia, no se aplicó.
 
-## Siguiente paso
+## Decisión y siguiente paso
 
-Liber elige entre Opciones actual y la propuesta con `01`–`04`, `06`, `07` y `08`. Hasta entonces no se avanza a otro bloque de Inicio, ni a la app real.
+Liber eligió **la propuesta** tras ver las capturas, aceptando el borde más suave de la pieza cerrada. La versión actual queda en el laboratorio como referencia. El foco al volver y el nombre «Herramientas» siguen como sugerencias sin aplicar. El siguiente detalle de Inicio lo elige Liber; hasta entonces no se toca el resto de Inicio ni la app real.
