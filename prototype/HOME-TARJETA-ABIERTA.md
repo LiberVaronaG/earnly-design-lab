@@ -1,6 +1,6 @@
 # Tarjeta C abierta: desglose actual y propuesta
 
-Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Encargo: [briefs/home-tarjeta-abierta/PROMPT-CLAUDE.md](../briefs/home-tarjeta-abierta/PROMPT-CLAUDE.md). Se conservan Inicio sin título y la C cerrada elegida. **La propuesta del desglose está pendiente de elección.** Nada de esto está en la app.
+Rama `design/home-sin-titulo-2026-10-27`, 27 oct 2026. Encargo: [briefs/home-tarjeta-abierta/PROMPT-CLAUDE.md](../briefs/home-tarjeta-abierta/PROMPT-CLAUDE.md). Se conservan Inicio sin título y la C cerrada elegida. **Decisión de Liber (27 oct): la propuesta.** Nada de esto está en la app.
 
 ![Desglose actual y propuesta, pagos completos, claro, ES](captures/home-tarjeta-abierta/03-comparar-pagos-completos-claro-es.png)
 
@@ -137,6 +137,6 @@ El coste es altura con texto normal: 8 a 36 px en español y hasta 58 px en ingl
 - La propuesta solo existe con C en V0. El desglose de la tarjeta de tres columnas y el de V1–V3 no cambian.
 - Queda pendiente lo que el documento de C anotó: el botón se llama «Mostrar desglose» y un lector de pantalla puede no leer el importe que contiene.
 
-## Siguiente paso
+## Decisión y siguiente paso
 
-Liber elige entre el desglose actual y la propuesta con `01`/`02`, `03`, `06` y `07`/`08`. Hasta entonces no se toca el resto de Inicio, ni la app real.
+Liber eligió **la propuesta** tras ver las capturas, aceptando su altura extra con texto normal. El desglose actual queda en el laboratorio como referencia. El siguiente detalle de Inicio lo elige Liber; hasta entonces no se toca el resto de Inicio ni la app real.
