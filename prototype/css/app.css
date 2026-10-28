@@ -380,6 +380,11 @@
 .start-map { position: absolute; inset: 0; opacity: .3; pointer-events: none; }
 .start-map svg { display: block; width: 100%; height: 100%; }
 .start-circle-map .start-label { position: relative; }
+/* Dark mode: white over #3F9442 falls to 2,43 : 1 where a line crosses a letter. Light mode is unchanged. */
+/* «Corte»: a halo in the circle's own green stops every line about 2.6 px short of the letters. */
+.app[data-theme="dark"] .start-map-corte .start-label { --halo: var(--color-action); text-shadow: .12em 0 var(--halo), .104em .06em var(--halo), .06em .104em var(--halo), 0 .12em var(--halo), -.06em .104em var(--halo), -.104em .06em var(--halo), -.12em 0 var(--halo), -.104em -.06em var(--halo), -.06em -.104em var(--halo), 0 -.12em var(--halo), .06em -.104em var(--halo), .104em -.06em var(--halo); }
+/* «Tenue»: at 12 % the label keeps 3,16 : 1 over a line (3,0 : 1 or more measured at antialiased edges). */
+.app[data-theme="dark"] .start-map-tenue .start-map { opacity: .12; }
 .hour-ring { position: absolute; width: calc(max(var(--control-start-diameter), 6.4em) + 44px); aspect-ratio: 1; pointer-events: none; }
 .start-ring { font-family: var(--font-display); font-weight: 600; }
 .footer-bar { flex: none; padding: var(--space-sm) var(--space-md); background: var(--color-bg); border-top: var(--stroke-hairline) solid var(--color-separator); }

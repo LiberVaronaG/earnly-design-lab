@@ -359,7 +359,9 @@
       if (xmas) return xmas;
     }
     // «Fondo»: the real Woodbridge interchange fills the circle behind the label; it is decorative only.
-    if (s === 'circle' && ctx.circ === 'fondo') return `<div class="start-wrap"><button class="start-circle start-circle-map" ${act('startShift')}>${E.startMap()}<span class="start-label">${esc(ctx.t('startShift'))}</span></button></div>`;
+    // «Corte» and «Tenue» change only how the lines meet the label in dark mode (app.css).
+    const map = { fondo: '', 'fondo-corte': ' start-map-corte', 'fondo-tenue': ' start-map-tenue' }[ctx.circ];
+    if (s === 'circle' && map !== undefined) return `<div class="start-wrap"><button class="start-circle start-circle-map${map}" ${act('startShift')}>${E.startMap()}<span class="start-label">${esc(ctx.t('startShift'))}</span></button></div>`;
     if (s === 'circle') return `<div class="start-wrap"><button class="start-circle" ${act('startShift')}><span>${esc(ctx.t('startShift'))}</span></button></div>`;
     if (s === 'ring') return `<div class="start-wrap start-wrap-ring">${E.hourRing()}<button class="start-circle start-ring" ${act('startShift')}><span>${esc(ctx.t('startShift'))}</span></button></div>`;
     return '';
@@ -756,7 +758,7 @@
 
   const expenses = simple('expenses', (ctx) => `<p class="empty">${esc(ctx.t('expensesBody'))}</p>`);
   const help = simple('help', (ctx) => `<p class="note">${esc(ctx.t('helpBody'))}</p>`);
-  const about = simple('about', (ctx) => `<p class="note">${esc(ctx.t('aboutBody'))}</p>${ctx.circ === 'fondo' ? `<p class="note">${esc(ctx.t('startMapCredit'))}</p>` : ''}`);
+  const about = simple('about', (ctx) => `<p class="note">${esc(ctx.t('aboutBody'))}</p>${/^fondo/.test(ctx.circ || '') ? `<p class="note">${esc(ctx.t('startMapCredit'))}</p>` : ''}`);
   const accessibilityInfo = simple('accessibility', (ctx) => `<p class="note">${esc(ctx.t('accessibilityBody'))}</p>`);
 
   function language(ctx) {

@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -122,6 +122,15 @@ let sets: [String: [Shot]] = [
     Shot(file: "05-comparar-oscuro-en.png", hash: "view=iniciar&\(common)&screen=home&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false),
     Shot(file: "06-comparar-320-texto-200-es.png", hash: "view=iniciar&\(common)&screen=home&theme=light&lang=es&scenario=partial&width=320&text=2", dark: false, solo: false, full: true),
     Shot(file: "07-comparar-viaje-en-curso-es.png", hash: "view=iniciar&\(common)&screen=homeLive&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false)
+  ],
+  // Fondo in dark mode: as chosen, with the lines cut around the label («corte») and with the map at 14 % («tenue»).
+  "contraste-oscuro": [
+    Shot(file: "01-corte-oscuro-es.png", hash: "\(chosen)&personal=a&vivo=tablero&circulo=fondo-corte&screen=home&theme=dark&lang=es&scenario=partial&width=390&text=1", dark: true, solo: true),
+    Shot(file: "02-tenue-oscuro-es.png", hash: "\(chosen)&personal=a&vivo=tablero&circulo=fondo-tenue&screen=home&theme=dark&lang=es&scenario=partial&width=390&text=1", dark: true, solo: true),
+    Shot(file: "03-comparar-oscuro-es.png", hash: "view=contraste&\(common)&screen=home&theme=dark&lang=es&scenario=partial&width=390&text=1", dark: true, solo: false),
+    Shot(file: "04-comparar-oscuro-en.png", hash: "view=contraste&\(common)&screen=home&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false),
+    Shot(file: "05-comparar-320-texto-200-oscuro-es.png", hash: "view=contraste&\(common)&screen=home&theme=dark&lang=es&scenario=partial&width=320&text=2", dark: true, solo: false, full: true),
+    Shot(file: "06-comparar-claro-es.png", hash: "view=contraste&\(common)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false)
   ]
 ]
 

@@ -13,7 +13,7 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 
 | Control | Qué hace |
 |---|---|
-| Vista | Muestra una familia, compara dos lado a lado, enseña las cuatro con la misma pantalla y los mismos datos, «Original y Sin título»: la misma familia dos veces, con y sin el rótulo de Inicio, «Tarjeta verde»: la tarjeta actual y C, «Tarjeta abierta»: el desglose de C actual y la propuesta, «Opciones»: Opciones actual y la propuesta, «Personal»: la fila Personal actual, A y B, o «Personal en marcha»: tres formas de mostrar un viaje personal en curso |
+| Vista | Muestra una familia, compara dos lado a lado, enseña las cuatro con la misma pantalla y los mismos datos, «Original y Sin título»: la misma familia dos veces, con y sin el rótulo de Inicio, «Tarjeta verde»: la tarjeta actual y C, «Tarjeta abierta»: el desglose de C actual y la propuesta, «Opciones»: Opciones actual y la propuesta, «Personal»: la fila Personal actual, A y B, «Personal en marcha»: tres formas de mostrar un viaje personal en curso, «Iniciar turno»: el círculo actual y el Fondo, o «Contraste en oscuro»: el Fondo, Corte y Tenue |
 | Familia / Comparar con | V0 Actual, V1 Esencial, V2 Claridad, V3 Estudio |
 | Inicio | Original o Sin título (sin «Earnly Driver» arriba). Solo afecta a Inicio; ver [HOME-SIN-TITULO.md](HOME-SIN-TITULO.md) |
 | Tarjeta / Tarjetas | Tarjeta verde de Inicio: la actual o C · Dos zonas (solo V0). La vista «Tarjeta verde» las pone lado a lado con Inicio sin título; ver [HOME-TARJETA-VERDE.md](HOME-TARJETA-VERDE.md) |
@@ -21,7 +21,7 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 | Opciones | Bloque Opciones de Inicio: actual o propuesta (una pieza con dos filas); ver [HOME-OPCIONES.md](HOME-OPCIONES.md) |
 | Personal / Marcos | Fila Personal de Inicio: actual, A · Una fila o B · Dos niveles (solo V0). La vista «Personal» las pone lado a lado; ver [HOME-PERSONAL.md](HOME-PERSONAL.md) |
 | En marcha | Con Personal A y un viaje personal en curso: 1 · Línea en vivo, 2 · El viaje primero o 3 · Barra fija abajo; ver [HOME-PERSONAL-EN-MARCHA.md](HOME-PERSONAL-EN-MARCHA.md) |
-| Círculo | «Iniciar turno» actual o con el trébol real de Woodbridge de fondo (OpenStreetMap); ver [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md) |
+| Círculo | «Iniciar turno» actual o con el trébol real de Woodbridge de fondo (OpenStreetMap), y las dos correcciones del Fondo en oscuro: Corte y Tenue; ver [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md) |
 | Tema, Idioma | Claro u oscuro; EN o ES. El idioma también se cambia desde Ajustes → Idioma, dentro de la app |
 | Escenario | Pago parcial (24 oct), pagos completos, cifras demasiado grandes, sin datos (aproximación), turno sin cerrar y tres pruebas de diseño: importe largo, cobrado $0 y millas personales largas |
 | Pantalla | Salta a uno de los estados de ejemplo, incluidos los cuatro de viaje personal en marcha (con Personal A). Después se puede navegar normalmente por la app |

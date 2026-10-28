@@ -35,7 +35,9 @@
   // «Iniciar turno»: what the start circle shows besides its label.
   const CIRC = {
     actual: ['Círculo actual', 'solo el texto'],
-    fondo: ['Fondo · Woodbridge', 'el trébol real detrás del texto']
+    fondo: ['Fondo · Woodbridge', 'el trébol real detrás del texto'],
+    'fondo-corte': ['Fondo · corte', 'en oscuro, las líneas se cortan alrededor de cada letra'],
+    'fondo-tenue': ['Fondo · tenue', 'en oscuro, el mapa baja del 30 % al 12 %']
   };
   // «Tarjeta verde» and «Personal» views: which variants sit side by side.
   const CARD_SETS = { 'actual,c': ['actual', 'c'] };
@@ -122,13 +124,13 @@
     $('c-motion').value = L.motion;
     document.querySelectorAll('[data-when="compare"]').forEach((el) => { el.hidden = L.view !== 'compare'; });
     $('c-family').parentElement.hidden = L.view === 'gallery';
-    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar'].includes(L.view) && !L.solo;
-    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar'].includes(L.view) && !L.solo;
-    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal', 'enmarcha', 'iniciar'].includes(L.view) && !L.solo;
-    $('c-opts').parentElement.hidden = ['opciones', 'personal', 'enmarcha', 'iniciar'].includes(L.view) && !L.solo;
-    $('c-personal').parentElement.hidden = ['personal', 'enmarcha', 'iniciar'].includes(L.view) && !L.solo;
-    $('c-vivo').parentElement.hidden = ['enmarcha', 'iniciar'].includes(L.view) && !L.solo;
-    $('c-circ').parentElement.hidden = L.view === 'iniciar' && !L.solo;
+    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste'].includes(L.view) && !L.solo;
+    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste'].includes(L.view) && !L.solo;
+    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste'].includes(L.view) && !L.solo;
+    $('c-opts').parentElement.hidden = ['opciones', 'personal', 'enmarcha', 'iniciar', 'contraste'].includes(L.view) && !L.solo;
+    $('c-personal').parentElement.hidden = ['personal', 'enmarcha', 'iniciar', 'contraste'].includes(L.view) && !L.solo;
+    $('c-vivo').parentElement.hidden = ['enmarcha', 'iniciar', 'contraste'].includes(L.view) && !L.solo;
+    $('c-circ').parentElement.hidden = ['iniciar', 'contraste'].includes(L.view) && !L.solo;
     $('c-cards').parentElement.hidden = L.view !== 'tarjeta';
     $('c-personals').parentElement.hidden = L.view !== 'personal' || L.solo;
   }
@@ -147,7 +149,8 @@
     // «En marcha» keeps Personal A and everything before it; only the live presentation differs.
     const vivos = L.view === 'enmarcha' && !L.solo ? Object.keys(VIVO) : null;
     // «Iniciar turno» keeps every Home choice so far, the drive-first live Personal included; only the circle differs.
-    const circs = L.view === 'iniciar' && !L.solo ? Object.keys(CIRC) : null;
+    // «Contraste en oscuro» does the same with the chosen Fondo and its two dark-mode fixes.
+    const circs = L.solo ? null : L.view === 'iniciar' ? ['actual', 'fondo'] : L.view === 'contraste' ? ['fondo', 'fondo-corte', 'fondo-tenue'] : null;
     const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards || pers || vivos || circs ? (cards || pers || vivos || circs).map(() => L.family) : [L.family];
     document.body.classList.toggle('is-solo', L.solo);
     const stage = $('stage');
@@ -187,6 +190,7 @@
       ${S.lab.view === 'sintitulo' ? '<span>Original y Sin título: misma familia, datos, tamaño y estado; solo cambia el rótulo de Inicio.</span>' : ''}
       ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
       ${S.lab.view === 'iniciar' ? '<span>Iniciar turno: todo lo elegido en Inicio en los dos marcos, mismos datos y estado; solo cambia el círculo. El fondo es el trébol real de Woodbridge (Nueva Jersey) trazado con datos de OpenStreetMap.</span>' : ''}
+      ${S.lab.view === 'contraste' ? '<span>Contraste en oscuro: todo lo elegido en Inicio y el Fondo · Woodbridge en los tres marcos; solo cambia cómo se cruzan las líneas con el texto. Pon Tema → Oscuro: en claro los tres son iguales.</span>' : ''}
       ${S.lab.view === 'enmarcha' ? '<span>En marcha: Personal A y todo lo elegido en los tres marcos, mismos datos y estado; solo cambia cómo se muestra el viaje personal en curso. Elige una pantalla «Inicio · viaje personal: …».</span>' : ''}
       ${S.lab.view === 'personal' ? '<span>Personal: Inicio sin título, tarjeta C, desglose y Opciones propuestos en todos los marcos, mismos datos y estado; solo cambia la fila Personal. Aparece cuando el seguimiento personal está activo.</span>' : ''}
       ${S.lab.view === 'opciones' ? '<span>Opciones: Inicio sin título, tarjeta C y desglose propuesto en los dos marcos, mismos datos y estado; solo cambia Opciones.</span>' : ''}
