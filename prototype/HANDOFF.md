@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero y el círculo «Iniciar turno» con el trébol de Woodbridge de fondo (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero y el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -105,7 +105,7 @@ Liber pidió ideas para la misma caja mientras conduce en personal y eligió la 
   - Las comprobaciones de las tres variantes siguen valiendo; no se repitieron.
 - Siguiente paso de entonces: que Liber eligiera el próximo detalle de Inicio. Fue el círculo «Iniciar turno».
 
-### Iniciar turno (28 oct): **elegido Fondo · Woodbridge (`circulo=fondo`)**
+### Iniciar turno (28 oct): **elegido Fondo · Woodbridge, con Corte en oscuro (`circulo=fondo-corte`)**
 
 Detalle completo en [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md).
 
@@ -115,11 +115,15 @@ Detalle completo en [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md).
 - Vista «Iniciar turno», control «Círculo» y parámetro `circulo`.
 - Se corrigió que el foco de teclado volviera cuadrado el círculo.
 - Comprobación: 1600 renders sin fallos.
+- En oscuro, el texto quedaba a 2,43 : 1 donde lo cruzaba una línea. Se probaron dos correcciones en la vista «Contraste en oscuro»; auditoría de 2400 renders sin fallos.
+  - **Decisión de Liber (28 oct): Corte** (`circulo=fondo-corte`). Un halo del verde del círculo para las líneas antes de cada letra, y el mapa sigue al 30 %. Era la recomendada.
+  - Tenue (`circulo=fondo-tenue`, el mapa al 12 % en oscuro) queda como referencia, con sus capturas.
+  - Al registrarla no cambió el producto; las comprobaciones siguen valiendo.
 - **Pendiente:**
-  - En oscuro, el texto queda a 2,43 : 1 donde lo cruza una línea. **Dos correcciones en el laboratorio (28 oct), falta que Liber elija:** Corte (`circulo=fondo-corte`, las líneas se paran antes de cada letra; recomendada) y Tenue (`circulo=fondo-tenue`, el mapa al 12 % en oscuro). Vista «Contraste en oscuro». Auditoría de 2400 renders sin fallos; detalle en HOME-INICIAR-TURNO.md.
+  - En SwiftUI, Corte necesita otra técnica (una máscara hecha con el propio texto). No se ha probado.
   - Las decoraciones de Navidad tapan el mapa.
   - Si pasa a la app: crédito de OpenStreetMap en Acerca de, SPEC §4.3 y PARITY.md.
-- **Siguiente paso:** que Liber elija entre Corte y Tenue, y después el próximo detalle de Inicio. Nada pasa a SwiftUI.
+- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

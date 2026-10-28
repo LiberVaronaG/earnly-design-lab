@@ -14,12 +14,13 @@ Recorrido hasta aquí, todo con Liber el 27 y 28 oct:
 2. Un trébol genérico dibujado a mano no le convenció: «no es idéntico a la calle».
 3. Se pasó al trazado real de OpenStreetMap, comprobado carril a carril sobre el satélite.
 4. Entre «Sello» (el cruce dentro de un aro, encima del texto) y «Fondo» (el cruce ocupa todo el botón), **Liber eligió Fondo**.
+5. Para el contraste en oscuro, entre Corte y Tenue, **Liber eligió Corte** (ver más abajo).
 
 Hoy el cruce es un trébol parcial: lo rehicieron hacia 2004–2006 y le queda un solo lazo. Por eso, al ser idéntico a la calle, se lee como una X con un lazo, no como cuatro hojas.
 
 ## Abrir
 
-- Elegido, a pantalla completa: `prototype/index.html#view=single&solo=1&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo&lang=es&scenario=partial&screen=home`.
+- Elegido, a pantalla completa: `prototype/index.html#view=single&solo=1&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&lang=es&scenario=partial&screen=home`. Con `circulo=fondo` es el mismo Fondo sin la corrección de oscuro.
 - Comparación: **Vista → «Iniciar turno»** (`#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`). Los dos marcos llevan todo lo elegido en Inicio y solo cambia el círculo.
 - En cualquier vista, el control **Círculo → Actual / Fondo · Woodbridge** y el parámetro `circulo`. Sin `circulo`, el prototipo se comporta como antes.
 
@@ -67,7 +68,7 @@ El rótulo es texto grande (22 px, negrita): pide 3 : 1. En claro se cumple incl
 
 (Hasta el 28 oct este documento decía «los 5 escenarios»; la auditoría recorrió los 8.)
 
-## Contraste en oscuro: Corte y Tenue (28 oct)
+## Contraste en oscuro (28 oct): **elegido Corte**
 
 Liber pidió probar las dos salidas y verlas. Las dos cambian solo el modo oscuro; en claro el Fondo sigue igual.
 
@@ -97,6 +98,7 @@ Cómo se midió:
 - **Corte:** el mapa se ve igual que ahora y el texto queda limpio. Donde una línea llega en ángulo a una letra (en «Iniciar turno», entre la «r» y la «t») el corte hace un pequeño escalón: el halo son 12 sombras sin desenfoque. En SwiftUI sería otra técnica (una máscara hecha con el propio texto), no se ha probado.
 - **Tenue:** es un solo número y fácil de llevar a iOS. A cambio, en oscuro el mapa casi desaparece (1,20 : 1 contra el verde).
 - Recomendación de Claude: **Corte**, porque el fondo existe para que se vea el trébol y Tenue lo borra en oscuro.
+- **Decisión de Liber (28 oct): Corte.** Tenue queda como referencia, con sus capturas. Al registrarla no cambió el producto.
 
 ### Comprobado
 
@@ -134,3 +136,4 @@ Cómo se midió:
 - El círculo de V0 en el prototipo mide 160 px; en el SPEC son 200 pt. A 200 pt las líneas serían algo más gruesas en proporción.
 - Con las decoraciones de Navidad, incluida la elegida (solo gorrito), el círculo lo dibuja la decoración y no muestra el mapa. Falta decidir cómo se combinan.
 - Llevarlo a la app exige cambiar SPEC §4.3, actualizar PARITY.md y añadir el crédito de OpenStreetMap. Nada de eso se ha hecho.
+- En iOS, el Corte de oscuro necesita otra técnica (una máscara hecha con el propio texto). No se ha probado.

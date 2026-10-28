@@ -21,7 +21,7 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 | Opciones | Bloque Opciones de Inicio: actual o propuesta (una pieza con dos filas); ver [HOME-OPCIONES.md](HOME-OPCIONES.md) |
 | Personal / Marcos | Fila Personal de Inicio: actual, A · Una fila o B · Dos niveles (solo V0). La vista «Personal» las pone lado a lado; ver [HOME-PERSONAL.md](HOME-PERSONAL.md) |
 | En marcha | Con Personal A y un viaje personal en curso: 1 · Línea en vivo, 2 · El viaje primero o 3 · Barra fija abajo; ver [HOME-PERSONAL-EN-MARCHA.md](HOME-PERSONAL-EN-MARCHA.md) |
-| Círculo | «Iniciar turno» actual o con el trébol real de Woodbridge de fondo (OpenStreetMap), y las dos correcciones del Fondo en oscuro: Corte y Tenue; ver [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md) |
+| Círculo | «Iniciar turno» actual o con el trébol real de Woodbridge de fondo (OpenStreetMap), y las dos correcciones del Fondo en oscuro: Corte (elegida) y Tenue; ver [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md) |
 | Tema, Idioma | Claro u oscuro; EN o ES. El idioma también se cambia desde Ajustes → Idioma, dentro de la app |
 | Escenario | Pago parcial (24 oct), pagos completos, cifras demasiado grandes, sin datos (aproximación), turno sin cerrar y tres pruebas de diseño: importe largo, cobrado $0 y millas personales largas |
 | Pantalla | Salta a uno de los estados de ejemplo, incluidos los cuatro de viaje personal en marcha (con Personal A). Después se puede navegar normalmente por la app |
