@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -112,6 +112,16 @@ let sets: [String: [Shot]] = [
   "personal-viaje-primero": [
     Shot(file: "01-trackeando-claro-es.png", hash: "\(chosen)&personal=a&vivo=tablero&screen=homeLive&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
     Shot(file: "02-en-pausa-claro-es.png", hash: "\(chosen)&personal=a&vivo=tablero&screen=homeLivePaused&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true)
+  ],
+  // «Iniciar turno»: the start circle with the real Woodbridge interchange behind its label, over every Home choice so far.
+  "iniciar-turno": [
+    Shot(file: "01-actual-claro-es.png", hash: "\(chosen)&personal=a&vivo=tablero&circulo=actual&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "02-fondo-claro-es.png", hash: "\(chosen)&personal=a&vivo=tablero&circulo=fondo&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "03-fondo-oscuro-es.png", hash: "\(chosen)&personal=a&vivo=tablero&circulo=fondo&screen=home&theme=dark&lang=es&scenario=partial&width=390&text=1", dark: true, solo: true),
+    Shot(file: "04-comparar-claro-es.png", hash: "view=iniciar&\(common)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false),
+    Shot(file: "05-comparar-oscuro-en.png", hash: "view=iniciar&\(common)&screen=home&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false),
+    Shot(file: "06-comparar-320-texto-200-es.png", hash: "view=iniciar&\(common)&screen=home&theme=light&lang=es&scenario=partial&width=320&text=2", dark: false, solo: false, full: true),
+    Shot(file: "07-comparar-viaje-en-curso-es.png", hash: "view=iniciar&\(common)&screen=homeLive&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false)
   ]
 ]
 

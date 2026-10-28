@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A y, durante un viaje personal, El viaje primero (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`). Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero y el círculo «Iniciar turno» con el trébol de Woodbridge de fondo (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -103,7 +103,23 @@ Liber pidió ideas para la misma caja mientras conduce en personal y eligió la 
   - La 1 · Línea en vivo y la 3 · Barra fija abajo se quedan como referencias, con sus capturas.
   - Al registrarla no cambió el producto: solo se añadieron dos capturas individuales, en `captures/home-personal-viaje-primero/`.
   - Las comprobaciones de las tres variantes siguen valiendo; no se repitieron.
-- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Hasta entonces no se toca el resto de Inicio, y nada pasa a SwiftUI.
+- Siguiente paso de entonces: que Liber eligiera el próximo detalle de Inicio. Fue el círculo «Iniciar turno».
+
+### Iniciar turno (28 oct): **elegido Fondo · Woodbridge (`circulo=fondo`)**
+
+Detalle completo en [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md).
+
+- Liber pidió un icono para el círculo a partir de un cruce de carreteras famoso y eligió el trébol de Woodbridge (Nueva Jersey).
+- Rechazó un trébol genérico porque no era idéntico a la calle. Se trazó con OpenStreetMap: `tools/build-start-map.cjs` genera `js/start-map.js`.
+- De «Sello» y «Fondo», eligió **Fondo**: el cruce real en líneas blancas al 30 % detrás del texto.
+- Vista «Iniciar turno», control «Círculo» y parámetro `circulo`.
+- Se corrigió que el foco de teclado volviera cuadrado el círculo.
+- Comprobación: 1600 renders sin fallos.
+- **Pendiente:**
+  - En oscuro, el texto queda a 2,43 : 1 donde lo cruza una línea.
+  - Las decoraciones de Navidad tapan el mapa.
+  - Si pasa a la app: crédito de OpenStreetMap en Acerca de, SPEC §4.3 y PARITY.md.
+- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

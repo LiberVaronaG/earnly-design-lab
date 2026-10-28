@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -310,7 +310,8 @@
       app.dataset.opts = slot.dataset.opts || 'actual';
       app.dataset.personal = slot.dataset.personal || 'actual';
       app.dataset.vivo = slot.dataset.vivo || 'linea';
-      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo });
+      app.dataset.circ = slot.dataset.circ || 'actual';
+      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo, circ: app.dataset.circ });
       fitAmounts(app);
       fitPersonal(app);
     }

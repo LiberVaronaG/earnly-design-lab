@@ -372,7 +372,14 @@
 .start-wrap { display: grid; place-items: center; padding: var(--space-md) 0 var(--space-xs); position: relative; }
 .start-circle { width: max(var(--control-start-diameter), 6.4em); aspect-ratio: 1; border-radius: 50%; background: var(--color-action) !important; color: var(--color-on-action) !important; font-size: var(--size-title2); font-weight: 700; display: grid; place-items: center; text-align: center !important; padding: var(--space-md); line-height: 1.15; box-shadow: var(--shadow-button); transition: transform var(--motion-fast) var(--motion-easing); }
 .start-circle:active { transform: scale(.97); }
+/* The shared focus ring sets a 6 px radius; the start circle keeps its round shape. */
+.app .start-circle:focus-visible { border-radius: 50%; }
 .start-wrap-ring { padding: var(--space-lg) 0; }
+/* «Fondo»: the Woodbridge interchange (OpenStreetMap) fills the start circle behind its label. */
+.start-circle-map { position: relative; overflow: hidden; }
+.start-map { position: absolute; inset: 0; opacity: .3; pointer-events: none; }
+.start-map svg { display: block; width: 100%; height: 100%; }
+.start-circle-map .start-label { position: relative; }
 .hour-ring { position: absolute; width: calc(max(var(--control-start-diameter), 6.4em) + 44px); aspect-ratio: 1; pointer-events: none; }
 .start-ring { font-family: var(--font-display); font-weight: 600; }
 .footer-bar { flex: none; padding: var(--space-sm) var(--space-md); background: var(--color-bg); border-top: var(--stroke-hairline) solid var(--color-separator); }
