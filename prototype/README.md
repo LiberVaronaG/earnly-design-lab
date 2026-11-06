@@ -26,7 +26,7 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 | Escenario | Pago parcial (24 oct), pagos completos, cifras demasiado grandes, sin datos (aproximación), turno sin cerrar y tres pruebas de diseño: importe largo, cobrado $0 y millas personales largas |
 | Avisos | Avisos de Inicio: los de hoy, A · Un solo aviso, B · Cada uno en su sitio (elegida) o C · Franja arriba (solo V0); ver [HOME-AVISOS.md](HOME-AVISOS.md) |
 | Recientes | Recientes de Inicio: la antigua del laboratorio (por defecto; no es la app), la actual de la app, A · Mapa con datos, B · Los tres últimos, C · El último, compacto o D · El último en grande (elegida) (solo V0); ver [HOME-RECIENTES.md](HOME-RECIENTES.md) |
-| Turno | Turno en curso: la antigua del laboratorio (por defecto; no es la app), la actual de la app, A · Con estado, B · Como tu viaje personal o C · Mapa grande (solo V0); ver [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md) |
+| Turno | Turno en curso: la antigua del laboratorio (por defecto; no es la app), la actual de la app, A · Con estado, B · Como tu viaje personal (elegida, sin «Trackeando») o C · Mapa grande (solo V0); ver [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md) |
 | Pantalla | Salta a uno de los estados de ejemplo, incluidos los cuatro de viaje personal en marcha (con Personal A) y los de avisos (sin avisos, ubicación apagada, ahorro de batería, dos avisos y Personal sin Movimiento) y el último turno sin ruta, y los del turno en curso (en marcha, buscando ubicación, ahorro de batería, turno largo y la pregunta de terminar). Después se puede navegar normalmente por la app |
 | Ancho | 320, 390 o 430 px |
 | Texto | 100 %, 135 % o 200 %. Aproxima Dynamic Type/AX; no equivale a iOS |

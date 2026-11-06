@@ -599,6 +599,9 @@
     return {
       sh, miles, chip, who,
       status: `<div class="ts-status">${chip}${who}</div>`,
+      // B, as Liber chose it: no «Trackeando» chip, only the platform and the start time, laid out like Recientes D.
+      // The chip stays only while there is no GPS point yet, so 0.0 mi never stands unexplained.
+      statusB: `${waiting ? `<div class="ts-status">${chip}</div>` : ''}<div class="rd-top ts-top"><span class="rd-who">${platformBadge(platform)}<span class="rd-name">${esc(pname(platform))}</span></span> <span class="rd-date ts-since">${esc(ctx.t('shiftSince', { t: ctx.fmt.time(ctx.lang, sh.start) }))}</span></div>`,
       map: (cls) => E.map(ctx, sh.route ?? 0, { live: true, waiting, cls, label: `${ctx.t('routeMap')}, ${ctx.t(waiting ? 'routeWaiting' : 'routeInProgress')}` }),
       // The app's banner in its during-shift wording: not tappable, iOS has no link to Battery settings.
       low: lowCard(ctx, 'nLowShiftBody'),
@@ -628,7 +631,7 @@
     // B · The language of «El viaje primero»: the state, this shift's miles large, time and deduction, then the map.
   // End Shift keeps SPEC §4.4 (destructive fill, static glow) in every proposal.
     if (ctx.turno === 'b') {
-      return { header, body: `<div class="ts ts-b"><div class="pv-box ts-board">${P.status}
+      return { header, body: `<div class="ts ts-b"><div class="pv-box ts-board">${P.statusB}
           <span class="ts-board-fig"><span class="ts-big">${esc(P.miles)}<small> mi</small></span> <span class="ts-cap">${esc(ctx.t('thisShift'))}</span></span>
           <div class="rd-figs ts-figs">${P.figDur}${P.figDed}</div></div>${P.lowShort}${P.map('ts-map-fill')}</div>`,
         footer: `<div class="ts-foot">${P.end('ts-end-glow')}</div>` };

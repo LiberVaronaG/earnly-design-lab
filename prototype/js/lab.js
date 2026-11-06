@@ -60,7 +60,7 @@
     lab: ['Antigua del laboratorio', 'plataforma dentro de la pantalla y botón para volver; la app no es así'],
     actual: ['Turno activo actual', 'mapa, millas y duración, como en la app'],
     a: ['A · Con estado', 'la misma, con plataforma, inicio y si graba'],
-    b: ['B · Como tu viaje personal', 'estado y cifras arriba, el mapa debajo'],
+    b: ['B · Como tu viaje personal', 'plataforma y cifras arriba, el mapa debajo'],
     c: ['C · Mapa grande', 'el mapa arriba, las cifras en un panel abajo']
   };
   // «Tarjeta verde» and «Personal» views: which variants sit side by side.

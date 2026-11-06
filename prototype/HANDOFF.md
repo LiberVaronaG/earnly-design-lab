@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio y Recientes D · El último en grande (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Turno en curso (tres propuestas, sin elegir): `#view=turno&family=v0&lang=es&scenario=partial&screen=active`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio, Recientes D · El último en grande y, durante el turno, B · Como tu viaje personal sin la ficha «Trackeando» (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&turno=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`; con un turno en curso, `screen=active`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Turno en curso (elegida B): `#view=turno&family=v0&lang=es&scenario=partial&screen=active`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -189,7 +189,7 @@ Detalle completo en [HOME-RECIENTES.md](HOME-RECIENTES.md).
   - cambiar SPEC §4.3, PARITY.md, `docs/parity/home-screen.md` y Android.
 - **Siguiente paso:** que Liber elija el próximo detalle de Inicio. En el orden propuesto toca el turno activo: el círculo que cambia por «Turno activo», que falta en el laboratorio. Nada pasa a SwiftUI.
 
-### Turno en curso (6 nov): **tres propuestas, sin elegir**
+### Turno en curso (6 nov): **elegida B · Como tu viaje personal (`turno=b`), sin «Trackeando»**
 
 Detalle completo en [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md).
 
@@ -213,7 +213,13 @@ Detalle completo en [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md).
   - 720 renders sin fallos y control negativo de 11 de 11;
   - Recientes y avisos siguen sin fallos, y sus capturas no cambiaron.
 - **No se propone «Sin señal GPS»:** con el filtro de 10 m, parado no llegan puntos, y daría falsas alarmas. Haría falta un cambio en el motor.
-- **Siguiente paso:** que Liber elija A, B, C o ninguna. Nada pasa a SwiftUI.
+- **Decisión de Liber (6 nov): B, sin la ficha «Trackeando turno» con el punto verde.**
+  - Arriba solo quedan la plataforma y la hora de inicio, como en Recientes D.
+  - «Buscando tu ubicación» se queda antes del primer punto GPS; si Liber lo quiere fuera, se quita.
+  - A y C se quedan como referencia; el enlace del Inicio elegido lleva `turno=b`.
+  - Auditoría repetida: 720 renders sin fallos; control negativo de 13 de 13.
+- **Pendiente:** Liber notó que sobra espacio. Pensaba que la pantalla casi no se ve, pero se ve todo el turno; la que casi no se ve es el círculo de Inicio.
+- **Siguiente paso:** ajustar ese espacio si Liber quiere, o pasar al siguiente detalle del orden, Navidad. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

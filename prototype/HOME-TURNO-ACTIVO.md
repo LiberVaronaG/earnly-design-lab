@@ -1,6 +1,6 @@
-# Turno en curso: la app y tres propuestas
+# Turno en curso: elegida B
 
-Rama `design/home-sin-titulo-2026-10-27`, 6 nov 2026. Es el paso 3 del orden propuesto para Inicio, después de Recientes. Inicio no cambia: todo lo elegido sigue igual, Recientes D incluido.
+Rama `design/home-sin-titulo-2026-10-27`, 6 nov 2026. Es el paso 3 del orden propuesto para Inicio, después de Recientes. **Elegida: B · Como tu viaje personal** (`turno=b`), sin la ficha «Trackeando turno». Inicio no cambia: todo lo elegido sigue igual, Recientes D incluido.
 
 ![Turno en curso de la app, A, B y C, claro, ES, 390 px](captures/home-turno-activo/01-comparar-claro-es.png)
 
@@ -44,6 +44,7 @@ Lo que tienen en común:
   - «Trackeando turno», o «Buscando tu ubicación» mientras no llega el primer punto;
   - la plataforma y la hora de inicio.
   - La ficha es la misma de «El viaje primero».
+  - B, tal como la eligió Liber, no lleva la ficha mientras graba (ver B).
 - **El aviso de batería es corto:** el título y «Tus millas pueden quedarse cortas. Desactívalo en Ajustes de iOS → Batería.». Es la frase que la app ya lee en VoiceOver.
 - **El mapa encoge,** hasta 140 px, antes de que se tape una cifra.
 - **No cambia lo que ya funciona:**
@@ -75,7 +76,8 @@ La misma pantalla, con la línea de estado encima del mapa.
 
 El mismo lenguaje de «El viaje primero», que Liber eligió para el viaje personal.
 - **Una caja con:**
-  - la línea de estado;
+  - arriba, la plataforma y la hora de inicio, como en la tarjeta de Recientes D: «Amazon Flex» a la izquierda y «desde 5:10 a. m.» a la derecha;
+  - sin la ficha «Trackeando turno»: Liber la quitó al elegir B. Solo aparece «Buscando tu ubicación» mientras no llega el primer punto, para que «0.0 mi» no quede sin explicar;
   - las millas de este turno en grande;
   - debajo, la duración y la deducción estimada hasta ahora.
 - **Luego el mapa,** que ocupa lo que sobra.
@@ -116,7 +118,7 @@ En los casos de 390 × 844 px y 430 × 932 px, el texto es normal. La altura del
 | Millas fuera de la pantalla (de 180 estados) | 22 | 52 | **0** | 38 |
 | Cabe sin desplazar, 390 px con el aviso | no, faltan 64 | sí | sí | sí |
 
-## Recomendación: B
+## Recomendación: B (elegida el 6 nov)
 
 - **Es la única en la que las millas, lo que importa durante el turno, se ven siempre sin desplazar.** También «Terminar turno» se ve siempre.
 - **Repite «El viaje primero»,** que ya elegiste para el viaje personal: la misma ficha de estado, las cifras primero y luego el mapa.
@@ -127,6 +129,14 @@ En los casos de 390 × 844 px y 430 × 932 px, el texto es normal. La altura del
 - **Su coste es cambiar el SPEC §4.4:** el mapa deja de estar arriba.
 - **C es la alternativa** si pesa más ver el mapa grande que tener las millas siempre a la vista.
 - **A** es la opción si se quiere tocar lo mínimo y no cambiar el SPEC.
+
+## Decisión
+
+**Liber eligió B el 6 nov 2026, sin la ficha «Trackeando turno» con el punto verde.** Arriba quedan solo la plataforma y la hora de inicio.
+- **Se mantiene «Buscando tu ubicación»** antes del primer punto GPS, porque es lo único que explica «0.0 mi» al empezar. Si Liber también lo quiere fuera, se quita.
+- **Liber notó que la pantalla tiene mucho espacio.** Pensaba que casi no se ve, pero la que casi nunca se ve es el círculo «Turno activo» de Inicio: esta pantalla está delante todo el turno. Ajustar ese espacio queda pendiente.
+- A y C se quedan como referencia, con la ficha, y la app de hoy como «Hoy».
+- El enlace del Inicio elegido ahora lleva `turno=b`.
 
 ## Lo que no se propone, y por qué
 
@@ -156,8 +166,9 @@ En los casos de 390 × 844 px y 430 × 932 px, el texto es normal. La altura del
   - con el aviso largo, A no cabía a 390 px; ahora usa el aviso corto;
   - en los mapas altos, el punto del conductor quedaba fuera del mapa; ahora el mapa muestra el lado donde acaba la ruta, como la app, que sigue al conductor;
   - «18.6mi» salía sin espacio en B y C.
+- **Al registrar B sin la ficha,** la auditoría se repitió: 720 de 720 sin fallos. Comprueba que en B la ficha solo sale mientras busca ubicación y que la hora de inicio está.
 - **Fallo de la propia auditoría:** comprobaba el contraste del icono de la plataforma, que no tiene texto, en vez del nombre. Se corrigió y se repitió la auditoría completa.
-- **Control negativo: 11 de 11 detectados.** Se rompieron a propósito:
+- **Control negativo: 13 de 13 detectados.** Se rompieron a propósito:
   - el contraste;
   - una cifra recortada;
   - «Terminar turno» fuera de la pantalla, y también demasiado pequeño;
@@ -167,7 +178,8 @@ En los casos de 390 × 844 px y 430 × 932 px, el texto es normal. La altura del
   - el aviso quitado;
   - una cifra de menos;
   - una cifra fuera de su caja;
-  - un «Terminar turno» que no pregunta.
+  - un «Terminar turno» que no pregunta;
+  - en B, la ficha mientras graba y la hora de inicio quitada.
 - **Lo de antes sigue igual:**
   - las auditorías de Recientes (1440 de 1440) y de avisos (864 de 864) siguen sin fallos;
   - sus capturas no cambiaron ni un byte;
@@ -210,4 +222,4 @@ En los casos de 390 × 844 px y 430 × 932 px, el texto es normal. La altura del
 
 ## Siguiente paso
 
-Liber elige A, B, C o ninguna. Nada pasa a SwiftUI.
+Que Liber diga si ajustamos el espacio de B o elige el próximo detalle de Inicio; en el orden propuesto toca Navidad. Nada pasa a SwiftUI.
