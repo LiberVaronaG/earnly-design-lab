@@ -218,13 +218,14 @@ Detalle completo en [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md).
   - «Buscando tu ubicación» se queda antes del primer punto GPS; si Liber lo quiere fuera, se quita.
   - A y C se quedan como referencia; el enlace del Inicio elegido lleva `turno=b`.
   - Auditoría repetida: 720 renders sin fallos; control negativo de 13 de 13.
-- **Pendiente:** Liber notó que sobra espacio. Pensaba que la pantalla casi no se ve, pero se ve todo el turno; la que casi no se ve es el círculo de Inicio.
+- **Espacio:** Liber notó que sobraba espacio. Pensaba que la pantalla casi no se ve, pero se ve todo el turno; la que casi no se ve es el círculo de Inicio.
 - **Espacio de B, probado** (vista «Turno activo · espacio de B»):
   - **B · Mapa con tope** (`turno=b-tope`): el mapa no pasa de 240 px y deja 153 px vacíos a 390 px.
   - **B · Más junto** (`turno=b-junto`): 20 px menos de caja con texto normal y 80 menos con texto al 200 %, donde cabe sin desplazar. Es la recomendada.
   - Auditoría: 540 renders sin fallos.
   - Parte del espacio viene del mapa ficticio, que se amplía como una foto; en la app, un mapa más alto enseña más calles.
-- **Siguiente paso:** que Liber elija el espacio de B, y luego Navidad. Nada pasa a SwiftUI.
+- **Decisión de Liber (6 nov): B tal cual, sin ajustar el espacio**, con la plataforma y la hora arriba y sin «Trackeando». Las dos pruebas se quedan como referencia. Con texto grande, conviene probarlo en el iPhone si pasa a la app.
+- **Siguiente paso:** que Liber elija el próximo detalle de Inicio; en el orden propuesto toca Navidad. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

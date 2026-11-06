@@ -165,6 +165,8 @@ Medidas en px, con texto normal salvo donde se indica:
 - **Más junto** apenas cambia con texto normal, pero con texto grande o a 320 px cabe sin desplazar donde B no cabe.
 - **Recomendación: Más junto.** Quita aire sin dejar huecos y aguanta mejor el texto grande. Las tres pasan la auditoría: 540 renders sin fallos y las millas siempre a la vista.
 
+**Decisión de Liber (6 nov): B tal cual, sin ajustar el espacio**, con el cambio ya hecho: la plataforma y la hora de inicio arriba, sin «Trackeando». Mapa con tope y Más junto se quedan como referencia. Si pasa a la app, conviene probar el texto grande en el iPhone: ahí era donde Más junto ayudaba.
+
 ## Lo que no se propone, y por qué
 
 - **«Sin señal GPS» durante el turno.** La app pide la ubicación con un filtro de 10 m (`distanceFilter = 10`), así que parado en un semáforo o en la estación no llegan puntos. Deducir «sin señal» del último punto daría falsas alarmas en cada parada. Haría falta un estado nuevo en el motor de seguimiento, y eso no se toca aquí.
@@ -251,4 +253,4 @@ Medidas en px, con texto normal salvo donde se indica:
 
 ## Siguiente paso
 
-Que Liber elija el espacio de B: tal cual, Mapa con tope o Más junto. Después toca Navidad, según el orden propuesto. Nada pasa a SwiftUI.
+Que Liber elija el próximo detalle de Inicio; en el orden propuesto toca Navidad. Nada pasa a SwiftUI.
