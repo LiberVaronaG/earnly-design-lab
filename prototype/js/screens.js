@@ -630,8 +630,9 @@
     }
     // B · The language of «El viaje primero»: the state, this shift's miles large, time and deduction, then the map.
   // End Shift keeps SPEC §4.4 (destructive fill, static glow) in every proposal.
-    if (ctx.turno === 'b') {
-      return { header, body: `<div class="ts ts-b"><div class="pv-box ts-board">${P.statusB}
+    if (ctx.turno.startsWith('b')) {
+      const space = { 'b-tope': ' ts-b-tope', 'b-junto': ' ts-b-junto' }[ctx.turno] || '';
+      return { header, body: `<div class="ts ts-b${space}"><div class="pv-box ts-board">${P.statusB}
           <span class="ts-board-fig"><span class="ts-big">${esc(P.miles)}<small> mi</small></span> <span class="ts-cap">${esc(ctx.t('thisShift'))}</span></span>
           <div class="rd-figs ts-figs">${P.figDur}${P.figDed}</div></div>${P.lowShort}${P.map('ts-map-fill')}</div>`,
         footer: `<div class="ts-foot">${P.end('ts-end-glow')}</div>` };
@@ -642,7 +643,7 @@
   }
 
   function active(ctx) {
-    if (ctx.famId === 'v0' && ['actual', 'a', 'b', 'c'].includes(ctx.turno)) return activeVariant(ctx);
+    if (ctx.famId === 'v0' && ['actual', 'a', 'b', 'c', 'b-tope', 'b-junto'].includes(ctx.turno)) return activeVariant(ctx);
     const a = ctx.ui.active || {};
     const platforms = ['amazonFlex', 'uber', 'doorDash', 'spark'];
     return {

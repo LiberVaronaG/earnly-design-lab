@@ -49,7 +49,10 @@ let sets: [String: [Shot]] = [
     Shot(file: "09-actual-es.png", hash: "\(chosenRecent)&turno=actual&screen=active&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
     Shot(file: "10-a-es.png", hash: "\(chosenRecent)&turno=a&screen=active&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
     Shot(file: "11-b-es.png", hash: "\(chosenRecent)&turno=b&screen=active&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
-    Shot(file: "12-c-es.png", hash: "\(chosenRecent)&turno=c&screen=active&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true)
+    Shot(file: "12-c-es.png", hash: "\(chosenRecent)&turno=c&screen=active&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "13-espacio-b-390-es.png", hash: "view=turnob&family=v0&deco=none&motion=normal&screen=active&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false),
+    Shot(file: "14-espacio-b-430-es.png", hash: "view=turnob&family=v0&deco=none&motion=normal&screen=active&theme=light&lang=es&scenario=partial&width=430&text=1", dark: false, solo: false),
+    Shot(file: "15-espacio-b-ahorro-es.png", hash: "view=turnob&family=v0&deco=none&motion=normal&screen=activeLowPower&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false)
   ],
   "recientes": [
     Shot(file: "01-comparar-claro-es.png", hash: "\(recientesView)&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),

@@ -61,7 +61,10 @@
     actual: ['Turno activo actual', 'mapa, millas y duración, como en la app'],
     a: ['A · Con estado', 'la misma, con plataforma, inicio y si graba'],
     b: ['B · Como tu viaje personal', 'plataforma y cifras arriba, el mapa debajo'],
-    c: ['C · Mapa grande', 'el mapa arriba, las cifras en un panel abajo']
+    c: ['C · Mapa grande', 'el mapa arriba, las cifras en un panel abajo'],
+    // B's spacing, after Liber chose B and found it roomy: the map capped at the app's 240 px, or less air.
+    'b-tope': ['B · Mapa con tope', 'el mapa no pasa de 240 px, como la app'],
+    'b-junto': ['B · Más junto', 'menos margen; el mapa gana lo que se quita']
   };
   // «Tarjeta verde» and «Personal» views: which variants sit side by side.
   const CARD_SETS = { 'actual,c': ['actual', 'c'] };
@@ -157,16 +160,16 @@
     $('c-motion').value = L.motion;
     document.querySelectorAll('[data-when="compare"]').forEach((el) => { el.hidden = L.view !== 'compare'; });
     $('c-family').parentElement.hidden = L.view === 'gallery';
-    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-opts').parentElement.hidden = ['opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-personal').parentElement.hidden = ['personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-vivo').parentElement.hidden = ['enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-circ').parentElement.hidden = ['iniciar', 'contraste', 'avisos', 'recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-avisos').parentElement.hidden = ['avisos', 'recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-recientes').parentElement.hidden = ['recientes', 'turno'].includes(L.view) && !L.solo;
-    $('c-turno').parentElement.hidden = L.view === 'turno' && !L.solo;
+    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-opts').parentElement.hidden = ['opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-personal').parentElement.hidden = ['personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-vivo').parentElement.hidden = ['enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-circ').parentElement.hidden = ['iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-avisos').parentElement.hidden = ['avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-recientes').parentElement.hidden = ['recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-turno').parentElement.hidden = ['turno', 'turnob'].includes(L.view) && !L.solo;
     $('c-cards').parentElement.hidden = L.view !== 'tarjeta';
     $('c-personals').parentElement.hidden = L.view !== 'personal' || L.solo;
   }
@@ -192,7 +195,7 @@
     // «Recientes» keeps the whole chosen Home, notices B included; only the recent-shifts block differs.
     const recs = L.view === 'recientes' && !L.solo ? ['actual', 'a', 'b', 'c', 'd'] : null;
     // «Turno activo» keeps the whole chosen Home, Recientes D included; only the active-shift screen differs.
-    const turs = L.view === 'turno' && !L.solo ? ['actual', 'a', 'b', 'c'] : null;
+    const turs = L.solo ? null : L.view === 'turno' ? ['actual', 'a', 'b', 'c'] : L.view === 'turnob' ? ['b', 'b-tope', 'b-junto'] : null;
     const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards || pers || vivos || circs || avs || recs || turs ? (cards || pers || vivos || circs || avs || recs || turs).map(() => L.family) : [L.family];
     document.body.classList.toggle('is-solo', L.solo);
     const stage = $('stage');
@@ -239,6 +242,7 @@
       ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
       ${S.lab.view === 'iniciar' ? '<span>Iniciar turno: todo lo elegido en Inicio en los dos marcos, mismos datos y estado; solo cambia el círculo. El fondo es el trébol real de Woodbridge (Nueva Jersey) trazado con datos de OpenStreetMap.</span>' : ''}
       ${S.lab.view === 'contraste' ? '<span>Contraste en oscuro: todo lo elegido en Inicio y el Fondo · Woodbridge en los tres marcos; solo cambia cómo se cruzan las líneas con el texto. Pon Tema → Oscuro: en claro los tres son iguales.</span>' : ''}
+      ${S.lab.view === 'turnob' ? '<span>Espacio de B: la B elegida en los tres marcos, mismos datos y estado; solo cambia el espacio. El mapa es ficticio.</span>' : ''}
       ${S.lab.view === 'turno' ? '<span>Turno activo: todo lo elegido en Inicio en los cuatro marcos, Recientes D incluido; solo cambia la pantalla del turno en curso. El mapa es ficticio: la app usa Apple Maps. Las cifras no avanzan.</span>' : ''}
       ${S.lab.view === 'recientes' ? '<span>Recientes: todo lo elegido en Inicio en los cinco marcos, avisos B incluidos, mismos datos y estado; solo cambia Recientes. El mapa es ficticio: la app usa Apple Maps.</span>' : ''}
       ${S.lab.view === 'avisos' ? '<span>Avisos: todo lo elegido en Inicio en los cuatro marcos, mismos datos y estado; solo cambia cómo se presentan los avisos. Elige una pantalla «Inicio · aviso…» o «Inicio · dos avisos».</span>' : ''}

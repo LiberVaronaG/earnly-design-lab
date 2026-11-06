@@ -138,6 +138,33 @@ En los casos de 390 × 844 px y 430 × 932 px, el texto es normal. La altura del
 - A y C se quedan como referencia, con la ficha, y la app de hoy como «Hoy».
 - El enlace del Inicio elegido ahora lleva `turno=b`.
 
+## El espacio de B
+
+Después de elegir B, Liber notó que la pantalla tiene mucho espacio. No eligió cómo ajustarlo, así que se probaron dos ajustes junto a la B elegida (vista «Turno activo · espacio de B»):
+- **B · Mapa con tope** (`turno=b-tope`): el mapa no pasa de 240 px, como en la app.
+- **B · Más junto** (`turno=b-junto`): menos margen dentro de la caja y entre la caja, el mapa y el botón. El mapa gana lo que se quita.
+
+**No se agrandaron las cifras:** las millas ya van en título grande, el tamaño mayor de los tres que permite Earnly.
+
+**Ojo con el mapa del laboratorio:** al crecer, se amplía como una foto, y por eso las calles y los rótulos se ven enormes. En la app, un mapa más alto enseña más calles al mismo tamaño. Parte de la sensación de espacio viene del laboratorio.
+
+Medidas en px, con texto normal salvo donde se indica:
+
+| | B | Mapa con tope | Más junto |
+|---|---|---|---|
+| Caja, 390 px | 172 | 172 | 152 |
+| Mapa, 390 px | 348 | 240 | 376 |
+| Hueco sobre el botón, 390 px | 45 | **153** | 45 |
+| Hueco sobre el botón, 430 px | 45 | **241** | 45 |
+| Caja, 390 px con texto al 200 % | 417 | 417 | **337** |
+| Desplazamiento necesario, 390 px con texto al 200 % | 54 | 54 | **0** |
+| Desplazamiento necesario, 320 px | 15 | 15 | **0** |
+| Desplazamiento necesario, 390 px con texto al 140 % y el aviso de batería | 96 | 96 | **31** |
+
+- **Mapa con tope** no quita espacio: lo vuelve hueco vacío sobre el botón.
+- **Más junto** apenas cambia con texto normal, pero con texto grande o a 320 px cabe sin desplazar donde B no cabe.
+- **Recomendación: Más junto.** Quita aire sin dejar huecos y aguanta mejor el texto grande. Las tres pasan la auditoría: 540 renders sin fallos y las millas siempre a la vista.
+
 ## Lo que no se propone, y por qué
 
 - **«Sin señal GPS» durante el turno.** La app pide la ubicación con un filtro de 10 m (`distanceFilter = 10`), así que parado en un semáforo o en la estación no llegan puntos. Deducir «sin señal» del último punto daría falsas alarmas en cada parada. Haría falta un estado nuevo en el motor de seguimiento, y eso no se toca aquí.
@@ -206,6 +233,8 @@ En los casos de 390 × 844 px y 430 × 932 px, el texto es normal. La altura del
 | `07-comparar-320-texto-200-ahorro-es.png` | Lo mismo con el aviso de batería |
 | `08-comparar-terminar-es.png` | La pregunta «¿Terminar turno?» (aproximada) |
 | `09`–`12-…-es.png` | Hoy, A, B y C a 390 × 844 |
+| `13-espacio-b-390-es.png`, `14-espacio-b-430-es.png` | B, Mapa con tope y Más junto, a 390 y 430 px |
+| `15-espacio-b-ahorro-es.png` | Lo mismo con el aviso de batería |
 
 ## Si pasa a la app
 
@@ -222,4 +251,4 @@ En los casos de 390 × 844 px y 430 × 932 px, el texto es normal. La altura del
 
 ## Siguiente paso
 
-Que Liber diga si ajustamos el espacio de B o elige el próximo detalle de Inicio; en el orden propuesto toca Navidad. Nada pasa a SwiftUI.
+Que Liber elija el espacio de B: tal cual, Mapa con tope o Más junto. Después toca Navidad, según el orden propuesto. Nada pasa a SwiftUI.

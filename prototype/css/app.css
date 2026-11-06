@@ -522,6 +522,11 @@
 .ts-figs { padding-top: var(--space-sm); border-top: var(--stroke-hairline) solid var(--color-separator); }
 .ts-panel { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm) var(--space-md) var(--space-md); background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); }
 .ts-c .ts-figs { border-top: 0; padding-top: 0; }
+/* B's spacing tests. Tope: the map stops at the app's 240 px and the rest stays free. Junto: less air, the map takes it. */
+.ts-b-tope .map.ts-map-fill { flex: 10 1 0; max-height: 240px; }
+.ts-b-junto { gap: var(--space-xs); }
+.ts-b-junto .ts-board { gap: var(--space-xs); padding: var(--space-xs) var(--space-sm) var(--space-sm); }
+.ts-b-junto .ts-figs { padding-top: var(--space-xs); }
 .ts-figs .rd-val { align-items: baseline; gap: 0.2em; }
 
 /* Large text: the icon moves above its title instead of eating a column of the line. */
