@@ -1,6 +1,6 @@
-# Cierre del turno: la app y tres propuestas
+# Cierre del turno: elegida A
 
-Rama `design/home-sin-titulo-2026-10-27`, 6 nov 2026. Es parte de lo que Liber llama «base 1»: lo que se va eligiendo encima de la app actual, la «base 0». En el laboratorio también existe una familia llamada «V1», que es otra cosa. Inicio y el turno en curso no cambian: todo lo elegido sigue igual.
+Rama `design/home-sin-titulo-2026-10-27`, 6 nov 2026. Es parte de lo que Liber llama «base 1»: lo que se va eligiendo encima de la app actual, la «base 0». En el laboratorio también existe una familia llamada «V1», que es otra cosa. Inicio y el turno en curso no cambian: todo lo elegido sigue igual. **Elegida: A · Marca las apps** (`cierre=a`), que falta afinar con las combinaciones de [CIERRE-COMBINACIONES.md](CIERRE-COMBINACIONES.md).
 
 ![Cierre de la app, A, B y C, con Amazon Flex $90 y Uber $20, claro, ES, 390 px](captures/home-cierre/02-comparar-con-uber-es.png)
 
@@ -93,6 +93,17 @@ El cierre ya se desplaza hoy, y «Listo» va fijo abajo, así que la altura pesa
 - **B es la alternativa** si casi siempre usas una sola app y quieres el cierre corto. Pero no pregunta.
 - **C** pregunta igual de claro que A, pero con un paso más.
 
+## Decisión
+
+**Liber eligió A · Marca las apps el 6 nov 2026.** Pidió además que la lista no ofrezca apps que no se combinan con la del turno, por ejemplo Instacart en un turno de Amazon Flex.
+- La investigación y las reglas propuestas están en [CIERRE-COMBINACIONES.md](CIERRE-COMBINACIONES.md). Por ejemplo:
+  - Flex no ofrece ninguna;
+  - Uber ofrece Lyft, DoorDash y Grubhub;
+  - lo que anota cada conductor manda sobre la tabla;
+  - un enlace discreto «Otra app» deja anotar cualquier otra activada.
+- **Aún no está construido.** Falta que Liber dé por buenas esas reglas.
+- B y C se quedan como referencia; el enlace del cierre elegido lleva `cierre=a`.
+
 ## Comprobado
 
 - **Auditoría en WebKit: 1296 renders, 0 fallos.**
@@ -168,4 +179,4 @@ El cierre ya se desplaza hoy, y «Listo» va fijo abajo, así que la altura pesa
 
 ## Siguiente paso
 
-Liber elige A, B, C o ninguna. Nada pasa a SwiftUI.
+Que Liber revise las reglas de combinación; si las acepta, se construye la lista filtrada en A. Nada pasa a SwiftUI.
