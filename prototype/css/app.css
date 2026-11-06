@@ -527,6 +527,25 @@
 .ts-b-junto { gap: var(--space-xs); }
 .ts-b-junto .ts-board { gap: var(--space-xs); padding: var(--space-xs) var(--space-sm) var(--space-sm); }
 .ts-b-junto .ts-figs { padding-top: var(--space-xs); }
+/* ---------- Close · proposals: the pay of every app used on the shift ---------- */
+.cl-pay { display: flex; flex-direction: column; gap: var(--space-sm); }
+.cl-q { color: var(--color-text-muted); }
+.cl-list { display: flex; flex-direction: column; gap: var(--space-xs); }
+.cl-app { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xxs) var(--space-xs); width: 100%; min-height: var(--control-min-target); text-align: start; }
+.cl-box { flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--color-text-muted); color: var(--color-on-action); }
+.cl-app.is-on .cl-box { background: var(--color-action); border-color: var(--color-action); }
+.cl-box .ic { width: 16px; height: 16px; }
+.cl-name { font-weight: var(--weight-semibold); }
+.cl-tag { margin-inline-start: auto; color: var(--color-text-muted); font-size: var(--size-subhead); }
+.cl-fields { display: flex; flex-direction: column; gap: var(--space-sm); padding-inline-start: calc(22px + var(--space-xs)); }
+.cl-b .cl-fields, .cl-c .cl-fields { padding-inline-start: 0; }
+.cl-added { display: flex; flex-direction: column; gap: var(--space-xxs); padding-top: var(--space-sm); border-top: var(--stroke-hairline) solid var(--color-separator); }
+.cl-remove { align-self: flex-start; }
+.cl-add { align-self: flex-start; width: auto; }
+.cl-chips, .cl-yesno { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.cl-chip, .cl-answer { flex: 1 1 8em; min-height: var(--control-min-target); }
+.cl-c .cl-fields { padding-top: var(--space-sm); border-top: var(--stroke-hairline) solid var(--color-separator); }
+.app[data-ax="true"] .cl-fields { padding-inline-start: 0; }
 .ts-figs .rd-val { align-items: baseline; gap: 0.2em; }
 
 /* Large text: the icon moves above its title instead of eating a column of the line. */

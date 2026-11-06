@@ -66,6 +66,14 @@
     'b-tope': ['B · Mapa con tope', 'el mapa no pasa de 240 px, como la app'],
     'b-junto': ['B · Más junto', 'menos margen; el mapa gana lo que se quita']
   };
+  // Close of a work shift. `lab` had «Add pay from another platform» on this screen, which the app does not.
+  const CIERRE = {
+    lab: ['Antigua del laboratorio', 'con «otra plataforma» en el cierre; la app no es así'],
+    actual: ['Cierre actual', 'solo el cobro de la app del turno, como en la app'],
+    a: ['A · Marca las apps', 'todas tus apps en una lista; marcas las que usaste'],
+    b: ['B · Añadir otra', 'la del turno primero; «+ Otra app» si usaste más'],
+    c: ['C · Pregunta primero', '«¿Usaste otra app?» Sí o No, cada vez']
+  };
   // «Tarjeta verde» and «Personal» views: which variants sit side by side.
   const CARD_SETS = { 'actual,c': ['actual', 'c'] };
   const PERSONAL_SETS = { 'actual,a,b': ['actual', 'a', 'b'], 'actual,a': ['actual', 'a'], 'a,b': ['a', 'b'] };
@@ -77,7 +85,9 @@
     ['homeLive', 'Inicio · viaje personal: trackeando'], ['homeLiveAcquiring', 'Inicio · viaje personal: buscando ubicación'],
     ['homeLiveNoSignal', 'Inicio · viaje personal: sin señal GPS'], ['homeLivePaused', 'Inicio · viaje personal: en pausa'],
     ['active', 'Turno en curso'], ['activeAcquiring', 'Turno en curso · buscando ubicación'], ['activeLowPower', 'Turno en curso · ahorro de batería'],
-    ['activeLong', 'Turno en curso · turno largo'], ['activeEnd', 'Turno en curso · ¿terminar turno?'], ['close', 'Cierre · vacío'], ['closeResult', 'Cierre · resultado ($90)'],
+    ['activeLong', 'Turno en curso · turno largo'], ['activeEnd', 'Turno en curso · ¿terminar turno?'],
+    ['closeStacked', 'Cierre · con Uber ($90 + $20)'], ['closeOnlyOther', 'Cierre · solo Uber (parcial)'], ['closeTwoApps', 'Cierre · con Uber y DoorDash'],
+    ['closeTipTooBig', 'Cierre · propina mayor que el pago'], ['closePicking', 'Cierre · eligiendo otra app (B)'], ['close', 'Cierre · vacío'], ['closeResult', 'Cierre · resultado ($90)'],
     ['closeInvalid', 'Cierre · cantidad inválida'], ['closeExtras', 'Cierre · otra plataforma'], ['recovery', 'Recuperar turno (hoja)'],
     ['historyWork', 'Historial · Trabajo'], ['historyPersonal', 'Historial · Personal'], ['day', 'Día personal'],
     ['trip', 'Detalle personal'], ['tripGap', 'Detalle con hueco'], ['shift', 'Detalle de turno (aprox.)'],
@@ -113,6 +123,7 @@
     if (AVISOS[h.get('avisos')]) L.avisos = h.get('avisos');
     if (RECIENTES[h.get('recientes')]) L.recientes = h.get('recientes');
     if (TURNO[h.get('turno')]) L.turno = h.get('turno');
+    if (CIERRE[h.get('cierre')]) L.cierre = h.get('cierre');
     if (['light', 'dark'].includes(h.get('theme'))) L.theme = h.get('theme');
     if (['en', 'es'].includes(h.get('lang'))) L.lang = h.get('lang');
     if (E.SCENARIOS[h.get('scenario')]) L.scenario = h.get('scenario');
@@ -127,7 +138,7 @@
 
   function writeHash() {
     const L = S.lab;
-    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, vivo: L.vivo, circulo: L.circ, avisos: L.avisos, recientes: L.recientes, turno: L.turno, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
+    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, vivo: L.vivo, circulo: L.circ, avisos: L.avisos, recientes: L.recientes, turno: L.turno, cierre: L.cierre, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
     if (L.solo) h.set('solo', '1');
     if (L.tall) h.set('tall', '1');
     history.replaceState(null, '', '#' + h.toString());
@@ -150,6 +161,7 @@
     $('c-avisos').value = L.avisos;
     $('c-recientes').value = L.recientes;
     $('c-turno').value = L.turno;
+    $('c-cierre').value = L.cierre;
     $('c-theme').value = L.theme;
     $('c-lang').value = L.lang;
     $('c-scenario').value = L.scenario;
@@ -160,16 +172,17 @@
     $('c-motion').value = L.motion;
     document.querySelectorAll('[data-when="compare"]').forEach((el) => { el.hidden = L.view !== 'compare'; });
     $('c-family').parentElement.hidden = L.view === 'gallery';
-    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-opts').parentElement.hidden = ['opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-personal').parentElement.hidden = ['personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-vivo').parentElement.hidden = ['enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-circ').parentElement.hidden = ['iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-avisos').parentElement.hidden = ['avisos', 'recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-recientes').parentElement.hidden = ['recientes', 'turno', 'turnob'].includes(L.view) && !L.solo;
-    $('c-turno').parentElement.hidden = ['turno', 'turnob'].includes(L.view) && !L.solo;
+    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-opts').parentElement.hidden = ['opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-personal').parentElement.hidden = ['personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-vivo').parentElement.hidden = ['enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-circ').parentElement.hidden = ['iniciar', 'contraste', 'avisos', 'recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-avisos').parentElement.hidden = ['avisos', 'recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-recientes').parentElement.hidden = ['recientes', 'turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-turno').parentElement.hidden = ['turno', 'turnob', 'cierre'].includes(L.view) && !L.solo;
+    $('c-cierre').parentElement.hidden = L.view === 'cierre' && !L.solo;
     $('c-cards').parentElement.hidden = L.view !== 'tarjeta';
     $('c-personals').parentElement.hidden = L.view !== 'personal' || L.solo;
   }
@@ -196,20 +209,23 @@
     const recs = L.view === 'recientes' && !L.solo ? ['actual', 'a', 'b', 'c', 'd'] : null;
     // «Turno activo» keeps the whole chosen Home, Recientes D included; only the active-shift screen differs.
     const turs = L.solo ? null : L.view === 'turno' ? ['actual', 'a', 'b', 'c'] : L.view === 'turnob' ? ['b', 'b-tope', 'b-junto'] : null;
-    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards || pers || vivos || circs || avs || recs || turs ? (cards || pers || vivos || circs || avs || recs || turs).map(() => L.family) : [L.family];
+    // «Cierre» keeps the whole chosen Home and active shift; only the close screen differs.
+    const cies = L.view === 'cierre' && !L.solo ? ['actual', 'a', 'b', 'c'] : null;
+    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards || pers || vivos || circs || avs || recs || turs || cies ? (cards || pers || vivos || circs || avs || recs || turs || cies).map(() => L.family) : [L.family];
     document.body.classList.toggle('is-solo', L.solo);
     const stage = $('stage');
     stage.innerHTML = fams.map((f, i) => {
-      const home = homes ? homes[i] : cards || bds || opts || pers || vivos || circs || avs || recs || turs ? 'sintitulo' : L.home;
-      const card = cards ? cards[i] : bds || opts || pers || vivos || circs || avs || recs || turs ? 'c' : L.card;
-      const bd = bds ? bds[i] : opts || pers || vivos || circs || avs || recs || turs ? 'propuesta' : L.bd;
-      const opt = opts ? opts[i] : pers || vivos || circs || avs || recs || turs ? 'propuesta' : L.opts;
-      const per = pers ? pers[i] : vivos || circs || avs || recs || turs ? 'a' : L.personal;
-      const vivo = vivos ? vivos[i] : circs || avs || recs || turs ? 'tablero' : L.vivo;
-      const circ = circs ? circs[i] : avs || recs || turs ? 'fondo-corte' : L.circ;
-      const aviso = avs ? avs[i] : recs || turs ? 'b' : L.avisos;
-      const rec = recs ? recs[i] : turs ? 'd' : L.recientes;
-      const tur = turs ? turs[i] : L.turno;
+      const home = homes ? homes[i] : cards || bds || opts || pers || vivos || circs || avs || recs || turs || cies ? 'sintitulo' : L.home;
+      const card = cards ? cards[i] : bds || opts || pers || vivos || circs || avs || recs || turs || cies ? 'c' : L.card;
+      const bd = bds ? bds[i] : opts || pers || vivos || circs || avs || recs || turs || cies ? 'propuesta' : L.bd;
+      const opt = opts ? opts[i] : pers || vivos || circs || avs || recs || turs || cies ? 'propuesta' : L.opts;
+      const per = pers ? pers[i] : vivos || circs || avs || recs || turs || cies ? 'a' : L.personal;
+      const vivo = vivos ? vivos[i] : circs || avs || recs || turs || cies ? 'tablero' : L.vivo;
+      const circ = circs ? circs[i] : avs || recs || turs || cies ? 'fondo-corte' : L.circ;
+      const aviso = avs ? avs[i] : recs || turs || cies ? 'b' : L.avisos;
+      const rec = recs ? recs[i] : turs || cies ? 'd' : L.recientes;
+      const tur = turs ? turs[i] : cies ? 'b' : L.turno;
+      const cie = cies ? cies[i] : L.cierre;
       const [name, summary] = homes ? [HOME[home][0], `${FAMS[f].name.es}, ${HOME[home][1]}.`]
         : cards ? [CARD[card][0], `${FAMS[f].name.es}, ${CARD[card][1]}.`]
         : bds ? [BD[bd][0], `${FAMS[f].name.es}, ${BD[bd][1]}.`]
@@ -219,11 +235,12 @@
         : circs ? [CIRC[circ][0], `${FAMS[f].name.es}, ${CIRC[circ][1]}.`]
         : avs ? [AVISOS[aviso][0], `${FAMS[f].name.es}, ${AVISOS[aviso][1]}.`]
         : recs ? [RECIENTES[rec][0], `${FAMS[f].name.es}, ${RECIENTES[rec][1]}.`]
-        : turs ? [TURNO[tur][0], `${FAMS[f].name.es}, ${TURNO[tur][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
+        : turs ? [TURNO[tur][0], `${FAMS[f].name.es}, ${TURNO[tur][1]}.`]
+        : cies ? [CIERRE[cie][0], `${FAMS[f].name.es}, ${CIERRE[cie][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
       return `
       <section class="frame-col" aria-label="${name}" style="--w:${L.width}px">
         ${L.solo ? '' : `<div class="frame-head"><strong>${name}</strong><span>${summary}</span></div>`}
-        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}" data-vivo="${vivo}" data-circ="${circ}" data-avisos="${aviso}" data-recientes="${rec}" data-turno="${tur}">
+        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}" data-vivo="${vivo}" data-circ="${circ}" data-avisos="${aviso}" data-recientes="${rec}" data-turno="${tur}" data-cierre="${cie}">
           <div class="app" data-family="${f}" data-theme="${L.theme}"></div>
         </div>
       </section>`;
@@ -242,6 +259,7 @@
       ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
       ${S.lab.view === 'iniciar' ? '<span>Iniciar turno: todo lo elegido en Inicio en los dos marcos, mismos datos y estado; solo cambia el círculo. El fondo es el trébol real de Woodbridge (Nueva Jersey) trazado con datos de OpenStreetMap.</span>' : ''}
       ${S.lab.view === 'contraste' ? '<span>Contraste en oscuro: todo lo elegido en Inicio y el Fondo · Woodbridge en los tres marcos; solo cambia cómo se cruzan las líneas con el texto. Pon Tema → Oscuro: en claro los tres son iguales.</span>' : ''}
+      ${S.lab.view === 'cierre' ? '<span>Cierre: todo lo elegido en Inicio y en el turno en curso en los cuatro marcos, mismos datos y estado; solo cambia cómo se pide el cobro. Las plataformas activadas de ejemplo son Amazon Flex, Uber y DoorDash.</span>' : ''}
       ${S.lab.view === 'turnob' ? '<span>Espacio de B: la B elegida en los tres marcos, mismos datos y estado; solo cambia el espacio. El mapa es ficticio.</span>' : ''}
       ${S.lab.view === 'turno' ? '<span>Turno activo: todo lo elegido en Inicio en los cuatro marcos, Recientes D incluido; solo cambia la pantalla del turno en curso. El mapa es ficticio: la app usa Apple Maps. Las cifras no avanzan.</span>' : ''}
       ${S.lab.view === 'recientes' ? '<span>Recientes: todo lo elegido en Inicio en los cinco marcos, avisos B incluidos, mismos datos y estado; solo cambia Recientes. El mapa es ficticio: la app usa Apple Maps.</span>' : ''}
@@ -273,6 +291,7 @@
     L.avisos = $('c-avisos').value;
     L.recientes = $('c-recientes').value;
     L.turno = $('c-turno').value;
+    L.cierre = $('c-cierre').value;
     L.theme = $('c-theme').value;
     L.lang = $('c-lang').value;
     L.scenario = $('c-scenario').value;
@@ -285,7 +304,7 @@
       L.familyB = Object.keys(FAMS).find((f) => f !== L.family);
     }
     if (prev.scenario !== L.scenario || prevScreen !== screenId) E.jump(screenId);
-    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.vivo !== L.vivo || prev.circ !== L.circ || prev.avisos !== L.avisos || prev.recientes !== L.recientes || prev.turno !== L.turno || prev.width !== L.width) buildStage();
+    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.vivo !== L.vivo || prev.circ !== L.circ || prev.avisos !== L.avisos || prev.recientes !== L.recientes || prev.turno !== L.turno || prev.cierre !== L.cierre || prev.width !== L.width) buildStage();
     syncControls();
     writeHash();
     E.render();

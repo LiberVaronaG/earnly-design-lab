@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro | avisos | recientes | turno-activo
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro | avisos | recientes | turno-activo | cierre
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -32,11 +32,27 @@ let recientesView = "view=recientes&family=v0&deco=none&motion=normal"
 let chosenNotices = "\(chosenAll)&avisos=b"
 let turnoView = "view=turno&family=v0&deco=none&motion=normal"
 let chosenRecent = "\(chosenNotices)&recientes=d"
+let cierreView = "view=cierre&family=v0&deco=none&motion=normal"
+let chosenShift = "\(chosenRecent)&turno=b"
 
 
 // Same scenario, screen and size on every side of a comparison; only the lab variant differs.
 let common = "family=v0&deco=none&motion=normal"
 let sets: [String: [Shot]] = [
+  "cierre": [
+    Shot(file: "01-comparar-vacio-es.png", hash: "\(cierreView)&screen=close&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "02-comparar-con-uber-es.png", hash: "\(cierreView)&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "03-comparar-con-uber-oscuro-en.png", hash: "\(cierreView)&screen=closeStacked&theme=dark&lang=en&scenario=complete&width=390&text=1", dark: true, solo: false, full: true),
+    Shot(file: "04-comparar-solo-uber-es.png", hash: "\(cierreView)&screen=closeOnlyOther&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "05-comparar-dos-apps-es.png", hash: "\(cierreView)&screen=closeTwoApps&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "06-comparar-propina-es.png", hash: "\(cierreView)&screen=closeTipTooBig&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "07-comparar-320-texto-200-es.png", hash: "\(cierreView)&screen=closeStacked&theme=light&lang=es&scenario=complete&width=320&text=2", dark: false, solo: false, full: true),
+    Shot(file: "08-comparar-sin-gasolina-es.png", hash: "\(cierreView)&screen=closeStacked&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "09-actual-es.png", hash: "\(chosenShift)&cierre=actual&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true),
+    Shot(file: "10-a-es.png", hash: "\(chosenShift)&cierre=a&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true),
+    Shot(file: "11-b-es.png", hash: "\(chosenShift)&cierre=b&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true),
+    Shot(file: "12-c-es.png", hash: "\(chosenShift)&cierre=c&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true)
+  ],
   "turno-activo": [
     Shot(file: "01-comparar-claro-es.png", hash: "\(turnoView)&screen=active&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false),
     Shot(file: "02-comparar-oscuro-en.png", hash: "\(turnoView)&screen=active&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false),

@@ -658,28 +658,78 @@
     };
   }
 
-  function closeShift(ctx) {
+  // ---------- Close · proposals: ask the pay of every app used on the shift ----------
+  // The app (2.0.3) asks only the shift's own pay here; other platforms are added later in History's edit
+  // («Also ran another platform?»). The proposals ask it at close. They store what the app already stores
+  // (`grossEarnings`, `tip`, `extraEarnings`); nothing new in the data.
+  const hasTips = (p) => p !== 'amazonFlex';
+  function closeProposal(ctx) {
     const c = ctx.ui.close;
     const sh = c.shift;
     const f = ctx.ui.f;
-    const main = parseAmount(f.payMain);
-    const extra = c.extrasOpen ? parseAmount(f.payX) : '';
-    const tip = c.extrasOpen ? parseAmount(f.payXTip) : '';
-    const mainErr = Number.isNaN(main) ? ctx.t('invalidAmount') : '';
-    const extraErr = Number.isNaN(extra) ? ctx.t('invalidAmount') : '';
-    const tipErr = Number.isNaN(tip) ? ctx.t('invalidAmount') : (typeof tip === 'number' && typeof extra === 'number' && tip > extra ? ctx.t('tipTooBig') : '');
-    const hasMain = typeof main === 'number';
-    const hasExtra = typeof extra === 'number';
+    const v = ctx.cierre;
+    const others = E.ENABLED_PLATFORMS.filter((p) => p !== sh.platform);
+    const chosen = v === 'c' && c.ask !== 'yes' ? [] : (c.apps || []).filter((p) => others.includes(p));
+    const errs = {};
+    const read = (key) => { const n = parseAmount(f[key]); if (Number.isNaN(n)) errs[key] = ctx.t('invalidAmount'); return n; };
+    const main = read('payMain');
+    const pays = typeof main === 'number' ? [{ p: sh.platform, gross: main, tip: null, primary: true }] : [];
+    for (const p of chosen) {
+      const gross = read(`pay_${p}`);
+      const tip = hasTips(p) ? read(`tip_${p}`) : '';
+      if (!errs[`tip_${p}`] && typeof tip === 'number' && !(typeof gross === 'number' && tip <= gross)) errs[`tip_${p}`] = ctx.t('tipTooBig');
+      if (typeof gross === 'number') pays.push({ p, gross, tip: typeof tip === 'number' && tip > 0 && tip <= gross ? tip : null });
+    }
+    const hasMain = pays.some((x) => x.primary);
+    const hasExtra = pays.some((x) => !x.primary);
+    const lines = [];
+    for (const x of pays) {
+      lines.push({ k: hasExtra ? pname(x.p) : ctx.t('paid'), v: money(ctx, x.gross) });
+      if (x.tip) lines.push({ k: ctx.t('ofWhichTip'), v: money(ctx, x.tip), cls: 'kv-indent' });
+    }
+    const total = pays.reduce((a, x) => a + x.gross, 0);
+
+    const mainField = moneyField(ctx, 'payMain', { label: esc(ctx.t('clPaidBy', { p: pname(sh.platform) })), error: errs.payMain });
+    const fields = (p) => `<div class="cl-fields" data-app="${p}">${moneyField(ctx, `pay_${p}`, { label: esc(ctx.t('clPaidBy', { p: pname(p) })), error: errs[`pay_${p}`] })}${hasTips(p) ? moneyField(ctx, `tip_${p}`, { label: esc(ctx.t('tipOptional')), error: errs[`tip_${p}`] }) : ''}</div>`;
+    const later = `<p class="note">${esc(ctx.t('payOptional'))}</p>`;
+    let pay;
+    // With a single platform switched on there is nothing else to ask: the shift's own field, as in the app.
+    if (!others.length) {
+      pay = `${mainField}${later}`;
+    } else if (v === 'a') {
+      // A · Every enabled app as a checklist; the shift's own app is ticked and fixed. Ticking one opens its amount.
+      pay = `<p class="cl-q" id="cl-apps-q">${esc(ctx.t('clWhichApps'))}</p>
+        <div class="cl-list" role="group" aria-labelledby="cl-apps-q">
+          <div class="cl-app is-on is-fixed"><span class="cl-box" aria-hidden="true">${icon('check')}</span>${platformBadge(sh.platform)}<span class="cl-name">${esc(pname(sh.platform))}</span><span class="cl-tag">${esc(ctx.t('clShiftApp'))}</span></div>
+          <div class="cl-fields">${mainField}</div>
+          ${others.map((p) => { const on = chosen.includes(p); return `<button class="cl-app ${on ? 'is-on' : ''}" role="checkbox" aria-checked="${on}" ${act('toggleApp', p)}><span class="cl-box" aria-hidden="true">${on ? icon('check') : ''}</span>${platformBadge(p)}<span class="cl-name">${esc(pname(p))}</span></button>${on ? fields(p) : ''}`; }).join('')}
+        </div>${later}`;
+    } else if (v === 'b') {
+      // B · The shift's app first; «+ Otra app» picks another, as History's editor does, without leaving the close.
+      const left = others.filter((p) => !chosen.includes(p));
+      pay = `${mainField}
+        ${chosen.map((p) => `<div class="cl-added">${fields(p)}<button class="btn-destructive-text cl-remove" ${act('removeApp', p)}>${esc(ctx.t('clRemove', { p: pname(p) }))}</button></div>`).join('')}
+        ${!left.length ? '' : c.picking
+          ? `<p class="cl-q" id="cl-pick-q">${esc(ctx.t('clWhichOther'))}</p><div class="cl-chips" role="group" aria-labelledby="cl-pick-q">${left.map((p) => `<button class="choice cl-chip" ${act('addApp', p)}>${platformBadge(p)}<span>${esc(pname(p))}</span></button>`).join('')}</div>`
+          : `<button class="btn btn-secondary cl-add" ${act('pickOther')}>${icon('plus')}<span>${esc(ctx.t('clAddOther'))}</span></button>`}
+        ${later}`;
+    } else {
+      // C · Asks every time: «¿Usaste otra app además de Amazon Flex?» No / Sí; Sí shows the apps to tick.
+      pay = `${mainField}
+        <p class="cl-q" id="cl-ask-q">${esc(ctx.t('clOtherQ', { p: pname(sh.platform) }))}</p>
+        <div class="cl-yesno" role="radiogroup" aria-labelledby="cl-ask-q">${[['no', 'clNo'], ['yes', 'clYes']].map(([k, label]) => `<button class="choice cl-answer ${c.ask === k ? 'is-selected' : ''}" role="radio" aria-checked="${c.ask === k}" ${act('askOther', k)}><span>${esc(ctx.t(label))}</span></button>`).join('')}</div>
+        ${c.ask === 'yes' ? `<div class="cl-chips" role="group" aria-labelledby="cl-ask-q">${others.map((p) => { const on = chosen.includes(p); return `<button class="choice cl-chip ${on ? 'is-selected' : ''}" aria-pressed="${on}" ${act('toggleApp', p)}>${platformBadge(p)}<span>${esc(pname(p))}</span></button>`; }).join('')}</div>${chosen.map(fields).join('')}` : ''}
+        ${later}`;
+    }
+    const anyErr = Object.keys(errs).length > 0;
+    const result = closeResult(ctx, sh, lines, total, hasMain, hasExtra);
+    return closeFrame(ctx, card(pay, `card-pay cl-pay cl-${v}`), result, anyErr);
+  }
+
+  // What the shift paid after gas, from the pay lines already built. Shared by the app's screen and the proposals.
+  function closeResult(ctx, sh, lines, total, hasMain, hasExtra) {
     const gas = ctx.data.gasKnown ? sh.gasKnownCost : null;
     const hours = E.mins(sh) / 60;
-
-    const lines = [];
-    if (hasMain) lines.push({ k: hasExtra ? pname(sh.platform) : ctx.t('paid'), v: money(ctx, main) });
-    if (hasExtra) {
-      lines.push({ k: 'Uber', v: money(ctx, extra) });
-      if (typeof tip === 'number' && tip > 0) lines.push({ k: ctx.t('ofWhichTip'), v: money(ctx, tip), cls: 'kv-indent' });
-    }
-    const total = (hasMain ? main : 0) + (hasExtra ? extra : 0);
     let result = '';
     if (!hasMain && hasExtra) {
       result = `${kv([...lines, { k: ctx.t('recordedSoFar'), v: money(ctx, total) }])}
@@ -712,6 +762,47 @@
       }
     }
 
+    return result;
+  }
+
+  function closeShift(ctx) {
+    if (ctx.famId === 'v0' && ['a', 'b', 'c'].includes(ctx.cierre)) return closeProposal(ctx);
+    const c = ctx.ui.close;
+    const sh = c.shift;
+    const f = ctx.ui.f;
+    const main = parseAmount(f.payMain);
+    // «Hoy» (the app, 2.0.3): no other platform on this screen; that is History's edit.
+    const extrasHere = !(ctx.famId === 'v0' && ctx.cierre === 'actual');
+    const extra = extrasHere && c.extrasOpen ? parseAmount(f.payX) : '';
+    const tip = extrasHere && c.extrasOpen ? parseAmount(f.payXTip) : '';
+    const mainErr = Number.isNaN(main) ? ctx.t('invalidAmount') : '';
+    const extraErr = Number.isNaN(extra) ? ctx.t('invalidAmount') : '';
+    const tipErr = Number.isNaN(tip) ? ctx.t('invalidAmount') : (typeof tip === 'number' && typeof extra === 'number' && tip > extra ? ctx.t('tipTooBig') : '');
+    const hasMain = typeof main === 'number';
+    const hasExtra = typeof extra === 'number';
+
+    const lines = [];
+    if (hasMain) lines.push({ k: hasExtra ? pname(sh.platform) : ctx.t('paid'), v: money(ctx, main) });
+    if (hasExtra) {
+      lines.push({ k: 'Uber', v: money(ctx, extra) });
+      if (typeof tip === 'number' && tip > 0) lines.push({ k: ctx.t('ofWhichTip'), v: money(ctx, tip), cls: 'kv-indent' });
+    }
+    const total = (hasMain ? main : 0) + (hasExtra ? extra : 0);
+    const result = closeResult(ctx, sh, lines, total, hasMain, hasExtra);
+
+    const payCard = card(`${moneyField(ctx, 'payMain', { label: ctx.t('howMuchPaid'), error: mainErr, describedBy: 'pay-help' })}
+          <p class="note" id="pay-help">${esc(ctx.t('payOptional'))}</p>
+          ${!extrasHere ? '' : c.extrasOpen
+            ? `<div class="extras">${moneyField(ctx, 'payX', { label: ctx.t('otherPlatformPay'), error: extraErr })}${moneyField(ctx, 'payXTip', { label: ctx.t('tipOptional'), error: tipErr })}</div>`
+            : `<button class="link-button with-icon" ${act('openExtras')}>${icon('plus')}<span>${esc(ctx.t('addOtherPlatform'))}</span></button>`}`, 'card-pay');
+    return closeFrame(ctx, payCard, result, Boolean(mainErr || extraErr || tipErr));
+  }
+
+  // The close screen around its pay card: summary, result, station, trash and Done, the same in every variant.
+  function closeFrame(ctx, payCard, result, anyErr) {
+    const c = ctx.ui.close;
+    const sh = c.shift;
+    const f = ctx.ui.f;
     const station = c.stationDone ? '' : card(`<h3 class="card-title">${esc(ctx.t('saveStationQ'))}</h3>
       <p class="note">${esc(ctx.t('saveStationBody'))}</p>
       ${textField(ctx, 'station', { placeholder: ctx.t('stationPlaceholder') })}
@@ -728,15 +819,11 @@
           { k: ctx.t('miles'), v: `${ctx.fmt.miles(ctx.lang, sh.miles, 2)} mi` }, '---',
           { k: ctx.t('estDeduction'), v: money(ctx, sh.deduction) }
         ]))}
-        ${card(`${moneyField(ctx, 'payMain', { label: ctx.t('howMuchPaid'), error: mainErr, describedBy: 'pay-help' })}
-          <p class="note" id="pay-help">${esc(ctx.t('payOptional'))}</p>
-          ${c.extrasOpen
-            ? `<div class="extras">${moneyField(ctx, 'payX', { label: ctx.t('otherPlatformPay'), error: extraErr })}${moneyField(ctx, 'payXTip', { label: ctx.t('tipOptional'), error: tipErr })}</div>`
-            : `<button class="link-button with-icon" ${act('openExtras')}>${icon('plus')}<span>${esc(ctx.t('addOtherPlatform'))}</span></button>`}`, 'card-pay')}
+        ${payCard}
         ${card(`<h3 class="card-title">${esc(ctx.t('afterGas'))}</h3>${result}`, 'card-result', 'aria-live="polite"')}
         ${station}
         <div class="center">${button(ctx.t('moveToTrash'), 'confirmTrash', undefined, { kind: 'destructive-text' })}</div>`,
-      footer: `<div class="footer-bar">${button(ctx.t('done'), 'finishClose', undefined, { disabled: Boolean(mainErr || extraErr || tipErr) })}</div>`
+      footer: `<div class="footer-bar">${button(ctx.t('done'), 'finishClose', undefined, { disabled: anyErr })}</div>`
     };
   }
 

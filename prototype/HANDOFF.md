@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio, Recientes D · El último en grande y, durante el turno, B · Como tu viaje personal sin la ficha «Trackeando» (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&turno=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`; con un turno en curso, `screen=active`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Turno en curso (elegida B): `#view=turno&family=v0&lang=es&scenario=partial&screen=active`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio, Recientes D · El último en grande y, durante el turno, B · Como tu viaje personal sin la ficha «Trackeando» (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&turno=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`; con un turno en curso, `screen=active`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Turno en curso (elegida B): `#view=turno&family=v0&lang=es&scenario=partial&screen=active`. Cierre del turno (tres propuestas, sin elegir): `#view=cierre&family=v0&lang=es&scenario=complete&screen=closeStacked`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -226,6 +226,25 @@ Detalle completo en [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md).
   - Parte del espacio viene del mapa ficticio, que se amplía como una foto; en la app, un mapa más alto enseña más calles.
 - **Decisión de Liber (6 nov): B tal cual, sin ajustar el espacio**, con la plataforma y la hora arriba y sin «Trackeando». Las dos pruebas se quedan como referencia. Con texto grande, conviene probarlo en el iPhone si pasa a la app.
 - **Siguiente paso:** que Liber elija el próximo detalle de Inicio; en el orden propuesto toca Navidad. Nada pasa a SwiftUI.
+
+### Cierre del turno (6 nov): **tres propuestas, sin elegir**
+
+Detalle completo en [CIERRE-TURNO.md](CIERRE-TURNO.md).
+
+- **Nombres:** Liber llama «base 1» a lo que se va eligiendo encima de la app actual, la «base 0». En el laboratorio también existe una familia «V1», que es otra cosa. Antes de Navidad quiere terminar la base 1.
+- **Corrección:** la app publicada (2.0.3, compilada desde `081c436`) solo pregunta en el cierre el cobro de la app del turno, más la propina si la plataforma tiene.
+  - Las otras apps se añaden después, editando el turno en Historial.
+  - El laboratorio tenía «Agregar pago de otra plataforma» en el cierre. Se queda como `cierre=lab`, el valor por defecto, y sigue idéntico.
+- **Las propuestas** preguntan en el cierre qué apps se usaron y cuánto pagó cada una, y guardan lo que la app ya guarda (`extraEarnings`):
+  - **A · Marca las apps** (`cierre=a`): «¿Qué apps usaste en este turno?», con una lista.
+  - **B · Añadir otra** (`cierre=b`): «+ Otra app».
+  - **C · Pregunta primero** (`cierre=c`): «¿Usaste otra app además de Amazon Flex?», con No y Sí.
+- **Recomendación: A.** Pregunta lo que Liber pidió, con un toque por app. B es la más corta, pero no pregunta.
+- **Comprobación:**
+  - 1296 renders sin fallos y control negativo de 10 de 10;
+  - el resto de las auditorías y capturas no cambian.
+- **Las millas personales mientras manejas:** Liber confirmó que es Inicio, ya elegido («El viaje primero»). Se revisa en la pasada final.
+- **Siguiente paso:** que Liber elija A, B, C o ninguna. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

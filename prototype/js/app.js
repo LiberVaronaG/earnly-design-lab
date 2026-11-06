@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', avisos: 'actual', recientes: 'lab', turno: 'lab', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', avisos: 'actual', recientes: 'lab', turno: 'lab', cierre: 'lab', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -48,8 +48,9 @@
   }
 
   function startClose() {
-    state.ui.close = { shift: JSON.parse(JSON.stringify(E.CLOSE_SHIFT)), extrasOpen: false, stationDone: false };
+    state.ui.close = { shift: JSON.parse(JSON.stringify(E.CLOSE_SHIFT)), extrasOpen: false, stationDone: false, apps: [], ask: null, picking: false };
     Object.assign(state.ui.f, { payMain: '', payX: '', payXTip: '', station: '' });
+    for (const p of E.ENABLED_PLATFORMS) Object.assign(state.ui.f, { [`pay_${p}`]: '', [`tip_${p}`]: '' });
     state.ui.tab = 'home';
     state.ui.stacks.home = [{ name: 'close', params: {} }];
     navigated();
@@ -102,6 +103,12 @@
       startClose();
     },
     openExtras() { state.ui.close.extrasOpen = true; state.ui.focusTarget = 'in-payX'; },
+    // Close proposals: which other apps were used on the shift, and their amounts.
+    toggleApp(arg) { const c = state.ui.close; c.apps = c.apps.includes(arg) ? c.apps.filter((p) => p !== arg) : [...c.apps, arg]; },
+    askOther(arg) { state.ui.close.ask = arg; },
+    pickOther() { state.ui.close.picking = true; },
+    addApp(arg) { const c = state.ui.close; c.apps = [...c.apps, arg]; c.picking = false; state.ui.focusTarget = `in-pay_${arg}`; },
+    removeApp(arg) { const c = state.ui.close; c.apps = c.apps.filter((p) => p !== arg); Object.assign(state.ui.f, { [`pay_${arg}`]: '', [`tip_${arg}`]: '' }); },
     saveStation() {
       state.data.stations.push(state.ui.f.station.trim());
       state.ui.close.stationDone = true;
@@ -131,11 +138,14 @@
       const extra = c.extrasOpen ? E.parseAmount(f.payX) : '';
       const tip = c.extrasOpen ? E.parseAmount(f.payXTip) : '';
       const sh = c.shift;
+      // The proposals' other apps; C's answer «No» drops them.
+      const stacked = c.ask === 'no' ? [] : c.apps.map((p) => ({ p, g: E.parseAmount(f[`pay_${p}`]), t: E.parseAmount(f[`tip_${p}`]) }))
+        .filter((x) => typeof x.g === 'number').map((x) => ({ platform: x.p, amount: x.g, tip: typeof x.t === 'number' ? x.t : 0 }));
       state.data.shifts.push({
         id: sh.id + Date.now(), kind: 'work', platform: sh.platform, date: sh.date, start: sh.start, end: sh.end,
         miles: sh.miles, deduction: sh.deduction, gas: state.data.gasKnown ? sh.gasKnownCost : null, route: sh.route,
         main: typeof main === 'number' ? main : null, tip: 0,
-        extras: typeof extra === 'number' ? [{ platform: 'uber', amount: extra, tip: typeof tip === 'number' ? tip : 0 }] : []
+        extras: typeof extra === 'number' ? [{ platform: 'uber', amount: extra, tip: typeof tip === 'number' ? tip : 0 }] : stacked
       });
       state.ui.close = null;
       state.ui.stacks.home = [];
@@ -344,7 +354,8 @@
       app.dataset.avisos = slot.dataset.avisos || 'actual';
       app.dataset.recientes = slot.dataset.recientes || 'lab';
       app.dataset.turno = slot.dataset.turno || 'lab';
-      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo, circ: app.dataset.circ, avisos: app.dataset.avisos, recientes: app.dataset.recientes, turno: app.dataset.turno });
+      app.dataset.cierre = slot.dataset.cierre || 'lab';
+      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo, circ: app.dataset.circ, avisos: app.dataset.avisos, recientes: app.dataset.recientes, turno: app.dataset.turno, cierre: app.dataset.cierre });
       fitAmounts(app);
       fitPersonal(app);
       fitRecentFigures(app);
@@ -450,6 +461,12 @@
     closeResult: () => { startClose(); state.ui.f.payMain = '90'; },
     closeInvalid: () => { startClose(); state.ui.f.payMain = '90..'; },
     closeExtras: () => { startClose(); state.ui.close.extrasOpen = true; Object.assign(state.ui.f, { payX: '20', payXTip: '5' }); },
+    // Close with other apps (every variant: the lab's old extras and the proposals' apps carry the same Uber figures).
+    closeStacked: () => { startClose(); Object.assign(state.ui.close, { extrasOpen: true, apps: ['uber'], ask: 'yes' }); Object.assign(state.ui.f, { payMain: '90', payX: '20', payXTip: '5', pay_uber: '20', tip_uber: '5' }); },
+    closeOnlyOther: () => { startClose(); Object.assign(state.ui.close, { extrasOpen: true, apps: ['uber'], ask: 'yes' }); Object.assign(state.ui.f, { payX: '20', pay_uber: '20' }); },
+    closeTwoApps: () => { startClose(); Object.assign(state.ui.close, { apps: ['uber', 'doorDash'], ask: 'yes' }); Object.assign(state.ui.f, { payMain: '90', pay_uber: '20', tip_uber: '5', pay_doorDash: '15' }); },
+    closeTipTooBig: () => { startClose(); Object.assign(state.ui.close, { apps: ['uber'], ask: 'yes' }); Object.assign(state.ui.f, { payMain: '90', pay_uber: '20', tip_uber: '25' }); },
+    closePicking: () => { startClose(); state.ui.close.picking = true; state.ui.f.payMain = '90'; },
     recovery: () => { state.ui.sheet = 'recovery'; },
     historyWork: () => { state.ui.tab = 'history'; },
     historyPersonal: () => { state.ui.tab = 'history'; state.ui.historySeg = 'personal'; },

@@ -126,6 +126,9 @@
       shiftTracking: 'Tracking shift', shiftSince: 'since {t}', thisShift: 'this shift',
       // Proposals: the app's own spoken version of the banner, shorter than the visible text.
       nLowShiftShort: 'Your miles may be undercounted. Turn it off in iOS Settings → Battery.',
+      // Close proposals: the pay of every app used on the shift.
+      clPaidBy: 'How much did {p} pay you?', clWhichApps: 'Which apps did you use on this shift?', clShiftApp: "this shift's app",
+      clWhichOther: 'Which one?', clAddOther: 'Another app', clRemove: 'Remove {p}', clOtherQ: 'Did you also use another app besides {p}?', clNo: 'No', clYes: 'Yes',
       // Recovery
       shiftRecovery: 'Shift Recovery', forgotEnd: 'Did you forget to end this shift?',
       forgotBody: 'We found a shift still in progress from earlier. Pick how to close it.',
@@ -326,6 +329,8 @@
       nLowShiftBody: 'El Modo Ahorro de Batería se activó durante tu turno, y iOS limita la ubicación mientras está encendido: tus millas pueden quedarse cortas. Desactívalo en Ajustes de iOS → Batería.',
       shiftTracking: 'Trackeando turno', shiftSince: 'desde {t}', thisShift: 'este turno',
       nLowShiftShort: 'Tus millas pueden quedarse cortas. Desactívalo en Ajustes de iOS → Batería.',
+      clPaidBy: '¿Cuánto te pagó {p}?', clWhichApps: '¿Qué apps usaste en este turno?', clShiftApp: 'la del turno',
+      clWhichOther: '¿Cuál?', clAddOther: 'Otra app', clRemove: 'Quitar {p}', clOtherQ: '¿Usaste otra app además de {p}?', clNo: 'No', clYes: 'Sí',
       shiftRecovery: 'Recuperar turno', forgotEnd: '¿Olvidaste terminar este turno?',
       forgotBody: 'Encontramos un turno que seguía en curso. Elige cómo cerrarlo.',
       started: 'Empezó', lastGps: 'Último GPS', milesTracked: 'Millas registradas',
