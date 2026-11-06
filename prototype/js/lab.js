@@ -46,6 +46,14 @@
     b: ['B · Cada uno en su sitio', 'el turno bajo el círculo, Personal en su caja'],
     c: ['C · Franja arriba', 'filas cortas arriba; la explicación en una hoja']
   };
+  // Home «Recientes». `lab` is this lab's earlier three-card list, which never matched the app; `actual` is the app's card.
+  const RECIENTES = {
+    lab: ['Antigua del laboratorio', 'tres tarjetas; la app no es así'],
+    actual: ['Recientes actual', 'una tarjeta con mapa, como en la app'],
+    a: ['A · Mapa con datos', 'el mapa más bajo, con el pago; se puede tocar'],
+    b: ['B · Los tres últimos', 'tres filas sin mapa en una caja'],
+    c: ['C · El último, compacto', 'el recorrido dibujado y los datos en una fila']
+  };
   // «Tarjeta verde» and «Personal» views: which variants sit side by side.
   const CARD_SETS = { 'actual,c': ['actual', 'c'] };
   const PERSONAL_SETS = { 'actual,a,b': ['actual', 'a', 'b'], 'actual,a': ['actual', 'a'], 'a,b': ['a', 'b'] };
@@ -53,7 +61,7 @@
   const SCREENS = [
     ['home', 'Inicio'], ['homeBreakdown', 'Inicio · desglose abierto'], ['homeOptions', 'Inicio · opciones'], ['homeBoth', 'Inicio · desglose y opciones abiertos'],
     ['homeNoNotice', 'Inicio · sin avisos'], ['homeDenied', 'Inicio · aviso: ubicación apagada'], ['homeLowPower', 'Inicio · aviso: ahorro de batería'],
-    ['homeTwoNotices', 'Inicio · dos avisos (Siempre y batería)'], ['homeMotion', 'Inicio · aviso: Personal sin Movimiento'],
+    ['homeTwoNotices', 'Inicio · dos avisos (Siempre y batería)'], ['homeMotion', 'Inicio · aviso: Personal sin Movimiento'], ['homeNoRoute', 'Inicio · último turno sin ruta'],
     ['homeLive', 'Inicio · viaje personal: trackeando'], ['homeLiveAcquiring', 'Inicio · viaje personal: buscando ubicación'],
     ['homeLiveNoSignal', 'Inicio · viaje personal: sin señal GPS'], ['homeLivePaused', 'Inicio · viaje personal: en pausa'],
     ['active', 'Turno en curso (aprox.)'], ['close', 'Cierre · vacío'], ['closeResult', 'Cierre · resultado ($90)'],
@@ -90,6 +98,7 @@
     if (VIVO[h.get('vivo')]) L.vivo = h.get('vivo');
     if (CIRC[h.get('circulo')]) L.circ = h.get('circulo');
     if (AVISOS[h.get('avisos')]) L.avisos = h.get('avisos');
+    if (RECIENTES[h.get('recientes')]) L.recientes = h.get('recientes');
     if (['light', 'dark'].includes(h.get('theme'))) L.theme = h.get('theme');
     if (['en', 'es'].includes(h.get('lang'))) L.lang = h.get('lang');
     if (E.SCENARIOS[h.get('scenario')]) L.scenario = h.get('scenario');
@@ -104,7 +113,7 @@
 
   function writeHash() {
     const L = S.lab;
-    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, vivo: L.vivo, circulo: L.circ, avisos: L.avisos, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
+    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, vivo: L.vivo, circulo: L.circ, avisos: L.avisos, recientes: L.recientes, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
     if (L.solo) h.set('solo', '1');
     if (L.tall) h.set('tall', '1');
     history.replaceState(null, '', '#' + h.toString());
@@ -125,6 +134,7 @@
     $('c-vivo').value = L.vivo;
     $('c-circ').value = L.circ;
     $('c-avisos').value = L.avisos;
+    $('c-recientes').value = L.recientes;
     $('c-theme').value = L.theme;
     $('c-lang').value = L.lang;
     $('c-scenario').value = L.scenario;
@@ -135,14 +145,15 @@
     $('c-motion').value = L.motion;
     document.querySelectorAll('[data-when="compare"]').forEach((el) => { el.hidden = L.view !== 'compare'; });
     $('c-family').parentElement.hidden = L.view === 'gallery';
-    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos'].includes(L.view) && !L.solo;
-    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos'].includes(L.view) && !L.solo;
-    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos'].includes(L.view) && !L.solo;
-    $('c-opts').parentElement.hidden = ['opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos'].includes(L.view) && !L.solo;
-    $('c-personal').parentElement.hidden = ['personal', 'enmarcha', 'iniciar', 'contraste', 'avisos'].includes(L.view) && !L.solo;
-    $('c-vivo').parentElement.hidden = ['enmarcha', 'iniciar', 'contraste', 'avisos'].includes(L.view) && !L.solo;
-    $('c-circ').parentElement.hidden = ['iniciar', 'contraste', 'avisos'].includes(L.view) && !L.solo;
-    $('c-avisos').parentElement.hidden = L.view === 'avisos' && !L.solo;
+    $('c-home').parentElement.hidden = ['sintitulo', 'tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes'].includes(L.view) && !L.solo;
+    $('c-card').parentElement.hidden = ['tarjeta', 'abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes'].includes(L.view) && !L.solo;
+    $('c-bd').parentElement.hidden = ['abierta', 'opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes'].includes(L.view) && !L.solo;
+    $('c-opts').parentElement.hidden = ['opciones', 'personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes'].includes(L.view) && !L.solo;
+    $('c-personal').parentElement.hidden = ['personal', 'enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes'].includes(L.view) && !L.solo;
+    $('c-vivo').parentElement.hidden = ['enmarcha', 'iniciar', 'contraste', 'avisos', 'recientes'].includes(L.view) && !L.solo;
+    $('c-circ').parentElement.hidden = ['iniciar', 'contraste', 'avisos', 'recientes'].includes(L.view) && !L.solo;
+    $('c-avisos').parentElement.hidden = ['avisos', 'recientes'].includes(L.view) && !L.solo;
+    $('c-recientes').parentElement.hidden = L.view === 'recientes' && !L.solo;
     $('c-cards').parentElement.hidden = L.view !== 'tarjeta';
     $('c-personals').parentElement.hidden = L.view !== 'personal' || L.solo;
   }
@@ -165,18 +176,21 @@
     const circs = L.solo ? null : L.view === 'iniciar' ? ['actual', 'fondo'] : L.view === 'contraste' ? ['fondo', 'fondo-corte', 'fondo-tenue'] : null;
     // «Avisos» keeps the whole chosen Home, the dark-mode Corte circle included; only the notices differ.
     const avs = L.view === 'avisos' && !L.solo ? Object.keys(AVISOS) : null;
-    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards || pers || vivos || circs || avs ? (cards || pers || vivos || circs || avs).map(() => L.family) : [L.family];
+    // «Recientes» keeps the whole chosen Home, notices B included; only the recent-shifts block differs.
+    const recs = L.view === 'recientes' && !L.solo ? ['actual', 'a', 'b', 'c'] : null;
+    const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards || pers || vivos || circs || avs || recs ? (cards || pers || vivos || circs || avs || recs).map(() => L.family) : [L.family];
     document.body.classList.toggle('is-solo', L.solo);
     const stage = $('stage');
     stage.innerHTML = fams.map((f, i) => {
-      const home = homes ? homes[i] : cards || bds || opts || pers || vivos || circs || avs ? 'sintitulo' : L.home;
-      const card = cards ? cards[i] : bds || opts || pers || vivos || circs || avs ? 'c' : L.card;
-      const bd = bds ? bds[i] : opts || pers || vivos || circs || avs ? 'propuesta' : L.bd;
-      const opt = opts ? opts[i] : pers || vivos || circs || avs ? 'propuesta' : L.opts;
-      const per = pers ? pers[i] : vivos || circs || avs ? 'a' : L.personal;
-      const vivo = vivos ? vivos[i] : circs || avs ? 'tablero' : L.vivo;
-      const circ = circs ? circs[i] : avs ? 'fondo-corte' : L.circ;
-      const aviso = avs ? avs[i] : L.avisos;
+      const home = homes ? homes[i] : cards || bds || opts || pers || vivos || circs || avs || recs ? 'sintitulo' : L.home;
+      const card = cards ? cards[i] : bds || opts || pers || vivos || circs || avs || recs ? 'c' : L.card;
+      const bd = bds ? bds[i] : opts || pers || vivos || circs || avs || recs ? 'propuesta' : L.bd;
+      const opt = opts ? opts[i] : pers || vivos || circs || avs || recs ? 'propuesta' : L.opts;
+      const per = pers ? pers[i] : vivos || circs || avs || recs ? 'a' : L.personal;
+      const vivo = vivos ? vivos[i] : circs || avs || recs ? 'tablero' : L.vivo;
+      const circ = circs ? circs[i] : avs || recs ? 'fondo-corte' : L.circ;
+      const aviso = avs ? avs[i] : recs ? 'b' : L.avisos;
+      const rec = recs ? recs[i] : L.recientes;
       const [name, summary] = homes ? [HOME[home][0], `${FAMS[f].name.es}, ${HOME[home][1]}.`]
         : cards ? [CARD[card][0], `${FAMS[f].name.es}, ${CARD[card][1]}.`]
         : bds ? [BD[bd][0], `${FAMS[f].name.es}, ${BD[bd][1]}.`]
@@ -184,11 +198,12 @@
         : pers ? [PERSONAL[per][0], `${FAMS[f].name.es}, ${PERSONAL[per][1]}.`]
         : vivos ? [VIVO[vivo][0], `${FAMS[f].name.es}, ${VIVO[vivo][1]}.`]
         : circs ? [CIRC[circ][0], `${FAMS[f].name.es}, ${CIRC[circ][1]}.`]
-        : avs ? [AVISOS[aviso][0], `${FAMS[f].name.es}, ${AVISOS[aviso][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
+        : avs ? [AVISOS[aviso][0], `${FAMS[f].name.es}, ${AVISOS[aviso][1]}.`]
+        : recs ? [RECIENTES[rec][0], `${FAMS[f].name.es}, ${RECIENTES[rec][1]}.`] : [FAMS[f].name.es, FAMS[f].summary.es];
       return `
       <section class="frame-col" aria-label="${name}" style="--w:${L.width}px">
         ${L.solo ? '' : `<div class="frame-head"><strong>${name}</strong><span>${summary}</span></div>`}
-        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}" data-vivo="${vivo}" data-circ="${circ}" data-avisos="${aviso}">
+        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}" data-vivo="${vivo}" data-circ="${circ}" data-avisos="${aviso}" data-recientes="${rec}">
           <div class="app" data-family="${f}" data-theme="${L.theme}"></div>
         </div>
       </section>`;
@@ -207,6 +222,7 @@
       ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
       ${S.lab.view === 'iniciar' ? '<span>Iniciar turno: todo lo elegido en Inicio en los dos marcos, mismos datos y estado; solo cambia el círculo. El fondo es el trébol real de Woodbridge (Nueva Jersey) trazado con datos de OpenStreetMap.</span>' : ''}
       ${S.lab.view === 'contraste' ? '<span>Contraste en oscuro: todo lo elegido en Inicio y el Fondo · Woodbridge en los tres marcos; solo cambia cómo se cruzan las líneas con el texto. Pon Tema → Oscuro: en claro los tres son iguales.</span>' : ''}
+      ${S.lab.view === 'recientes' ? '<span>Recientes: todo lo elegido en Inicio en los cuatro marcos, avisos B incluidos, mismos datos y estado; solo cambia Recientes. El mapa es ficticio: la app usa Apple Maps.</span>' : ''}
       ${S.lab.view === 'avisos' ? '<span>Avisos: todo lo elegido en Inicio en los cuatro marcos, mismos datos y estado; solo cambia cómo se presentan los avisos. Elige una pantalla «Inicio · aviso…» o «Inicio · dos avisos».</span>' : ''}
       ${S.lab.view === 'enmarcha' ? '<span>En marcha: Personal A y todo lo elegido en los tres marcos, mismos datos y estado; solo cambia cómo se muestra el viaje personal en curso. Elige una pantalla «Inicio · viaje personal: …».</span>' : ''}
       ${S.lab.view === 'personal' ? '<span>Personal: Inicio sin título, tarjeta C, desglose y Opciones propuestos en todos los marcos, mismos datos y estado; solo cambia la fila Personal. Aparece cuando el seguimiento personal está activo.</span>' : ''}
@@ -233,6 +249,7 @@
     L.vivo = $('c-vivo').value;
     L.circ = $('c-circ').value;
     L.avisos = $('c-avisos').value;
+    L.recientes = $('c-recientes').value;
     L.theme = $('c-theme').value;
     L.lang = $('c-lang').value;
     L.scenario = $('c-scenario').value;
@@ -245,7 +262,7 @@
       L.familyB = Object.keys(FAMS).find((f) => f !== L.family);
     }
     if (prev.scenario !== L.scenario || prevScreen !== screenId) E.jump(screenId);
-    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.vivo !== L.vivo || prev.circ !== L.circ || prev.avisos !== L.avisos || prev.width !== L.width) buildStage();
+    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.vivo !== L.vivo || prev.circ !== L.circ || prev.avisos !== L.avisos || prev.recientes !== L.recientes || prev.width !== L.width) buildStage();
     syncControls();
     writeHash();
     E.render();

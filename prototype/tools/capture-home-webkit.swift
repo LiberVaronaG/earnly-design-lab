@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro | avisos
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro | avisos | recientes
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -28,11 +28,26 @@ let chosen = "solo=1&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta
 // Everything chosen in Home so far, the dark-mode Corte circle included.
 let chosenAll = "\(chosen)&personal=a&vivo=tablero&circulo=fondo-corte"
 let avisosView = "view=avisos&family=v0&deco=none&motion=normal"
+let recientesView = "view=recientes&family=v0&deco=none&motion=normal"
+let chosenNotices = "\(chosenAll)&avisos=b"
 
 
 // Same scenario, screen and size on every side of a comparison; only the lab variant differs.
 let common = "family=v0&deco=none&motion=normal"
 let sets: [String: [Shot]] = [
+  "recientes": [
+    Shot(file: "01-comparar-claro-es.png", hash: "\(recientesView)&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "02-comparar-oscuro-en.png", hash: "\(recientesView)&screen=homeNoNotice&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false, full: true),
+    Shot(file: "03-comparar-sin-ruta-es.png", hash: "\(recientesView)&screen=homeNoRoute&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "04-comparar-importe-largo-en.png", hash: "\(recientesView)&screen=homeNoNotice&theme=light&lang=en&scenario=longPay&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "05-comparar-320-texto-200-es.png", hash: "\(recientesView)&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=320&text=2", dark: false, solo: false, full: true),
+    Shot(file: "06-comparar-con-aviso-es.png", hash: "\(recientesView)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "07-comparar-sin-datos-es.png", hash: "\(recientesView)&screen=homeNoNotice&theme=light&lang=es&scenario=empty&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "08-actual-es.png", hash: "\(chosenNotices)&recientes=actual&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "09-a-es.png", hash: "\(chosenNotices)&recientes=a&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "10-b-es.png", hash: "\(chosenNotices)&recientes=b&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "11-c-es.png", hash: "\(chosenNotices)&recientes=c&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true)
+  ],
   "avisos": [
     Shot(file: "01-comparar-siempre-claro-es.png", hash: "\(avisosView)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
     Shot(file: "02-comparar-dos-avisos-claro-es.png", hash: "\(avisosView)&screen=homeTwoNotices&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),

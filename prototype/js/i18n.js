@@ -54,6 +54,8 @@
       startOffHint: 'Unavailable while Low Power Mode is on',
       startShift: 'Start Shift',
       recent: 'Recent', viewAll: 'View all',
+      // Home «Recent», as in the app's card, and the proposals.
+      recentA11y: 'Most recent shift, {d}, {m} miles', noRoute: 'No Route',
       personal: 'Personal', work: 'Work',
       personalToday: '{a} mi today', personalMonth: '{b} mi mo.',
       liveRecording: 'Tracking personal', liveAcquiring: 'Finding your location', liveNoSignal: 'No GPS signal', livePaused: 'Drive paused',
@@ -252,6 +254,7 @@
       startOffHint: 'No disponible con Modo Ahorro de Batería',
       startShift: 'Iniciar turno',
       recent: 'Recientes', viewAll: 'Ver todo',
+      recentA11y: 'Último turno, {d}, {m} millas', noRoute: 'Sin ruta',
       personal: 'Personal', work: 'Trabajo',
       personalToday: '{a} mi hoy', personalMonth: '{b} mi mes',
       liveRecording: 'Trackeando personal', liveAcquiring: 'Buscando tu ubicación', liveNoSignal: 'Sin señal GPS', livePaused: 'Viaje en pausa',
@@ -419,7 +422,11 @@
         ? { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' }
         : style === 'weekday'
           ? { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }
-          : { month: 'short', day: 'numeric', year: 'numeric' };
+          : style === 'wide'
+            ? { month: 'long', day: 'numeric', year: 'numeric' }
+            : style === 'weekdayShort'
+              ? { weekday: 'short', month: 'short', day: 'numeric' }
+              : { month: 'short', day: 'numeric', year: 'numeric' };
       const s = new Intl.DateTimeFormat(locale(lang), opts).format(d);
       return s.charAt(0).toUpperCase() + s.slice(1);
     },

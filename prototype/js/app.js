@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', avisos: 'actual', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', avisos: 'actual', recientes: 'lab', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -314,7 +314,8 @@
       app.dataset.vivo = slot.dataset.vivo || 'linea';
       app.dataset.circ = slot.dataset.circ || 'actual';
       app.dataset.avisos = slot.dataset.avisos || 'actual';
-      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo, circ: app.dataset.circ, avisos: app.dataset.avisos });
+      app.dataset.recientes = slot.dataset.recientes || 'lab';
+      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo, circ: app.dataset.circ, avisos: app.dataset.avisos, recientes: app.dataset.recientes });
       fitAmounts(app);
       fitPersonal(app);
     }
@@ -407,6 +408,8 @@
     homeDenied: () => { state.data.permission = 'denied'; },
     homeLowPower: () => { state.data.permission = 'always'; state.data.lowPower = true; },
     homeTwoNotices: () => { state.data.permission = 'whenInUse'; state.data.lowPower = true; },
+    // The latest shift was recorded without GPS points, so it has no route to draw.
+    homeNoRoute: () => { state.data.permission = 'always'; const s = [...state.data.shifts].sort((a, b) => (b.date + b.start).localeCompare(a.date + a.start))[0]; if (s) s.route = null; },
     homeMotion: () => { state.data.permission = 'always'; state.data.autoPersonal = true; state.data.motionDenied = true; },
     active: () => { state.ui.active = { platform: 'amazonFlex' }; push('active'); },
     close: () => { startClose(); },

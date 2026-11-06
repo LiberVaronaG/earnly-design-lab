@@ -409,6 +409,65 @@
 .nc-icon .ic { width: 1.3em; height: 1.3em; }
 .nc-title { font-weight: var(--weight-semibold); }
 .nc-blocks .nc-title { color: var(--color-destructive); }
+/* Recientes · today in the app (RecentShiftCard): one card with a 140 pt map, then one row that truncates. */
+.rx-section .link-button { white-space: nowrap; }
+.rx-section .section-head { flex-wrap: wrap; column-gap: var(--space-sm); }
+/* `.map` rules come later in this file, hence the doubled class. */
+.map.map-bare { display: block; border: 0; border-radius: 0; }
+.map.map-bare svg { aspect-ratio: auto; height: 140px; }
+.map.map-bare polyline { stroke: var(--color-action); }
+.rc { background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border); border-radius: var(--radius-card); overflow: hidden; }
+.rc > span { display: block; }
+.rc-noroute { height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-xs); color: var(--color-text-muted); font-weight: var(--weight-semibold); }
+.rc-noroute .ic { width: 2em; height: 2em; }
+.rc-info { display: flex; align-items: center; gap: 8px; padding: var(--space-md); white-space: nowrap; }
+.rc-info > * { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.rc-info .platform-badge { flex: none; }
+.rc-time, .rc-dur { color: var(--color-text-muted); }
+.rc-gap { flex: 1 1 0; }
+.rc-dur, .rc-mi { font-variant-numeric: tabular-nums; }
+.rc-mi { flex: none; font-weight: var(--weight-bold); }
+
+/* Recientes · proposals: a quiet border (content, not an alert), details that wrap, and the shift opens on tap. */
+.rx-paid { color: var(--color-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ra { display: block; width: 100%; text-align: start; background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); overflow: hidden; }
+.ra .map.map-bare svg { height: 120px; }
+.ra-body { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: var(--space-sm); padding: var(--space-sm) var(--space-md); }
+.ra-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ra-line1, .ra-line2 { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px var(--space-sm); }
+.ra-date, .ra-mi { font-weight: var(--weight-semibold); }
+.ra-mi { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ra-line2 { color: var(--color-text-muted); font-size: var(--size-subhead); align-items: center; }
+.ra-when .platform-badge .ic, .rcc-sub .platform-badge .ic { width: 1.05em; height: 1.05em; vertical-align: -2px; }
+.ra-pay, .rb-pay, .rcc-pay { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.rb { background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); overflow: hidden; }
+.rb-row { display: grid; grid-template-columns: 1.4em 1fr; align-items: center; column-gap: var(--space-sm); width: 100%; min-height: 60px; padding: var(--space-sm) var(--space-md); text-align: start; }
+.rb-row + .rb-row { border-top: var(--stroke-hairline) solid var(--color-separator); }
+.rb-icon .ic { width: 1.25em; height: 1.25em; }
+/* Miles and pay sit on the right while they fit; a long amount moves them under the date instead of clipping it. */
+.rb-content { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px var(--space-sm); min-width: 0; }
+.rb-main, .rb-side { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rb-main { flex: 1 1 8.5em; }
+.rb-side { flex: 0 0 auto; margin-inline-start: auto; align-items: flex-end; text-align: end; }
+.rb-date, .rb-mi { font-weight: var(--weight-semibold); }
+.rb-mi { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rb-sub, .rb-pay { color: var(--color-text-muted); font-size: var(--size-subhead); }
+.rb-pay { justify-content: flex-end; }
+.rcc { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; column-gap: var(--space-sm); width: 100%; padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-sm); text-align: start; background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); }
+.rcc-sketch { width: 64px; height: 64px; display: grid; place-items: center; border-radius: 10px; background: var(--color-bg); color: var(--color-card-border); }
+.rcc-sketch > svg { width: 60px; height: 60px; }
+.rcc-sketch .platform-badge .ic { width: 1.6em; height: 1.6em; }
+.rcc-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rcc-top, .rcc-sub { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px var(--space-sm); }
+.rcc-date, .rcc-mi { font-weight: var(--weight-semibold); }
+.rcc-mi { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rcc-sub { color: var(--color-text-muted); font-size: var(--size-subhead); align-items: center; }
+.app[data-ax="true"] .rb-main { flex-basis: 100%; }
+.app[data-ax="true"] .rb-side { margin-inline-start: 0; align-items: flex-start; text-align: start; }
+.app[data-ax="true"] .rb-pay { justify-content: flex-start; }
+.app[data-ax="true"] .rcc { grid-template-columns: 1fr auto; row-gap: var(--space-xs); }
+.app[data-ax="true"] .rcc-sketch { grid-column: 1 / -1; }
+
 /* Large text: the icon moves above its title instead of eating a column of the line. */
 .app[data-ax="true"] .nb-item { grid-template-columns: 1fr; row-gap: var(--space-xxs); }
 .app[data-ax="true"] .nb-head { flex-direction: column; align-items: flex-start; gap: var(--space-xxs); }

@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, y los avisos B · Cada uno en su sitio (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, y los avisos B · Cada uno en su sitio (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (tres propuestas, sin elegir): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -147,7 +147,31 @@ Detalle completo en [HOME-AVISOS.md](HOME-AVISOS.md).
   - revisar las cinco frases cortas nuevas en español e inglés;
   - comprobar en el iPhone que se lee el texto blanco del círculo desactivado;
   - cambiar SPEC §4.3, PARITY.md y Android.
-- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Lo siguiente del orden propuesto es Recientes. Nada pasa a SwiftUI.
+- Siguiente paso de entonces: el próximo detalle de Inicio. Fue Recientes, el siguiente del orden propuesto.
+
+### Recientes (6 nov): **tres propuestas, sin elegir**
+
+Detalle completo en [HOME-RECIENTES.md](HOME-RECIENTES.md).
+
+- **Corrección:** el laboratorio dibujaba Recientes como tres tarjetas de texto, y la app no es así.
+  - Desde el 18 may, la app muestra una sola tarjeta del último turno: mapa de 140 pt y una fila de datos que no se puede tocar.
+  - La versión antigua se queda como `recientes=lab` y sigue siendo el valor por defecto. La vista nueva usa como «Hoy» la tarjeta de la app, con un mapa ficticio.
+  - El SPEC §4.3 todavía describe la lista de tres.
+- **Qué falla hoy en la app:**
+  - la fila corta algún dato en 184 de 288 estados auditados;
+  - no se puede tocar;
+  - no muestra el pago;
+  - sin ruta deja una caja vacía de 140 pt.
+- **Las propuestas:**
+  - **A · Mapa con datos** (`recientes=a`): el mapa a 120 pt, dos líneas con el pago y la tarjeta se puede tocar.
+  - **B · Los tres últimos** (`recientes=b`): tres filas sin mapa. Deshace la decisión del 18 may.
+  - **C · El último, compacto** (`recientes=c`): el recorrido dibujado y los datos en una fila de 90 px.
+- Vista «Recientes», control «Recientes» y parámetro `recientes`.
+- **Recomendación: A.** Conserva el mapa real y arregla lo que falla.
+- **Comprobación:** 1152 renders sin fallos en las propuestas; control negativo de 6 de 6.
+  - Se corrigió un recorte en B con un importe largo.
+  - Se corrigió también la propia comprobación de «Ver todo», que contaba cajas en vez de líneas.
+- **Siguiente paso:** que Liber elija A, B, C o ninguna. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

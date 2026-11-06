@@ -457,8 +457,62 @@
     return '';
   }
 
+  // ---------- Home · Recientes ----------
+  const durShort = (s) => E.fmt.duration(E.mins(s), false);
+  const recentHead = (ctx) => `<div class="section-head"><h2 class="section-title">${esc(ctx.t('recent'))}</h2><button class="link-button" ${act('viewAll')}>${esc(ctx.t('viewAll'))}</button></div>`;
+  // What the shift paid so far, or the chip that says it is missing (same rule as History).
+  function payNote(ctx, s) {
+    if (s.main === 'overflow') return chip('—');
+    if (s.main === null) return s.extras.length ? `<span class="rx-paid">${money(ctx, mainAmount(s))}</span> ${chip(ctx.t('partialChip'), 'partial')}` : chip(ctx.t('noPayChip'));
+    return `<span class="rx-paid">${money(ctx, mainAmount(s))}</span>`;
+  }
+
+  // Today in the app: only the latest shift, a 140 pt route map and one row of details. The card is not a button;
+  // VoiceOver reads one label for the whole card.
+  function recentApp(ctx, s) {
+    const label = ctx.t('recentA11y', { d: ctx.fmt.date(ctx.lang, s.date, 'wide'), m: ctx.fmt.miles(ctx.lang, s.miles) });
+    const top = s.route == null ? `<span class="rc-noroute">${icon('pin')}<span>${esc(ctx.t('noRoute'))}</span></span>` : E.map(ctx, s.route, { bare: true });
+    return `<div class="rc" role="group" aria-label="${esc(label)}"><span aria-hidden="true">${top}
+      <span class="rc-info">${platformBadge(s.platform)}<span class="rc-date">${esc(ctx.fmt.date(ctx.lang, s.date, 'short'))}</span><span class="rc-time">${esc(ctx.fmt.time(ctx.lang, s.start))}</span><span class="rc-gap"></span><span class="rc-dur">${durShort(s)}</span><span class="rc-mi">${mi(ctx, s.miles)}</span></span></span></div>`;
+  }
+
+  // A · The same card, map 20 pt lower, details on two lines that wrap instead of truncating, pay included,
+  // start time and duration as in the app,
+  // and the whole card opens the shift. Without a route there is no empty 140 pt box.
+  function recentA(ctx, s) {
+    return `<button class="ra" id="recent-latest" ${act('openShift', s.id)}>${s.route == null ? '' : E.map(ctx, s.route, { bare: true })}
+      <span class="ra-body"><span class="ra-text">
+        <span class="ra-line1"><span class="ra-date">${esc(ctx.fmt.date(ctx.lang, s.date, 'weekdayShort'))}</span> <span class="ra-mi">${mi(ctx, s.miles)}</span></span>
+        <span class="ra-line2"><span class="ra-when">${platformBadge(s.platform)} ${esc(ctx.fmt.time(ctx.lang, s.start))} · ${durShort(s)}</span> <span class="ra-pay">${payNote(ctx, s)}</span></span>
+      </span><span class="row-chevron">${icon('chevronRight')}</span></span></button>`;
+  }
+
+  // B · The three latest shifts, as SPEC §4.3 describes, in one quiet box; no map.
+  function recentB(ctx, list) {
+    return `<div class="rb">${list.map((s) => `<button class="rb-row" ${act('openShift', s.id)}>
+      <span class="rb-icon">${platformBadge(s.platform)}</span>
+      <span class="rb-content"><span class="rb-main"><span class="rb-date">${esc(ctx.fmt.date(ctx.lang, s.date, 'weekdayShort'))}</span> <span class="rb-sub">${esc(ctx.fmt.time(ctx.lang, s.start))} · ${durShort(s)}</span></span>
+      <span class="rb-side"><span class="rb-mi">${mi(ctx, s.miles)}</span> <span class="rb-pay">${payNote(ctx, s)}</span></span></span>
+    </button>`).join('')}</div>`;
+  }
+
+  // C · Only the latest shift in one row: the route drawn alone (no streets, no map service), then its figures.
+  function recentC(ctx, s) {
+    return `<button class="rcc" id="recent-latest" ${act('openShift', s.id)}>
+      <span class="rcc-sketch">${s.route == null ? platformBadge(s.platform) : E.routeSketch(s.route)}</span>
+      <span class="rcc-main"><span class="rcc-top"><span class="rcc-date">${esc(ctx.fmt.date(ctx.lang, s.date, 'weekdayShort'))}</span> <span class="rcc-mi">${mi(ctx, s.miles)}</span></span>
+        <span class="rcc-sub"><span>${esc(pname(s.platform))} · ${durShort(s)}</span> <span class="rcc-pay">${payNote(ctx, s)}</span></span></span>
+      <span class="row-chevron">${icon('chevronRight')}</span></button>`;
+  }
+
   function recentBlock(ctx) {
     const list = [...ctx.data.shifts].sort(byDateDesc).slice(0, 3);
+    if (ctx.famId === 'v0' && ['actual', 'a', 'b', 'c'].includes(ctx.recientes)) {
+      // As in the app, Home shows no Recent section at all until a shift is saved.
+      if (!list.length) return '';
+      const body = { actual: () => recentApp(ctx, list[0]), a: () => recentA(ctx, list[0]), b: () => recentB(ctx, list), c: () => recentC(ctx, list[0]) }[ctx.recientes]();
+      return `<section class="section rx-section">${recentHead(ctx)}${body}</section>`;
+    }
     if (!list.length) return `<section class="section"><h2 class="section-title">${esc(ctx.t('recent'))}</h2><p class="empty">${esc(ctx.t('emptyRecent'))}</p></section>`;
     return `<section class="section">
       <div class="section-head"><h2 class="section-title">${esc(ctx.t('recent'))}</h2><button class="link-button" ${act('viewAll')}>${esc(ctx.t('viewAll'))}</button></div>

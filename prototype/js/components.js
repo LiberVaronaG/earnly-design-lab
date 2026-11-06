@@ -125,14 +125,19 @@
   ];
   const pts = (a) => a.map((p) => p.join(',')).join(' ');
 
+  // `bare`: only the svg, inside a span (it can sit in a button) with plain start/end dots and no caption,
+  // as on the app's Home card. The geography stays invented.
   function map(ctx, routeIdx, opts = {}) {
     const r = ROUTES[routeIdx % ROUTES.length];
     const start = r.counted[0];
     const endSeg = r.counted2 || r.counted;
     const end = endSeg[endSeg.length - 1];
     const label = `${ctx.t('fictionalMap')}. ${ctx.t('mapLegendSolid')} / ${ctx.t('mapLegendDashed')}.`;
-    return `<figure class="map ${opts.cls || ''}">
-      <svg viewBox="0 0 340 200" role="img" aria-label="${esc(label)}" preserveAspectRatio="xMidYMid slice">
+    const dot = ([x, y], color) => `<circle cx="${x}" cy="${y}" r="5" fill="${color}"/>`;
+    const ends = opts.bare ? dot(start, 'var(--color-action)') + dot(end, 'var(--color-card-border)') : pin(start, 'var(--color-map-start)', ctx.t('start')) + pin(end, 'var(--color-map-end)', ctx.t('end'));
+    const tag = opts.bare ? 'span' : 'figure';
+    return `<${tag} class="map ${opts.bare ? 'map-bare' : ''} ${opts.cls || ''}">
+      <svg viewBox="0 0 340 200" ${opts.bare ? 'aria-hidden="true" focusable="false"' : `role="img" aria-label="${esc(label)}"`} preserveAspectRatio="xMidYMid slice">
         <rect width="340" height="200" fill="var(--color-map-water)"/>
         <path d="M0 0H220C200 30 196 60 214 86C232 112 210 140 160 160C120 176 60 186 0 200Z" fill="var(--color-map-land)"/>
         <path d="M260 0H340V200H250C270 170 300 150 290 120C280 90 250 60 260 0Z" fill="var(--color-map-land)"/>
@@ -148,15 +153,29 @@
         ${r.dashed.length ? `<polyline points="${pts(r.dashed)}" fill="none" stroke="var(--color-map-route)" stroke-width="3" stroke-dasharray="5 5" stroke-linecap="round" opacity="0.8"/>` : ''}
         <polyline points="${pts(r.counted)}" fill="none" stroke="var(--color-map-route)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
         ${r.counted2 ? `<polyline points="${pts(r.counted2)}" fill="none" stroke="var(--color-map-route)" stroke-width="4" stroke-linecap="round"/>` : ''}
-        ${pin(start, 'var(--color-map-start)', ctx.t('start'))}
-        ${pin(end, 'var(--color-map-end)', ctx.t('end'))}
+        ${ends}
       </svg>
-      ${opts.legend ? `<figcaption class="map-legend">
+      ${opts.bare ? '' : opts.legend ? `<figcaption class="map-legend">
         <span><svg width="22" height="6" aria-hidden="true"><line x1="1" y1="3" x2="21" y2="3" stroke="var(--color-map-route)" stroke-width="4" stroke-linecap="round"/></svg>${esc(ctx.t('mapLegendSolid'))}</span>
         <span><svg width="22" height="6" aria-hidden="true"><line x1="1" y1="3" x2="21" y2="3" stroke="var(--color-map-route)" stroke-width="3" stroke-dasharray="4 4"/></svg>${esc(ctx.t('mapLegendDashed'))}</span>
         <span class="map-fiction">${esc(ctx.t('fictionalMap'))}</span>
       </figcaption>` : `<figcaption class="map-legend"><span class="map-fiction">${esc(ctx.t('fictionalMap'))}</span></figcaption>`}
-    </figure>`;
+    </${tag}>`;
+  }
+
+  // The route alone, fitted to a 64 × 64 square: no streets, no tiles. Start green, end wine.
+  function routeSketch(routeIdx) {
+    const r = ROUTES[routeIdx % ROUTES.length];
+    const all = [...r.counted, ...(r.counted2 || []), ...r.dashed];
+    const xs = all.map((p) => p[0]), ys = all.map((p) => p[1]);
+    const k = 46 / Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 20);
+    const ox = 32 - ((Math.min(...xs) + Math.max(...xs)) / 2) * k, oy = 32 - ((Math.min(...ys) + Math.max(...ys)) / 2) * k;
+    const q = ([x, y]) => [+(x * k + ox).toFixed(1), +(y * k + oy).toFixed(1)];
+    const P = (a) => a.map((p) => q(p).join(',')).join(' ');
+    const line = (a, extra = '') => `<polyline points="${P(a)}" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
+    const [sx, sy] = q(r.counted[0]), [ex, ey] = q((r.counted2 || r.counted).slice(-1)[0]);
+    return `<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">${r.dashed.length ? line(r.dashed, 'stroke-dasharray="3 4" stroke-width="2" opacity=".55"') : ''}${line(r.counted)}${r.counted2 ? line(r.counted2) : ''}
+      <circle cx="${sx}" cy="${sy}" r="4" fill="var(--color-action)"/><circle cx="${ex}" cy="${ey}" r="4" fill="var(--color-card-border)"/></svg>`;
   }
   function pin([x, y], color, label) {
     return `<g transform="translate(${x},${y})"><path d="M0 0C-6 -8 -9 -12 -9 -16A9 9 0 0 1 9 -16C9 -12 6 -8 0 0Z" fill="${color}" stroke="#fff" stroke-width="1.5"/><circle cy="-16" r="3" fill="#fff"/>
@@ -195,5 +214,5 @@
   }
 
   window.E = window.E || {};
-  Object.assign(window.E, { esc, act, navBar, largeTitle, sheetBar, card, kv, button, row, toggle, moneyField, textField, segmented, chip, platformBadge, hourBucket, map, weekChart, hourRing });
+  Object.assign(window.E, { esc, act, navBar, largeTitle, sheetBar, card, kv, button, row, toggle, moneyField, textField, segmented, chip, platformBadge, hourBucket, map, routeSketch, weekChart, hourRing });
 })();
