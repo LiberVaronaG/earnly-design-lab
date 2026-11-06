@@ -1,6 +1,6 @@
-# Recientes de Inicio: cuatro propuestas
+# Recientes de Inicio: elegida D
 
-Rama `design/home-sin-titulo-2026-10-27`, 6 nov 2026. Viene después de los avisos. El resto de Inicio no cambia: todo lo elegido sigue igual, avisos B incluidos.
+Rama `design/home-sin-titulo-2026-10-27`, 6 nov 2026. Viene después de los avisos. **Elegida: D · El último en grande** (`recientes=d`). El resto de Inicio no cambia: todo lo elegido sigue igual, avisos B incluidos.
 
 ![Recientes de la app, A, B, C y D, claro, ES, 390 px](captures/home-recientes/01-comparar-claro-es.png)
 
@@ -138,7 +138,14 @@ iPhone de 390 × 844, texto normal, español, claro. Sin avisos, la cabecera «R
 - **C es la alternativa** si pesa más lo compacto y la identidad que ver las calles: cabe entera en pantalla y no carga mapa.
 - **B solo tiene sentido** si importa más ver en Inicio qué turnos faltan por cobrar que el mapa. Pero deshace una decisión ya tomada.
 
-**Después, Liber pidió D.** Él eligió quitar el mapa, sabiendo que deshace lo del 18 de mayo. D se queda junto a las otras hasta que la confirme al verla.
+**Después, Liber pidió D.** Él eligió quitar el mapa, sabiendo que deshace lo del 18 de mayo.
+
+## Decisión
+
+**Liber eligió D · El último en grande el 6 nov 2026,** al verla construida.
+- Hoy, A, B y C se quedan en el laboratorio como referencia, con sus capturas.
+- Al registrarla no cambió el diseño, y las comprobaciones de abajo siguen valiendo.
+- El enlace del Inicio elegido ahora lleva `recientes=d`.
 
 ## Comprobado
 
@@ -208,4 +215,4 @@ iPhone de 390 × 844, texto normal, español, claro. Sin avisos, la cabecera «R
 
 ## Siguiente paso
 
-Liber confirma D al verla, o elige otra. Nada pasa a SwiftUI.
+Que Liber elija el próximo detalle de Inicio; en el orden propuesto toca el turno activo. Nada pasa a SwiftUI.

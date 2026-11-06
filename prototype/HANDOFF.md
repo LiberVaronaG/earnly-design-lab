@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, y los avisos B · Cada uno en su sitio (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (tres propuestas, sin elegir): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio y Recientes D · El último en grande (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -149,7 +149,7 @@ Detalle completo en [HOME-AVISOS.md](HOME-AVISOS.md).
   - cambiar SPEC §4.3, PARITY.md y Android.
 - Siguiente paso de entonces: el próximo detalle de Inicio. Fue Recientes, el siguiente del orden propuesto.
 
-### Recientes (6 nov): **D pedida por Liber, pendiente de confirmar**
+### Recientes (6 nov): **elegida D · El último en grande (`recientes=d`)**
 
 Detalle completo en [HOME-RECIENTES.md](HOME-RECIENTES.md).
 
@@ -177,7 +177,17 @@ Detalle completo en [HOME-RECIENTES.md](HOME-RECIENTES.md).
   - Los dos anteriores van como filas, bajo «Anteriores».
   - A 390 px sin avisos, la tarjeta grande cabe entera en la primera pantalla. El bloque mide 331 px.
 - **Comprobación con D:** 1440 renders sin fallos; control negativo de 12 de 12. Se corrigieron dos desbordes de D con un importe largo a 320 px y texto al 200 %.
-- **Siguiente paso:** que Liber confirme D al verla. Nada pasa a SwiftUI.
+- **Decisión de Liber (6 nov): D · El último en grande.** La confirmó al verla.
+  - Hoy, A, B y C se quedan en el laboratorio como referencia, con sus capturas.
+  - Al registrarla no cambió el diseño; las comprobaciones siguen valiendo.
+  - El enlace del Inicio elegido ahora lleva `recientes=d`.
+- **Pendiente si pasa a la app:**
+  - quitar el mapa de Inicio, que deshace la decisión del 18 may;
+  - revisar «Anteriores» / «Earlier», la única frase nueva;
+  - comprobar en el iPhone el reparto de las tres cifras con Dynamic Type real;
+  - una etiqueta de VoiceOver por tarjeta y por fila;
+  - cambiar SPEC §4.3, PARITY.md, `docs/parity/home-screen.md` y Android.
+- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. En el orden propuesto toca el turno activo: el círculo que cambia por «Turno activo», que falta en el laboratorio. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 
