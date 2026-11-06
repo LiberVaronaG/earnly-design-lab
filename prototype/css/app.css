@@ -487,6 +487,42 @@
 .rd-list .rd-row { grid-template-columns: 1.4em 1fr auto; padding-inline: 0; }
 .rd-rname { font-weight: var(--weight-semibold); }
 .rd-row .rb-side { flex-shrink: 1; min-width: 0; }
+/* ---------- «Turno en curso»: the app's screen (ActiveTrackingView) and proposals A, B and C ---------- */
+/* The column takes exactly the screen; a map that may shrink gives room first (A to 140 px, B and C fill what
+   is left, never under 140 px). Only when even that is too tall does the column scroll above End Shift. */
+.ts { flex: 1 1 0; display: flex; flex-direction: column; gap: var(--space-md); }
+.ts-spacer { flex: 1 1 0; min-height: var(--space-xs); }
+.ts-a { gap: var(--space-sm); }
+.ts-a .ts-spacer { min-height: 0; }
+.ts-a .ts-counters { gap: var(--space-sm); }
+.ts .map-live { display: block; }
+.map.ts-map-240 svg { height: 240px; aspect-ratio: auto; }
+.map.ts-map-fill, .map.ts-map-shrink { position: relative; flex: 1 1 auto; min-height: 140px; }
+/* A: 240 px like the app while there is room (it takes the free space first, up to 240), down to 140 when not. */
+.map.ts-map-shrink { flex: 10 1 0; max-height: 240px; }
+.map.ts-map-fill svg, .map.ts-map-shrink svg { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+.ts-counters { display: flex; flex-direction: column; align-items: center; gap: var(--space-md); text-align: center; }
+.ts-counter { display: flex; flex-direction: column; align-items: center; gap: var(--space-xxs); }
+.ts-counter-label { color: var(--color-text-muted); }
+.ts-counter-mi { font-size: var(--size-large-title); line-height: 1.1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ts-counter-mi small { font-size: var(--size-body); color: var(--color-text-muted); }
+.ts-counter-dur { font-size: var(--size-title2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ts-end { display: flex; align-items: center; justify-content: center; width: 100%; min-height: var(--control-min-target); padding: 20px var(--space-md); border-radius: var(--radius-button); font-weight: var(--weight-bold); text-align: center; }
+.ts-end-glow { background: var(--color-destructive-fill); color: var(--color-on-action); }
+.ts-end-glow { box-shadow: 0 0 18px color-mix(in srgb, var(--color-destructive-fill) 55%, transparent), 0 0 6px color-mix(in srgb, var(--color-destructive-fill) 35%, transparent); }
+.ts-foot { flex: none; padding: var(--space-xs) var(--space-md) var(--space-md); background: var(--color-bg); }
+.ts-status { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-xs) var(--space-sm); }
+.ts-who { display: inline-flex; align-items: center; gap: 6px; color: var(--color-text-muted); font-size: var(--size-subhead); }
+.ts-who .ic { width: 1.1em; height: 1.1em; }
+.ts-board { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm) var(--space-md) var(--space-md); }
+.ts-board-fig { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--space-xs); }
+.ts-big { font-family: var(--font-numeric); font-size: var(--size-large-title); font-weight: var(--weight-semibold); line-height: 1.1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ts-big small, .ts-figs .rd-val small { font-size: var(--size-subhead); font-weight: 400; color: var(--color-text-muted); }
+.ts-cap { color: var(--color-text-muted); font-size: var(--size-subhead); }
+.ts-figs { padding-top: var(--space-sm); border-top: var(--stroke-hairline) solid var(--color-separator); }
+.ts-panel { display: flex; flex-direction: column; gap: var(--space-sm); padding: var(--space-sm) var(--space-md) var(--space-md); background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); }
+.ts-c .ts-figs { border-top: 0; padding-top: 0; }
+.ts-figs .rd-val { align-items: baseline; gap: 0.2em; }
 
 /* Large text: the icon moves above its title instead of eating a column of the line. */
 .app[data-ax="true"] .nb-item { grid-template-columns: 1fr; row-gap: var(--space-xxs); }

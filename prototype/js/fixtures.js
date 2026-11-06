@@ -161,6 +161,13 @@
   };
 
   // The shift produced by the simulated close flow (matches the 03-cierre-laboral captures).
+  // «Turno en curso»: fixed example values for the shift in progress. The lab's counters never advance,
+  // and the deduction is stored, not derived from a rate.
+  const ACTIVE_SHIFT = {
+    normal: { start: '05:10', elapsed: '1:24:10', miles: 18.6, deduction: 13.49, route: 9 },
+    acquiring: { start: '06:34', elapsed: '0:00:12', miles: 0, deduction: 0, route: null },
+    long: { start: '04:00', elapsed: '10:24:10', miles: 312.4, deduction: 226.49, route: 5 }
+  };
   const CLOSE_SHIFT = { id: 'wNew', platform: 'amazonFlex', date: '2026-10-23', start: '01:55', end: '04:55', miles: 40.0, deduction: 29.00, gasKnownCost: 8.00, route: 9 };
 
   const WEEK_MILES = { partial: [0, 15, 0, 10, 20, 0, 0], complete: [18, 20, 6, 40, 0, 0, 0], tooLarge: [0, 0, 0, 0, 15, 20, 0], empty: [0, 0, 0, 0, 0, 0, 0], orphan: [0, 0, 6, 40, 0, 0, 0], longPay: [0, 0, 4790.6, 0, 0, 0, 312.4], zeroPay: [0, 0, 0, 8, 0, 0, 18], personalLong: [0, 15, 0, 10, 20, 0, 0] };
@@ -246,5 +253,5 @@
   }
 
   window.E = window.E || {};
-  Object.assign(window.E, { TODAY, PLATFORMS, SCENARIOS, CLOSE_SHIFT, WEEK_MILES, load, mins, inPeriod, summarize, seIncome });
+  Object.assign(window.E, { TODAY, PLATFORMS, SCENARIOS, ACTIVE_SHIFT, CLOSE_SHIFT, WEEK_MILES, load, mins, inPeriod, summarize, seIncome });
 })();

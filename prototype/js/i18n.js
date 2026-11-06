@@ -119,6 +119,13 @@
       // Active shift (approx)
       activeShift: 'Shift in progress', choosePlatform: 'Which platform?', simulated: 'Simulated drive — no GPS in this prototype',
       endShift: 'End Shift', elapsed: 'Elapsed', milesSoFar: 'Miles so far',
+      // «Turno en curso», as in the app (ActiveTrackingView) and the proposals.
+      activeShiftTitle: 'Active Shift', endShiftQ: 'End Shift?', endShiftBody: 'Your shift will be saved with the miles tracked so far.', saveShift: 'Save Shift',
+      endShiftHint: 'Opens confirmation to end and save the current shift', routeMap: 'Route map', routeWaiting: 'Waiting for first location', routeInProgress: 'Route in progress',
+      nLowShiftBody: "Low Power Mode came on during your shift, and iOS throttles location while it's on — your miles may be undercounted. Turn it off in iOS Settings → Battery.",
+      shiftTracking: 'Tracking shift', shiftSince: 'since {t}', thisShift: 'this shift',
+      // Proposals: the app's own spoken version of the banner, shorter than the visible text.
+      nLowShiftShort: 'Your miles may be undercounted. Turn it off in iOS Settings → Battery.',
       // Recovery
       shiftRecovery: 'Shift Recovery', forgotEnd: 'Did you forget to end this shift?',
       forgotBody: 'We found a shift still in progress from earlier. Pick how to close it.',
@@ -314,6 +321,11 @@
       trashedDemo: 'Movido a la papelera (demo)',
       activeShift: 'Turno en curso', choosePlatform: '¿Qué plataforma?', simulated: 'Trayecto simulado: este prototipo no usa GPS',
       endShift: 'Terminar turno', elapsed: 'Tiempo', milesSoFar: 'Millas hasta ahora',
+      activeShiftTitle: 'Turno Activo', endShiftQ: '¿Terminar turno?', endShiftBody: 'Tu turno se guardará con las millas rastreadas hasta ahora.', saveShift: 'Guardar turno',
+      endShiftHint: 'Abre la confirmación para terminar y guardar el turno actual', routeMap: 'Mapa de ruta', routeWaiting: 'Esperando primera ubicación', routeInProgress: 'Ruta en progreso',
+      nLowShiftBody: 'El Modo Ahorro de Batería se activó durante tu turno, y iOS limita la ubicación mientras está encendido: tus millas pueden quedarse cortas. Desactívalo en Ajustes de iOS → Batería.',
+      shiftTracking: 'Trackeando turno', shiftSince: 'desde {t}', thisShift: 'este turno',
+      nLowShiftShort: 'Tus millas pueden quedarse cortas. Desactívalo en Ajustes de iOS → Batería.',
       shiftRecovery: 'Recuperar turno', forgotEnd: '¿Olvidaste terminar este turno?',
       forgotBody: 'Encontramos un turno que seguía en curso. Elige cómo cerrarlo.',
       started: 'Empezó', lastGps: 'Último GPS', milesTracked: 'Millas registradas',

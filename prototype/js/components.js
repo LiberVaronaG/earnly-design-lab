@@ -134,6 +134,21 @@
     const end = endSeg[endSeg.length - 1];
     const label = `${ctx.t('fictionalMap')}. ${ctx.t('mapLegendSolid')} / ${ctx.t('mapLegendDashed')}.`;
     const dot = ([x, y], color) => `<circle cx="${x}" cy="${y}" r="5" fill="${color}"/>`;
+    // Live (shift in progress): the route so far in the app's brandBorder and the user's dot at its end;
+    // `waiting` draws no route yet, as before the first GPS point. The app follows the user, so a tall map
+    // keeps the right side, where the example routes end, instead of cropping the dot away.
+    if (opts.live) {
+      const you = opts.waiting ? '' : `<circle cx="${end[0]}" cy="${end[1]}" r="9" fill="var(--color-on-action)"/><circle cx="${end[0]}" cy="${end[1]}" r="6.5" fill="var(--color-accent-positive)"/>`;
+      const route = opts.waiting ? '' : `<polyline points="${pts(r.counted)}" fill="none" stroke="var(--color-card-border)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`;
+      return `<span class="map map-live ${opts.cls || ''}" role="img" aria-label="${esc(opts.label || '')}"><svg viewBox="0 0 340 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMaxYMid slice">
+        <rect width="340" height="200" fill="var(--color-map-water)"/>
+        <path d="M0 0H220C200 30 196 60 214 86C232 112 210 140 160 160C120 176 60 186 0 200Z" fill="var(--color-map-land)"/>
+        <path d="M260 0H340V200H250C270 170 300 150 290 120C280 90 250 60 260 0Z" fill="var(--color-map-land)"/>
+        <ellipse cx="236" cy="150" rx="26" ry="12" fill="var(--color-map-park)"/><ellipse cx="70" cy="60" rx="30" ry="18" fill="var(--color-map-park)"/>
+        <g stroke="var(--color-map-road)" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.95"><path d="M0 120C60 112 140 108 340 98"/><path d="M40 0C50 60 60 130 70 200"/><path d="M130 0C134 50 140 110 150 170"/><path d="M290 0C292 60 300 130 310 200"/><path d="M0 40C80 44 160 40 220 36"/></g>
+        <g fill="var(--color-text-muted)" font-size="10" font-family="var(--font-text)" opacity="0.8"><text x="226" y="40">Isla Palma</text><text x="20" y="186">Bahía Norte</text><text x="150" y="70">Av. Central</text></g>
+        ${route}${you}</svg></span>`;
+    }
     const ends = opts.bare ? dot(start, 'var(--color-action)') + dot(end, 'var(--color-card-border)') : pin(start, 'var(--color-map-start)', ctx.t('start')) + pin(end, 'var(--color-map-end)', ctx.t('end'));
     const tag = opts.bare ? 'span' : 'figure';
     return `<${tag} class="map ${opts.bare ? 'map-bare' : ''} ${opts.cls || ''}">

@@ -583,7 +583,63 @@
 
   // ---------- Active shift (approximation) & close ----------
 
+  // The app's screen (ActiveTrackingView) and three proposals, V0 only. Fixed example values: nothing advances.
+  const lowCard = (ctx, body) => (ctx.data.lowPower ? `<div class="notice notice-card ts-low" role="group" aria-label="${esc(ctx.t('nLowTitle'))}"><span class="notice-icon">${icon('battery')}</span><span class="notice-main"><span class="notice-title">${esc(ctx.t('nLowTitle'))}</span><span class="notice-body">${esc(ctx.t(body))}</span></span></div>` : '');
+  function activeParts(ctx) {
+    const a = ctx.ui.active || {};
+    const sh = E.ACTIVE_SHIFT[a.kind || 'normal'];
+    const waiting = sh.route == null;
+    const platform = a.platform || 'amazonFlex';
+    const miles = ctx.fmt.miles(ctx.lang, sh.miles);
+    const chip = waiting
+      ? `<span class="pv-chip ts-chip"><span class="pv-live-mark">${icon('location')}</span><span>${esc(ctx.t('liveAcquiring'))}</span></span>`
+      : `<span class="pv-chip ts-chip"><span class="pv-live-mark"><span class="pv-live-dot"></span></span><span>${esc(ctx.t('shiftTracking'))}</span></span>`;
+    const who = `<span class="ts-who">${platformBadge(platform)}<span>${esc(pname(platform))} · ${esc(ctx.t('shiftSince', { t: ctx.fmt.time(ctx.lang, sh.start) }))}</span></span>`;
+    const fig = (v, label) => `<span class="rd-fig"><span class="rd-val">${v}</span><span class="rd-lab">${esc(label)}</span></span>`;
+    return {
+      sh, miles, chip, who,
+      status: `<div class="ts-status">${chip}${who}</div>`,
+      map: (cls) => E.map(ctx, sh.route ?? 0, { live: true, waiting, cls, label: `${ctx.t('routeMap')}, ${ctx.t(waiting ? 'routeWaiting' : 'routeInProgress')}` }),
+      // The app's banner in its during-shift wording: not tappable, iOS has no link to Battery settings.
+      low: lowCard(ctx, 'nLowShiftBody'),
+      lowShort: lowCard(ctx, 'nLowShiftShort'),
+      counters: `<div class="ts-counters"><span class="ts-counter"><span class="ts-counter-label">${esc(ctx.t('miles'))}</span><span class="ts-counter-mi">${esc(miles)}<small> mi</small></span></span>
+        <span class="ts-counter"><span class="ts-counter-label">${esc(ctx.t('duration'))}</span><span class="ts-counter-dur">${esc(sh.elapsed)}</span></span></div>`,
+      figMiles: fig(`${esc(miles)}<small> mi</small>`, ctx.t('miles')),
+      figDur: fig(esc(sh.elapsed), ctx.t('duration')),
+      figDed: fig(esc(money(ctx, sh.deduction)), ctx.t('estimatedDeduction')),
+      end: (cls) => `<button class="ts-end ${cls}" ${act('endShift', 'confirm')} aria-description="${esc(ctx.t('endShiftHint'))}">${esc(ctx.t('endShift'))}</button>`
+    };
+  }
+
+  function activeVariant(ctx) {
+    const P = activeParts(ctx);
+    const header = navBar(ctx, ctx.t('activeShiftTitle'));
+    // Today: map, then the two counters centred in what is left, then End Shift, all in one column that
+    // does not scroll in the app. No platform, no start time, nothing that says it is recording.
+    if (ctx.turno === 'actual') {
+      return { header, body: `<div class="ts ts-app">${P.low}${P.map('ts-map-240')}<span class="ts-spacer"></span>${P.counters}<span class="ts-spacer"></span>${P.end('ts-end-glow')}</div>` };
+    }
+    // A · The same screen with one status line: whether it records, the platform and when it started.
+    if (ctx.turno === 'a') {
+      return { header, body: `<div class="ts ts-a">${P.status}${P.lowShort}${P.map('ts-map-shrink')}<span class="ts-spacer"></span>${P.counters}<span class="ts-spacer"></span></div>`,
+        footer: `<div class="ts-foot">${P.end('ts-end-glow')}</div>` };
+    }
+    // B · The language of «El viaje primero»: the state, this shift's miles large, time and deduction, then the map.
+  // End Shift keeps SPEC §4.4 (destructive fill, static glow) in every proposal.
+    if (ctx.turno === 'b') {
+      return { header, body: `<div class="ts ts-b"><div class="pv-box ts-board">${P.status}
+          <span class="ts-board-fig"><span class="ts-big">${esc(P.miles)}<small> mi</small></span> <span class="ts-cap">${esc(ctx.t('thisShift'))}</span></span>
+          <div class="rd-figs ts-figs">${P.figDur}${P.figDed}</div></div>${P.lowShort}${P.map('ts-map-fill')}</div>`,
+        footer: `<div class="ts-foot">${P.end('ts-end-glow')}</div>` };
+    }
+    // C · The map takes whatever is left; the figures sit in one panel above End Shift.
+    return { header, body: `<div class="ts ts-c">${P.lowShort}${P.map('ts-map-fill')}<div class="ts-panel">${P.status}<div class="rd-figs ts-figs">${P.figMiles}${P.figDur}${P.figDed}</div></div></div>`,
+      footer: `<div class="ts-foot">${P.end('ts-end-glow')}</div>` };
+  }
+
   function active(ctx) {
+    if (ctx.famId === 'v0' && ['actual', 'a', 'b', 'c'].includes(ctx.turno)) return activeVariant(ctx);
     const a = ctx.ui.active || {};
     const platforms = ['amazonFlex', 'uber', 'doorDash', 'spark'];
     return {

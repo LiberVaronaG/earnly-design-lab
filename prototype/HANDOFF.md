@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio y Recientes D · El último en grande (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio y Recientes D · El último en grande (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Turno en curso (tres propuestas, sin elegir): `#view=turno&family=v0&lang=es&scenario=partial&screen=active`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -188,6 +188,32 @@ Detalle completo en [HOME-RECIENTES.md](HOME-RECIENTES.md).
   - una etiqueta de VoiceOver por tarjeta y por fila;
   - cambiar SPEC §4.3, PARITY.md, `docs/parity/home-screen.md` y Android.
 - **Siguiente paso:** que Liber elija el próximo detalle de Inicio. En el orden propuesto toca el turno activo: el círculo que cambia por «Turno activo», que falta en el laboratorio. Nada pasa a SwiftUI.
+
+### Turno en curso (6 nov): **tres propuestas, sin elegir**
+
+Detalle completo en [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md).
+
+- **Hallazgo:** con un turno en marcha, Inicio salta solo a la pantalla de seguimiento, que no tiene botón para volver, así que el círculo «Turno activo» de Inicio casi nunca se ve. Por eso el paso pasó a ser la pantalla del turno en curso, que Liber eligió.
+- **Corrección:** el «Turno en curso» del laboratorio no era la app. Se queda como `turno=lab`, el valor por defecto. La vista nueva usa como «Hoy» la pantalla de la app: título, mapa de 240 pt, millas, duración y «Terminar turno».
+- **Qué falla hoy:**
+  - no dice si graba, en qué plataforma ni desde qué hora;
+  - «Terminar turno» queda fuera de la pantalla en 80 de 180 estados, porque la pantalla no se desplaza: a 390 px, con el aviso de batería; a 320 px, siempre;
+  - con texto normal, un tercio de la pantalla queda vacío.
+- **Las propuestas:**
+  - **A · Con estado** (`turno=a`): la misma pantalla con una línea de estado.
+  - **B · Como tu viaje personal** (`turno=b`): el lenguaje de «El viaje primero»: estado, millas grandes, duración y deducción, y luego el mapa.
+  - **C · Mapa grande** (`turno=c`): el mapa arriba y un panel con tres cifras.
+- **En las tres:**
+  - «Terminar turno» siempre a la vista, con el rojo y el resplandor del SPEC §4.4;
+  - el aviso de batería corto;
+  - un mapa que encoge antes de tapar una cifra.
+- **Frente al SPEC §4.4,** que pide el mapa arriba en un tercio de la pantalla: A lo cumple, y B y C lo cambian.
+- **Recomendación: B.** Es la única en la que las millas se ven sin desplazar en los 180 estados. Su coste es cambiar esa línea del SPEC.
+- **Comprobación:**
+  - 720 renders sin fallos y control negativo de 11 de 11;
+  - Recientes y avisos siguen sin fallos, y sus capturas no cambiaron.
+- **No se propone «Sin señal GPS»:** con el filtro de 10 m, parado no llegan puntos, y daría falsas alarmas. Haría falta un cambio en el motor.
+- **Siguiente paso:** que Liber elija A, B, C o ninguna. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

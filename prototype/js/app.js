@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', avisos: 'actual', recientes: 'lab', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', avisos: 'actual', recientes: 'lab', turno: 'lab', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };
@@ -95,7 +95,12 @@
     viewAll() { state.ui.tab = 'history'; state.ui.stacks.history = []; state.ui.historySeg = 'work'; navigated(); },
     startShift() { state.ui.active = { platform: null }; push('active'); },
     pickPlatform(arg) { state.ui.active.platform = arg; },
-    endShift() { startClose(); },
+    // The app asks «End Shift?» before saving; the lab's old approximation went straight to the close.
+    endShift(arg) {
+      if (arg === 'confirm') { state.ui.dialog = { kind: 'endShift' }; return; }
+      state.ui.dialog = null;
+      startClose();
+    },
     openExtras() { state.ui.close.extrasOpen = true; state.ui.focusTarget = 'in-payX'; },
     saveStation() {
       state.data.stations.push(state.ui.f.station.trim());
@@ -213,6 +218,13 @@
   function dialog(ctx) {
     const d = state.ui.dialog;
     if (!d) return '';
+    if (d.kind === 'endShift') {
+      return `<div class="dialog-backdrop"><div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="dlg-title" aria-describedby="dlg-body">
+        <h2 id="dlg-title" class="dialog-title" tabindex="-1" data-dialog-heading>${esc(ctx.t('endShiftQ'))}</h2>
+        <p id="dlg-body" class="note">${esc(ctx.t('endShiftBody'))}</p>
+        <div class="dialog-actions">${E.button(ctx.t('cancel'), 'cancelDialog', undefined, { kind: 'secondary' })}${E.button(ctx.t('saveShift'), 'endShift')}</div>
+      </div></div>`;
+    }
     return `<div class="dialog-backdrop"><div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="dlg-title" aria-describedby="dlg-body">
       <h2 id="dlg-title" class="dialog-title" tabindex="-1" data-dialog-heading>${esc(ctx.t('trashConfirmTitle'))}</h2>
       <p id="dlg-body" class="note">${esc(ctx.t('trashConfirmBody'))}</p>
@@ -272,13 +284,18 @@
   }
 
   // Recientes D: a figure that can't fit even alone on its line shrinks just enough, like fitAmounts.
+  // The same for the active-shift proposals' figures; the app's own screen («Turno en curso actual») is left alone.
   function fitRecentFigures(app) {
-    for (const val of app.querySelectorAll('.rd-val')) {
-      const room = val.closest('.rd-text').clientWidth;
-      const need = val.scrollWidth;
-      if (need <= room) continue;
-      const size = parseFloat(getComputedStyle(val).fontSize);
-      val.style.fontSize = `${Math.floor((size * room) / need)}px`;
+    const figs = [...app.querySelectorAll('.rd-val')].map((v) => [v, v.closest('.rd-figs')])
+      .concat([...app.querySelectorAll('.ts-a .ts-counter-mi')].map((v) => [v, v.closest('.ts-counters')]))
+      .concat([...app.querySelectorAll('.ts-big')].map((v) => [v, v.closest('.ts-board-fig')]));
+    for (const [val, box] of figs) {
+      const room = box.clientWidth;
+      // A unit in <small> keeps its size, so one proportional step can fall short: repeat a few times.
+      for (let i = 0; i < 4 && val.scrollWidth > room; i++) {
+        const size = parseFloat(getComputedStyle(val).fontSize);
+        val.style.fontSize = `${Math.floor((size * room) / val.scrollWidth)}px`;
+      }
     }
   }
 
@@ -326,7 +343,8 @@
       app.dataset.circ = slot.dataset.circ || 'actual';
       app.dataset.avisos = slot.dataset.avisos || 'actual';
       app.dataset.recientes = slot.dataset.recientes || 'lab';
-      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo, circ: app.dataset.circ, avisos: app.dataset.avisos, recientes: app.dataset.recientes });
+      app.dataset.turno = slot.dataset.turno || 'lab';
+      app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo, circ: app.dataset.circ, avisos: app.dataset.avisos, recientes: app.dataset.recientes, turno: app.dataset.turno });
       fitAmounts(app);
       fitPersonal(app);
       fitRecentFigures(app);
@@ -423,7 +441,11 @@
     // The latest shift was recorded without GPS points, so it has no route to draw.
     homeNoRoute: () => { state.data.permission = 'always'; const s = [...state.data.shifts].sort((a, b) => (b.date + b.start).localeCompare(a.date + a.start))[0]; if (s) s.route = null; },
     homeMotion: () => { state.data.permission = 'always'; state.data.autoPersonal = true; state.data.motionDenied = true; },
-    active: () => { state.ui.active = { platform: 'amazonFlex' }; push('active'); },
+    active: () => { state.ui.active = { platform: 'amazonFlex', kind: 'normal' }; push('active'); },
+    activeAcquiring: () => { state.ui.active = { platform: 'amazonFlex', kind: 'acquiring' }; push('active'); },
+    activeLowPower: () => { state.data.lowPower = true; state.ui.active = { platform: 'amazonFlex', kind: 'normal' }; push('active'); },
+    activeLong: () => { state.ui.active = { platform: 'amazonFlex', kind: 'long' }; push('active'); },
+    activeEnd: () => { state.ui.active = { platform: 'amazonFlex', kind: 'normal' }; push('active'); state.ui.dialog = { kind: 'endShift' }; },
     close: () => { startClose(); },
     closeResult: () => { startClose(); state.ui.f.payMain = '90'; },
     closeInvalid: () => { startClose(); state.ui.f.payMain = '90..'; },
