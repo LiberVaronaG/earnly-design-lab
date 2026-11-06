@@ -1,6 +1,6 @@
 # Avisos de Inicio: tres propuestas
 
-Rama `design/home-sin-titulo-2026-10-27`, 6 nov 2026. Viene después de Iniciar turno. El resto de Inicio no cambia: tarjeta C, Opciones, Personal A, El viaje primero y el círculo con Corte siguen igual.
+Rama `design/home-sin-titulo-2026-10-27`, 6 nov 2026. Viene después de Iniciar turno. **Elegida: B · Cada uno en su sitio** (`avisos=b`). El resto de Inicio no cambia: tarjeta C, Opciones, Personal A, El viaje primero y el círculo con Corte siguen igual.
 
 ![Dos avisos a la vez: hoy, A, B y C, claro, ES, 390 px](captures/home-avisos/02-comparar-dos-avisos-claro-es.png)
 
@@ -116,7 +116,7 @@ Cada celda es dónde empieza el título de Recientes, en px desde arriba del con
   - Con dos avisos, Recientes empieza a 1823 en Hoy, 1942 en A, 1503 en B y 1253 en C.
 - **320 px, texto normal:** con dos avisos, el círculo solo cabe entero en B.
 
-## Recomendación: B
+## Recomendación: B (elegida el 6 nov)
 
 - **El círculo no se mueve.** Quien conduce encuentra «Iniciar turno» siempre en el mismo sitio. Los avisos van debajo de él, no lo empujan.
 - **El motivo está junto a lo que afecta.** Con batería, el círculo desactivado tiene su explicación justo debajo. Personal bloqueado se ve dentro de Personal, que es lo que no funciona.
@@ -183,6 +183,13 @@ Cada celda es dónde empieza el título de Recientes, en px desde arriba del con
 - Android.
 - No cambia nada de cómo se detecta cada estado ni cuándo se desactiva «Iniciar turno».
 
+## Decisión
+
+**Liber eligió B · Cada uno en su sitio el 6 nov 2026**; era la recomendada.
+- A y C se quedan en el laboratorio como referencia, con sus capturas.
+- Al registrarla no cambió el diseño, y las comprobaciones de arriba siguen valiendo.
+- El enlace del Inicio elegido ahora lleva `avisos=b`.
+
 ## Siguiente paso
 
-Liber elige A, B, C o ninguna. Nada pasa a SwiftUI.
+Que Liber elija el próximo detalle de Inicio; en el orden propuesto toca Recientes. Nada pasa a SwiftUI.

@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero y el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos (tres propuestas, sin elegir): `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, y los avisos B · Cada uno en su sitio (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -125,7 +125,7 @@ Detalle completo en [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md).
   - Si pasa a la app: crédito de OpenStreetMap en Acerca de, SPEC §4.3 y PARITY.md.
 - Siguiente paso de entonces: que Liber eligiera el próximo detalle de Inicio. Fueron los avisos.
 
-### Avisos (6 nov): **tres propuestas, sin elegir**
+### Avisos (6 nov): **elegida B · Cada uno en su sitio (`avisos=b`)**
 
 Detalle completo en [HOME-AVISOS.md](HOME-AVISOS.md).
 
@@ -140,7 +140,14 @@ Detalle completo en [HOME-AVISOS.md](HOME-AVISOS.md).
 - Comprobación: auditoría WebKit de 864 renders y las 8 hojas de C, sin fallos; un control negativo detectó 5 de 5 fallos provocados.
   - Se corrigió el halo verde del Corte sobre el círculo desactivado en oscuro.
 - La herramienta de capturas ya no deja que la barra de desplazamiento del Mac robe 11 px. Las capturas anteriores no se regeneraron.
-- **Siguiente paso:** que Liber elija A, B, C o ninguna. Nada pasa a SwiftUI.
+- **Decisión de Liber (6 nov): B · Cada uno en su sitio**, la recomendada.
+  - A y C se quedan en el laboratorio como referencia, con sus capturas.
+  - Al registrarla no cambió el producto; las comprobaciones siguen valiendo.
+- **Pendiente si pasa a la app:**
+  - revisar las cinco frases cortas nuevas en español e inglés;
+  - comprobar en el iPhone que se lee el texto blanco del círculo desactivado;
+  - cambiar SPEC §4.3, PARITY.md y Android.
+- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Lo siguiente del orden propuesto es Recientes. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 
