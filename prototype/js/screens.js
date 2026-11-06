@@ -505,12 +505,37 @@
       <span class="row-chevron">${icon('chevronRight')}</span></button>`;
   }
 
+  // D · Liber's pick (6 Nov) from a ChatGPT sketch: the latest shift large, with miles, pay and the estimated
+  // deduction as figures, then the two before it as small rows. No map: the route stays in the shift detail.
+  function payFigure(ctx, s) {
+    if (s.main === 'overflow') return { v: '—', chip: '' };
+    if (s.main === null) return s.extras.length ? { v: money(ctx, mainAmount(s)), chip: chip(ctx.t('partialChip'), 'partial') } : { v: '', chip: chip(ctx.t('noPayChip')) };
+    return { v: money(ctx, mainAmount(s)), chip: '' };
+  }
+  function recentD(ctx, list) {
+    const [s, ...rest] = list;
+    const pay = payFigure(ctx, s);
+    const fig = (v, label, extra = '') => `<span class="rd-fig"><span class="rd-val">${v}</span><span class="rd-lab">${esc(label)}${extra ? ` ${extra}` : ''}</span></span>`;
+    const latest = `<button class="rd" id="recent-latest" ${act('openShift', s.id)}><span class="rd-body"><span class="rd-text">
+        <span class="rd-top"><span class="rd-who">${platformBadge(s.platform)}<span class="rd-name">${esc(pname(s.platform))}</span></span> <span class="rd-date">${esc(ctx.fmt.date(ctx.lang, s.date, 'weekdayShort'))}</span></span>
+        <span class="rd-figs">${fig(esc(mi(ctx, s.miles)), ctx.t('miles'))}${fig(pay.v ? esc(pay.v) : pay.chip, ctx.t('paid'), pay.v ? pay.chip : '')}${fig(s.deduction == null ? '—' : esc(money(ctx, s.deduction)), ctx.t('estimatedDeduction'))}</span>
+        <span class="rd-foot"><span>${esc(ctx.fmt.timeRange(ctx.lang, s.start, s.end))}</span> <span class="rd-dur">${durShort(s)}</span></span>
+      </span><span class="row-chevron">${icon('chevronRight')}</span></span></button>`;
+    const rows = rest.length ? `<h3 class="rd-earlier">${esc(ctx.t('earlier'))}</h3><div class="rd-list">${rest.map((r) => `<button class="rb-row rd-row" ${act('openShift', r.id)}>
+      <span class="rb-icon">${platformBadge(r.platform)}</span>
+      <span class="rb-content"><span class="rb-main"><span class="rd-rname">${esc(pname(r.platform))}</span> <span class="rb-sub">${esc(ctx.fmt.date(ctx.lang, r.date, 'weekdayShort'))} · ${durShort(r)}</span></span>
+      <span class="rb-side"><span class="rb-mi">${mi(ctx, r.miles)}</span> <span class="rb-pay">${payNote(ctx, r)}</span></span></span>
+      <span class="row-chevron">${icon('chevronRight')}</span>
+    </button>`).join('')}</div>` : '';
+    return `<div class="rd-wrap">${latest}${rows}</div>`;
+  }
+
   function recentBlock(ctx) {
     const list = [...ctx.data.shifts].sort(byDateDesc).slice(0, 3);
-    if (ctx.famId === 'v0' && ['actual', 'a', 'b', 'c'].includes(ctx.recientes)) {
+    if (ctx.famId === 'v0' && ['actual', 'a', 'b', 'c', 'd'].includes(ctx.recientes)) {
       // As in the app, Home shows no Recent section at all until a shift is saved.
       if (!list.length) return '';
-      const body = { actual: () => recentApp(ctx, list[0]), a: () => recentA(ctx, list[0]), b: () => recentB(ctx, list), c: () => recentC(ctx, list[0]) }[ctx.recientes]();
+      const body = { actual: () => recentApp(ctx, list[0]), a: () => recentA(ctx, list[0]), b: () => recentB(ctx, list), c: () => recentC(ctx, list[0]), d: () => recentD(ctx, list) }[ctx.recientes]();
       return `<section class="section rx-section">${recentHead(ctx)}${body}</section>`;
     }
     if (!list.length) return `<section class="section"><h2 class="section-title">${esc(ctx.t('recent'))}</h2><p class="empty">${esc(ctx.t('emptyRecent'))}</p></section>`;

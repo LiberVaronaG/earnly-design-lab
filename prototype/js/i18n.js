@@ -55,7 +55,7 @@
       startShift: 'Start Shift',
       recent: 'Recent', viewAll: 'View all',
       // Home «Recent», as in the app's card, and the proposals.
-      recentA11y: 'Most recent shift, {d}, {m} miles', noRoute: 'No Route',
+      recentA11y: 'Most recent shift, {d}, {m} miles', noRoute: 'No Route', earlier: 'Earlier',
       personal: 'Personal', work: 'Work',
       personalToday: '{a} mi today', personalMonth: '{b} mi mo.',
       liveRecording: 'Tracking personal', liveAcquiring: 'Finding your location', liveNoSignal: 'No GPS signal', livePaused: 'Drive paused',
@@ -254,7 +254,7 @@
       startOffHint: 'No disponible con Modo Ahorro de Batería',
       startShift: 'Iniciar turno',
       recent: 'Recientes', viewAll: 'Ver todo',
-      recentA11y: 'Último turno, {d}, {m} millas', noRoute: 'Sin ruta',
+      recentA11y: 'Último turno, {d}, {m} millas', noRoute: 'Sin ruta', earlier: 'Anteriores',
       personal: 'Personal', work: 'Trabajo',
       personalToday: '{a} mi hoy', personalMonth: '{b} mi mes',
       liveRecording: 'Trackeando personal', liveAcquiring: 'Buscando tu ubicación', liveNoSignal: 'Sin señal GPS', livePaused: 'Viaje en pausa',
@@ -441,6 +441,11 @@
       const [h, m] = hhmm.split(':').map(Number);
       const d = new Date(2026, 9, 1, h, m);
       return new Intl.DateTimeFormat(locale(lang), { hour: 'numeric', minute: '2-digit' }).format(d);
+    },
+    timeRange(lang, a, b) {
+      const at = (hhmm) => { const [h, m] = hhmm.split(':').map(Number); return new Date(2026, 9, 1, h, m); };
+      const f = new Intl.DateTimeFormat(locale(lang), { hour: 'numeric', minute: '2-digit' });
+      return f.formatRange ? f.formatRange(at(a), at(b)) : `${f.format(at(a))}–${f.format(at(b))}`;
     },
     duration(mins, withSeconds = true, secs = 0) {
       const h = Math.floor(mins / 60);

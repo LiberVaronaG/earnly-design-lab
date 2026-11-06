@@ -271,6 +271,17 @@
     }
   }
 
+  // Recientes D: a figure that can't fit even alone on its line shrinks just enough, like fitAmounts.
+  function fitRecentFigures(app) {
+    for (const val of app.querySelectorAll('.rd-val')) {
+      const room = val.closest('.rd-text').clientWidth;
+      const need = val.scrollWidth;
+      if (need <= room) continue;
+      const size = parseFloat(getComputedStyle(val).fontSize);
+      val.style.fontSize = `${Math.floor((size * room) / need)}px`;
+    }
+  }
+
   // Render all frames, keeping focus and scroll stable across re-renders.
   // Personal A: one row when both measures fit beside the title; otherwise title and chevron on
   // top and the measures below (like SwiftUI's ViewThatFits). Measured with nothing allowed to wrap.
@@ -318,6 +329,7 @@
       app.innerHTML = renderApp(slot.dataset.family, { home: app.dataset.home, card: app.dataset.card, bd: app.dataset.bd, opts: app.dataset.opts, personal: app.dataset.personal, vivo: app.dataset.vivo, circ: app.dataset.circ, avisos: app.dataset.avisos, recientes: app.dataset.recientes });
       fitAmounts(app);
       fitPersonal(app);
+      fitRecentFigures(app);
     }
     slots.forEach((s, i) => {
       if (isNav) return;

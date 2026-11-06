@@ -467,6 +467,26 @@
 .app[data-ax="true"] .rb-pay { justify-content: flex-start; }
 .app[data-ax="true"] .rcc { grid-template-columns: 1fr auto; row-gap: var(--space-xs); }
 .app[data-ax="true"] .rcc-sketch { grid-column: 1 / -1; }
+/* D · the latest shift large with three figures, the two before it as plain rows. Figures keep their own width
+   and drop to the next line when they don't fit, so nothing is cut. */
+.rd-wrap { display: flex; flex-direction: column; }
+.rd { display: block; width: 100%; text-align: start; background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border-subtle); border-radius: var(--radius-card); }
+.rd-body { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: var(--space-xs); padding: var(--space-sm) var(--space-md); }
+.rd-text { display: flex; flex-direction: column; gap: var(--space-xs); min-width: 0; }
+.rd-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 2px var(--space-sm); }
+.rd-who { display: inline-flex; align-items: center; gap: 6px; font-weight: var(--weight-semibold); }
+.rd-who .ic { width: 1.25em; height: 1.25em; }
+.rd-date { color: var(--color-text-muted); font-size: var(--size-subhead); }
+.rd-figs { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-sm); }
+.rd-fig { flex: 1 1 0; min-width: min-content; display: flex; flex-direction: column; gap: 2px; }
+.rd-val { display: flex; align-items: center; min-height: 1.15em; font-size: var(--size-title2); font-weight: var(--weight-semibold); line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rd-lab { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; color: var(--color-text-muted); font-size: var(--size-subhead); }
+.rd-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px var(--space-sm); padding-top: var(--space-xs); border-top: var(--stroke-hairline) solid var(--color-separator); color: var(--color-text-muted); font-size: var(--size-subhead); }
+.rd-dur { font-variant-numeric: tabular-nums; }
+.rd-earlier { margin: var(--space-md) 0 0; font-size: var(--size-subhead); font-weight: 400; color: var(--color-text-muted); }
+.rd-list .rd-row { grid-template-columns: 1.4em 1fr auto; padding-inline: 0; }
+.rd-rname { font-weight: var(--weight-semibold); }
+.rd-row .rb-side { flex-shrink: 1; min-width: 0; }
 
 /* Large text: the icon moves above its title instead of eating a column of the line. */
 .app[data-ax="true"] .nb-item { grid-template-columns: 1fr; row-gap: var(--space-xxs); }

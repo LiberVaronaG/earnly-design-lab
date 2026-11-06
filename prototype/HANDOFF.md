@@ -149,7 +149,7 @@ Detalle completo en [HOME-AVISOS.md](HOME-AVISOS.md).
   - cambiar SPEC §4.3, PARITY.md y Android.
 - Siguiente paso de entonces: el próximo detalle de Inicio. Fue Recientes, el siguiente del orden propuesto.
 
-### Recientes (6 nov): **tres propuestas, sin elegir**
+### Recientes (6 nov): **D pedida por Liber, pendiente de confirmar**
 
 Detalle completo en [HOME-RECIENTES.md](HOME-RECIENTES.md).
 
@@ -171,7 +171,13 @@ Detalle completo en [HOME-RECIENTES.md](HOME-RECIENTES.md).
 - **Comprobación:** 1152 renders sin fallos en las propuestas; control negativo de 6 de 6.
   - Se corrigió un recorte en B con un importe largo.
   - Se corrigió también la propia comprobación de «Ver todo», que contaba cajas en vez de líneas.
-- **Siguiente paso:** que Liber elija A, B, C o ninguna. Nada pasa a SwiftUI.
+- **Después, Liber pidió D · El último en grande** (`recientes=d`), a partir de un boceto de ChatGPT.
+  - Sin mapa: lo eligió él, aunque deshace la decisión del 18 may.
+  - Tres cifras en grande: millas, cobrado y deducción estimada. Debajo, el horario y la duración.
+  - Los dos anteriores van como filas, bajo «Anteriores».
+  - A 390 px sin avisos, la tarjeta grande cabe entera en la primera pantalla. El bloque mide 331 px.
+- **Comprobación con D:** 1440 renders sin fallos; control negativo de 12 de 12. Se corrigieron dos desbordes de D con un importe largo a 320 px y texto al 200 %.
+- **Siguiente paso:** que Liber confirme D al verla. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

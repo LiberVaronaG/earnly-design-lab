@@ -46,7 +46,8 @@ let sets: [String: [Shot]] = [
     Shot(file: "08-actual-es.png", hash: "\(chosenNotices)&recientes=actual&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
     Shot(file: "09-a-es.png", hash: "\(chosenNotices)&recientes=a&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
     Shot(file: "10-b-es.png", hash: "\(chosenNotices)&recientes=b&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
-    Shot(file: "11-c-es.png", hash: "\(chosenNotices)&recientes=c&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true)
+    Shot(file: "11-c-es.png", hash: "\(chosenNotices)&recientes=c&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "12-d-es.png", hash: "\(chosenNotices)&recientes=d&screen=homeNoNotice&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true)
   ],
   "avisos": [
     Shot(file: "01-comparar-siempre-claro-es.png", hash: "\(avisosView)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),

@@ -52,7 +52,8 @@
     actual: ['Recientes actual', 'una tarjeta con mapa, como en la app'],
     a: ['A · Mapa con datos', 'el mapa más bajo, con el pago; se puede tocar'],
     b: ['B · Los tres últimos', 'tres filas sin mapa en una caja'],
-    c: ['C · El último, compacto', 'el recorrido dibujado y los datos en una fila']
+    c: ['C · El último, compacto', 'el recorrido dibujado y los datos en una fila'],
+    d: ['D · El último en grande', 'millas, cobrado y deducción; los dos anteriores debajo']
   };
   // «Tarjeta verde» and «Personal» views: which variants sit side by side.
   const CARD_SETS = { 'actual,c': ['actual', 'c'] };
@@ -177,7 +178,7 @@
     // «Avisos» keeps the whole chosen Home, the dark-mode Corte circle included; only the notices differ.
     const avs = L.view === 'avisos' && !L.solo ? Object.keys(AVISOS) : null;
     // «Recientes» keeps the whole chosen Home, notices B included; only the recent-shifts block differs.
-    const recs = L.view === 'recientes' && !L.solo ? ['actual', 'a', 'b', 'c'] : null;
+    const recs = L.view === 'recientes' && !L.solo ? ['actual', 'a', 'b', 'c', 'd'] : null;
     const fams = L.solo ? [L.family] : L.view === 'gallery' ? Object.keys(FAMS) : L.view === 'compare' ? [L.family, L.familyB] : homes || bds || opts ? [L.family, L.family] : cards || pers || vivos || circs || avs || recs ? (cards || pers || vivos || circs || avs || recs).map(() => L.family) : [L.family];
     document.body.classList.toggle('is-solo', L.solo);
     const stage = $('stage');
@@ -222,7 +223,7 @@
       ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
       ${S.lab.view === 'iniciar' ? '<span>Iniciar turno: todo lo elegido en Inicio en los dos marcos, mismos datos y estado; solo cambia el círculo. El fondo es el trébol real de Woodbridge (Nueva Jersey) trazado con datos de OpenStreetMap.</span>' : ''}
       ${S.lab.view === 'contraste' ? '<span>Contraste en oscuro: todo lo elegido en Inicio y el Fondo · Woodbridge en los tres marcos; solo cambia cómo se cruzan las líneas con el texto. Pon Tema → Oscuro: en claro los tres son iguales.</span>' : ''}
-      ${S.lab.view === 'recientes' ? '<span>Recientes: todo lo elegido en Inicio en los cuatro marcos, avisos B incluidos, mismos datos y estado; solo cambia Recientes. El mapa es ficticio: la app usa Apple Maps.</span>' : ''}
+      ${S.lab.view === 'recientes' ? '<span>Recientes: todo lo elegido en Inicio en los cinco marcos, avisos B incluidos, mismos datos y estado; solo cambia Recientes. El mapa es ficticio: la app usa Apple Maps.</span>' : ''}
       ${S.lab.view === 'avisos' ? '<span>Avisos: todo lo elegido en Inicio en los cuatro marcos, mismos datos y estado; solo cambia cómo se presentan los avisos. Elige una pantalla «Inicio · aviso…» o «Inicio · dos avisos».</span>' : ''}
       ${S.lab.view === 'enmarcha' ? '<span>En marcha: Personal A y todo lo elegido en los tres marcos, mismos datos y estado; solo cambia cómo se muestra el viaje personal en curso. Elige una pantalla «Inicio · viaje personal: …».</span>' : ''}
       ${S.lab.view === 'personal' ? '<span>Personal: Inicio sin título, tarjeta C, desglose y Opciones propuestos en todos los marcos, mismos datos y estado; solo cambia la fila Personal. Aparece cuando el seguimiento personal está activo.</span>' : ''}
