@@ -48,9 +48,9 @@
   }
 
   function startClose() {
-    state.ui.close = { shift: JSON.parse(JSON.stringify(E.CLOSE_SHIFT)), extrasOpen: false, stationDone: false, apps: [], ask: null, picking: false };
-    Object.assign(state.ui.f, { payMain: '', payX: '', payXTip: '', station: '' });
-    for (const p of E.ENABLED_PLATFORMS) Object.assign(state.ui.f, { [`pay_${p}`]: '', [`tip_${p}`]: '' });
+    state.ui.close = { shift: JSON.parse(JSON.stringify(E.CLOSE_SHIFT)), extrasOpen: false, stationDone: false, apps: [], ask: null, picking: false, moreOpen: false };
+    Object.assign(state.ui.f, { payMain: '', payMainTip: '', payX: '', payXTip: '', station: '' });
+    for (const p of Object.keys(E.PLATFORMS)) Object.assign(state.ui.f, { [`pay_${p}`]: '', [`tip_${p}`]: '' });
     state.ui.tab = 'home';
     state.ui.stacks.home = [{ name: 'close', params: {} }];
     navigated();
@@ -107,6 +107,7 @@
     toggleApp(arg) { const c = state.ui.close; c.apps = c.apps.includes(arg) ? c.apps.filter((p) => p !== arg) : [...c.apps, arg]; },
     askOther(arg) { state.ui.close.ask = arg; },
     pickOther() { state.ui.close.picking = true; },
+    moreApps() { state.ui.close.moreOpen = true; },
     addApp(arg) { const c = state.ui.close; c.apps = [...c.apps, arg]; c.picking = false; state.ui.focusTarget = `in-pay_${arg}`; },
     removeApp(arg) { const c = state.ui.close; c.apps = c.apps.filter((p) => p !== arg); Object.assign(state.ui.f, { [`pay_${arg}`]: '', [`tip_${arg}`]: '' }); },
     saveStation() {
@@ -144,7 +145,7 @@
       state.data.shifts.push({
         id: sh.id + Date.now(), kind: 'work', platform: sh.platform, date: sh.date, start: sh.start, end: sh.end,
         miles: sh.miles, deduction: sh.deduction, gas: state.data.gasKnown ? sh.gasKnownCost : null, route: sh.route,
-        main: typeof main === 'number' ? main : null, tip: 0,
+        main: typeof main === 'number' ? main : null, tip: typeof E.parseAmount(f.payMainTip) === 'number' ? E.parseAmount(f.payMainTip) : 0,
         extras: typeof extra === 'number' ? [{ platform: 'uber', amount: extra, tip: typeof tip === 'number' ? tip : 0 }] : stacked
       });
       state.ui.close = null;
@@ -467,6 +468,10 @@
     closeTwoApps: () => { startClose(); Object.assign(state.ui.close, { apps: ['uber', 'doorDash'], ask: 'yes' }); Object.assign(state.ui.f, { payMain: '90', pay_uber: '20', tip_uber: '5', pay_doorDash: '15' }); },
     closeTipTooBig: () => { startClose(); Object.assign(state.ui.close, { apps: ['uber'], ask: 'yes' }); Object.assign(state.ui.f, { payMain: '90', pay_uber: '20', tip_uber: '25' }); },
     closePicking: () => { startClose(); state.ui.close.picking = true; state.ui.f.payMain = '90'; },
+    // A's filtered list: an Uber shift with five apps switched on, and a Flex shift with the same five.
+    closeUber: () => { startClose(); state.ui.close.shift.platform = 'uber'; state.data.enabledPlatforms = ['uber', 'lyft', 'doorDash', 'instacart', 'amazonFlex']; Object.assign(state.ui.f, { payMain: '60', payMainTip: '8' }); },
+    closeUberMore: () => { JUMPS.closeUber(); state.ui.close.moreOpen = true; },
+    closeFlexMany: () => { startClose(); state.data.enabledPlatforms = ['amazonFlex', 'uber', 'lyft', 'doorDash', 'instacart']; state.ui.f.payMain = '90'; },
     recovery: () => { state.ui.sheet = 'recovery'; },
     historyWork: () => { state.ui.tab = 'history'; },
     historyPersonal: () => { state.ui.tab = 'history'; state.ui.historySeg = 'personal'; },

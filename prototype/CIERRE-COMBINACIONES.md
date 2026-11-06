@@ -2,7 +2,7 @@
 
 6 nov 2026. Lo pidió Liber al elegir **A · Marca las apps** para el cierre ([CIERRE-TURNO.md](CIERRE-TURNO.md)): que la lista no ofrezca apps que no se combinan con la del turno, por ejemplo Instacart en un turno de Amazon Flex.
 
-Este documento solo registra la investigación y unas reglas propuestas. No hay nada construido todavía.
+Este documento registra la investigación y las reglas. **Liber las aceptó, y la lista filtrada ya está construida en A** (ver [CIERRE-TURNO.md](CIERRE-TURNO.md)).
 
 ## Punto de partida
 

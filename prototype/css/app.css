@@ -546,6 +546,7 @@
 .cl-chip, .cl-answer { flex: 1 1 8em; min-height: var(--control-min-target); }
 .cl-c .cl-fields { padding-top: var(--space-sm); border-top: var(--stroke-hairline) solid var(--color-separator); }
 .app[data-ax="true"] .cl-fields { padding-inline-start: 0; }
+.cl-more { align-self: flex-start; }
 .ts-figs .rd-val { align-items: baseline; gap: 0.2em; }
 
 /* Large text: the icon moves above its title instead of eating a column of the line. */

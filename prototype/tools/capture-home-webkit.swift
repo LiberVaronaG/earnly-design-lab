@@ -51,7 +51,11 @@ let sets: [String: [Shot]] = [
     Shot(file: "09-actual-es.png", hash: "\(chosenShift)&cierre=actual&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true),
     Shot(file: "10-a-es.png", hash: "\(chosenShift)&cierre=a&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true),
     Shot(file: "11-b-es.png", hash: "\(chosenShift)&cierre=b&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true),
-    Shot(file: "12-c-es.png", hash: "\(chosenShift)&cierre=c&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true)
+    Shot(file: "12-c-es.png", hash: "\(chosenShift)&cierre=c&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: true),
+    Shot(file: "13-a-turno-uber-es.png", hash: "\(cierreView)&screen=closeUber&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "14-a-turno-uber-otra-app-es.png", hash: "\(cierreView)&screen=closeUberMore&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "15-a-flex-cinco-apps-es.png", hash: "\(cierreView)&screen=closeFlexMany&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "16-a-flex-historial-es.png", hash: "\(cierreView)&screen=closeFlexMany&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true)
   ],
   "turno-activo": [
     Shot(file: "01-comparar-claro-es.png", hash: "\(turnoView)&screen=active&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false),

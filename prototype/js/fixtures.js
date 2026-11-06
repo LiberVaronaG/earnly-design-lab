@@ -9,7 +9,8 @@
     doorDash: { name: 'DoorDash', icon: 'bag', color: 'platform-door-dash' },
     lyft: { name: 'Lyft', icon: 'car', color: 'platform-lyft' },
     instacart: { name: 'Instacart', icon: 'bag', color: 'platform-instacart' },
-    spark: { name: 'Spark', icon: 'box', color: 'platform-spark' }
+    spark: { name: 'Spark', icon: 'box', color: 'platform-spark' },
+    grubHub: { name: 'GrubHub', icon: 'bag', color: 'platform-grub-hub' }
   };
 
   // pay.main: number | null (missing) | 'overflow' (stored value too large to add up)
@@ -170,6 +171,17 @@
   };
   // The platforms switched on in Settings for the close proposals: the three of the app's «Start shift on» capture.
   const ENABLED_PLATFORMS = ['amazonFlex', 'uber', 'doorDash'];
+  // Close · A: which apps are usually run together with the shift's own, most likely first
+  // (CIERRE-COMBINACIONES.md). Amazon Flex blocks are a delivery commitment: none by default.
+  const COMBOS = {
+    amazonFlex: [],
+    uber: ['lyft', 'doorDash', 'grubHub'],
+    lyft: ['uber', 'doorDash'],
+    doorDash: ['uber', 'grubHub', 'spark'],
+    grubHub: ['doorDash', 'uber'],
+    instacart: ['doorDash', 'uber'],
+    spark: ['doorDash', 'instacart']
+  };
   const CLOSE_SHIFT = { id: 'wNew', platform: 'amazonFlex', date: '2026-10-23', start: '01:55', end: '04:55', miles: 40.0, deduction: 29.00, gasKnownCost: 8.00, route: 9 };
 
   const WEEK_MILES = { partial: [0, 15, 0, 10, 20, 0, 0], complete: [18, 20, 6, 40, 0, 0, 0], tooLarge: [0, 0, 0, 0, 15, 20, 0], empty: [0, 0, 0, 0, 0, 0, 0], orphan: [0, 0, 6, 40, 0, 0, 0], longPay: [0, 0, 4790.6, 0, 0, 0, 312.4], zeroPay: [0, 0, 0, 8, 0, 0, 18], personalLong: [0, 15, 0, 10, 20, 0, 0] };
@@ -255,5 +267,5 @@
   }
 
   window.E = window.E || {};
-  Object.assign(window.E, { TODAY, PLATFORMS, SCENARIOS, ACTIVE_SHIFT, ENABLED_PLATFORMS, CLOSE_SHIFT, WEEK_MILES, load, mins, inPeriod, summarize, seIncome });
+  Object.assign(window.E, { TODAY, PLATFORMS, SCENARIOS, ACTIVE_SHIFT, ENABLED_PLATFORMS, COMBOS, CLOSE_SHIFT, WEEK_MILES, load, mins, inPeriod, summarize, seIncome });
 })();
