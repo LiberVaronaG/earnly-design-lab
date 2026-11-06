@@ -13,7 +13,7 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 
 | Control | Qué hace |
 |---|---|
-| Vista | Muestra una familia, compara dos lado a lado, enseña las cuatro con la misma pantalla y los mismos datos, «Original y Sin título»: la misma familia dos veces, con y sin el rótulo de Inicio, «Tarjeta verde»: la tarjeta actual y C, «Tarjeta abierta»: el desglose de C actual y la propuesta, «Opciones»: Opciones actual y la propuesta, «Personal»: la fila Personal actual, A y B, «Personal en marcha»: tres formas de mostrar un viaje personal en curso, «Iniciar turno»: el círculo actual y el Fondo, o «Contraste en oscuro»: el Fondo, Corte y Tenue |
+| Vista | Muestra una familia, compara dos lado a lado, enseña las cuatro con la misma pantalla y los mismos datos, «Original y Sin título»: la misma familia dos veces, con y sin el rótulo de Inicio, «Tarjeta verde»: la tarjeta actual y C, «Tarjeta abierta»: el desglose de C actual y la propuesta, «Opciones»: Opciones actual y la propuesta, «Personal»: la fila Personal actual, A y B, «Personal en marcha»: tres formas de mostrar un viaje personal en curso, «Iniciar turno»: el círculo actual y el Fondo, «Contraste en oscuro»: el Fondo, Corte y Tenue, o «Avisos»: los avisos de hoy y las propuestas A, B y C |
 | Familia / Comparar con | V0 Actual, V1 Esencial, V2 Claridad, V3 Estudio |
 | Inicio | Original o Sin título (sin «Earnly Driver» arriba). Solo afecta a Inicio; ver [HOME-SIN-TITULO.md](HOME-SIN-TITULO.md) |
 | Tarjeta / Tarjetas | Tarjeta verde de Inicio: la actual o C · Dos zonas (solo V0). La vista «Tarjeta verde» las pone lado a lado con Inicio sin título; ver [HOME-TARJETA-VERDE.md](HOME-TARJETA-VERDE.md) |
@@ -24,7 +24,8 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 | Círculo | «Iniciar turno» actual o con el trébol real de Woodbridge de fondo (OpenStreetMap), y las dos correcciones del Fondo en oscuro: Corte (elegida) y Tenue; ver [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md) |
 | Tema, Idioma | Claro u oscuro; EN o ES. El idioma también se cambia desde Ajustes → Idioma, dentro de la app |
 | Escenario | Pago parcial (24 oct), pagos completos, cifras demasiado grandes, sin datos (aproximación), turno sin cerrar y tres pruebas de diseño: importe largo, cobrado $0 y millas personales largas |
-| Pantalla | Salta a uno de los estados de ejemplo, incluidos los cuatro de viaje personal en marcha (con Personal A). Después se puede navegar normalmente por la app |
+| Avisos | Avisos de Inicio: los de hoy, A · Un solo aviso, B · Cada uno en su sitio o C · Franja arriba (solo V0); ver [HOME-AVISOS.md](HOME-AVISOS.md) |
+| Pantalla | Salta a uno de los estados de ejemplo, incluidos los cuatro de viaje personal en marcha (con Personal A) y los de avisos (sin avisos, ubicación apagada, ahorro de batería, dos avisos y Personal sin Movimiento). Después se puede navegar normalmente por la app |
 | Ancho | 320, 390 o 430 px |
 | Texto | 100 %, 135 % o 200 %. Aproxima Dynamic Type/AX; no equivale a iOS |
 | Decoración | Muestra opcional de Halloween o Navidad. Está apagada por defecto y no tapa controles |

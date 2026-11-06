@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero y el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero y el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos (tres propuestas, sin elegir): `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -123,7 +123,24 @@ Detalle completo en [HOME-INICIAR-TURNO.md](HOME-INICIAR-TURNO.md).
   - En SwiftUI, Corte necesita otra técnica (una máscara hecha con el propio texto). No se ha probado.
   - Las decoraciones de Navidad tapan el mapa.
   - Si pasa a la app: crédito de OpenStreetMap en Acerca de, SPEC §4.3 y PARITY.md.
-- **Siguiente paso:** que Liber elija el próximo detalle de Inicio. Nada pasa a SwiftUI.
+- Siguiente paso de entonces: que Liber eligiera el próximo detalle de Inicio. Fueron los avisos.
+
+### Avisos (6 nov): **tres propuestas, sin elegir**
+
+Detalle completo en [HOME-AVISOS.md](HOME-AVISOS.md).
+
+- Liber descartó el rediseño del icono de la app (no está en este repositorio) y volvió a lo que faltaba por revisar en Inicio. Pidió tres propuestas de avisos.
+- El laboratorio ahora tiene los cuatro avisos de la app: ubicación «Siempre», ubicación apagada, ahorro de batería (con «Iniciar turno» desactivado) y Personal sin Movimiento. Hay pantallas nuevas para cada estado y para dos avisos a la vez.
+- Las propuestas:
+  - **A · Un solo aviso** (`avisos=a`): una caja ordenada por gravedad, con los textos de la app y un botón por aviso.
+  - **B · Cada uno en su sitio** (`avisos=b`): lo del turno bajo el círculo, y Personal bloqueado dentro de Personal.
+  - **C · Franja arriba** (`avisos=c`): filas cortas sobre la tarjeta; la explicación va en una hoja.
+- Vista «Avisos», control «Avisos» y parámetro `avisos`. Sin `avisos`, el prototipo se comporta como antes, salvo que el aviso de ubicación apagada del Inicio V0 ahora usa el texto de la app.
+- Recomendación: **B**. El círculo no se mueve nunca y el motivo de cada aviso va junto a lo que afecta.
+- Comprobación: auditoría WebKit de 864 renders y las 8 hojas de C, sin fallos; un control negativo detectó 5 de 5 fallos provocados.
+  - Se corrigió el halo verde del Corte sobre el círculo desactivado en oscuro.
+- La herramienta de capturas ya no deja que la barra de desplazamiento del Mac robe 11 px. Las capturas anteriores no se regeneraron.
+- **Siguiente paso:** que Liber elija A, B, C o ninguna. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

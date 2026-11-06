@@ -37,6 +37,8 @@
     external: '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v6H4V6h6"/>',
     more: '<circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/>',
     station: '<path d="M4 20h16M6 20V9l6-5 6 5v11"/><path d="M10 20v-5h4v5"/>',
+    battery: '<rect x="2.5" y="7" width="17" height="10" rx="2.5"/><path d="M21.5 10.5v3"/><path d="M6 10.5v3" stroke-width="3"/>',
+    motion: '<circle cx="14" cy="4.5" r="1.7"/><path d="m9 21 3-6 3 2.5V21"/><path d="m12 15 1.2-5.5L10 11l-2 3"/><path d="m13.2 9.5 2.3 2.5 3 1"/><path d="M3 9.5h3M2 13h3.5"/>',
     x: '<path d="M6 6l12 12M18 6 6 18"/>'
   };
 

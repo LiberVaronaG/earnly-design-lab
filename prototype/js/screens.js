@@ -106,7 +106,90 @@
     return [ctx.t('seUnder'), se.a < se.n ? ctx.t('seBasedOn', { a: se.a, n: se.n }) : ctx.t('seBasedAll', { n: se.n })];
   }
 
+  // Home notices in the app's order: Location, Personal blocked (only while Location is fine), Low Power Mode.
+  function noticeList(d) {
+    const out = [];
+    if (d.permission === 'denied') out.push('denied');
+    else if (d.permission !== 'always') out.push('always');
+    if (d.autoPersonal && d.motionDenied && d.permission === 'always') out.push('motion');
+    if (d.lowPower) out.push('low');
+    return out;
+  }
+  // The proposals put first what stops the shift: Low Power Mode disables Start, and with Location off nothing is recorded.
+  const SEVERITY = { low: 0, denied: 1, always: 2, motion: 3 };
+  const bySeverity = (list) => [...list].sort((x, y) => SEVERITY[x] - SEVERITY[y]);
+  // iOS has no link to Settings → Battery, so the Low Power Mode notice has no button (as in the app).
+  const NOTICE = {
+    always: { icon: 'locationOff', title: 'alwaysTitle', body: 'alwaysBody', short: 'alwaysShort', fix: true },
+    denied: { icon: 'locationOff', title: 'nDeniedTitle', body: 'nDeniedBody', short: 'nDeniedShort', fix: true, blocks: true },
+    motion: { icon: 'motion', title: 'nMotionTitle', body: 'nMotionBody', short: 'nMotionShort', fix: true },
+    low: { icon: 'battery', title: 'nLowTitle', body: 'nLowBody', short: 'nLowShort', fix: false, blocks: true }
+  };
+  const fixButton = (ctx, k, cls) => `<button class="${cls}" ${act('toast', 'systemSettings')} aria-describedby="nt-${k}">${esc(ctx.t('openSettings'))}</button>`;
+
+  // Today: one card per notice, stacked in the app's order. Only the Location ones open Settings.
+  function noticeCards(ctx, list) {
+    return list.map((k) => {
+      const n = NOTICE[k];
+      const inner = `<span class="notice-icon${k === 'motion' ? ' notice-icon-small' : ''}">${icon(n.icon)}</span>
+        <span class="notice-main"><span class="notice-title">${esc(ctx.t(n.title))}</span><span class="notice-body">${esc(ctx.t(n.body))}</span></span>`;
+      return n.fix ? `<button class="notice notice-card" ${act(k === 'motion' ? 'toast' : 'openTrackingSettings', k === 'motion' ? 'systemSettings' : undefined)}>${inner}<span class="row-chevron">${icon('chevronRight')}</span></button>`
+        : `<div class="notice notice-card" role="group" aria-label="${esc(ctx.t(n.title))}">${inner}</div>`;
+    }).join('');
+  }
+
+  // A · One box for every notice, worst first, each with its own explicit action.
+  function noticeGroup(ctx, list) {
+    const items = bySeverity(list);
+    const head = items.length > 1 ? `<p class="nb-head">${icon('warning')}<span>${esc(ctx.t('nGroupHead', { n: items.length }))}</span></p>` : '';
+    return `<section class="nb" aria-label="${esc(ctx.t('noticesLabel'))}">${head}${items.map((k) => {
+      const n = NOTICE[k];
+      return `<div class="nb-item${n.blocks ? ' nb-blocks' : ''}"><span class="nb-icon">${icon(n.icon)}</span>
+        <div class="nb-text"><p class="nb-title" id="nt-${k}">${esc(ctx.t(n.title))}</p><p class="nb-body">${esc(ctx.t(n.body))}</p>${n.fix ? fixButton(ctx, k, 'link-button nb-action') : ''}</div></div>`;
+    }).join('')}</section>`;
+  }
+
+  // B · What affects the shift sits under the circle it affects; Personal's own notice goes inside Personal.
+  function startNote(ctx, list) {
+    const items = bySeverity(list.filter((k) => k !== 'motion'));
+    if (!items.length) return '';
+    return `<div class="start-note" id="start-note">${items.map((k) => {
+      const n = NOTICE[k];
+      return `<div class="sn-item${n.blocks ? ' sn-blocks' : ''}"><p class="sn-title" id="nt-${k}">${icon(n.icon)}<span>${esc(ctx.t(n.title))}</span></p><p class="sn-body">${esc(ctx.t(n.short))}</p>${n.fix ? fixButton(ctx, k, 'link-button sn-action') : ''}</div>`;
+    }).join('')}</div>`;
+  }
+
+  function personalBlock(ctx) {
+    return `<div class="pv-live pv-block"><span class="pv-live-mark">${icon('motion')}</span>
+      <span class="pv-live-text"><span class="pv-live-title" id="nt-motion">${esc(ctx.t('nMotionShortTitle'))}</span> <span class="pv-live-sub">${esc(ctx.t('nMotionShort'))}</span></span>
+      ${fixButton(ctx, 'motion', 'pv-stop')}</div>`;
+  }
+
+  // C · Short rows at the very top; each opens its full explanation in a sheet.
+  function noticeStrip(ctx, list) {
+    const items = bySeverity(list);
+    return `<div class="nc" role="group" aria-label="${esc(ctx.t('noticesLabel'))}">${items.map((k) => {
+      const n = NOTICE[k];
+      return `<button class="nc-row${n.blocks ? ' nc-blocks' : ''}" ${act('openNotice', k)}><span class="nc-icon">${icon(n.icon)}</span><span class="nc-title">${esc(ctx.t(n.title))}</span><span class="row-chevron">${icon('chevronRight')}</span></button>`;
+    }).join('')}</div>`;
+  }
+
+  function noticeSheet(ctx) {
+    const k = ctx.ui.noticeId;
+    const n = NOTICE[k];
+    return `${sheetBar(ctx, ctx.t(n.title), { left: `<button class="link-button" ${act('closeSheet')}>${esc(ctx.t('done'))}</button>` })}
+      <div class="sheet-body"><div class="ns${n.blocks ? ' ns-blocks' : ''}"><span class="ns-icon">${icon(n.icon)}</span><p class="ns-body">${esc(ctx.t(n.body))}</p>
+        ${n.fix ? button(ctx.t('openSettings'), 'toast', 'systemSettings') : ''}</div></div>`;
+  }
+
   function noticeBlock(ctx) {
+    if (ctx.famId === 'v0') {
+      const list = noticeList(ctx.data);
+      if (!list.length) return '';
+      if (ctx.avisos === 'a') return noticeGroup(ctx, list);
+      if (ctx.avisos === 'b' || ctx.avisos === 'c') return '';
+      return noticeCards(ctx, list);
+    }
     const perm = ctx.data.permission;
     if (perm === 'always') return '';
     const denied = perm === 'denied';
@@ -341,6 +424,7 @@
       if (ctx.personal === 'b') return `<button class="pv pv-b" ${act('openPersonal')}><span class="pv-top">${lead} ${chevron}</span> ${metrics}</button>`;
       const rowA = `<button class="pv pv-a" id="personal-row" ${act('openPersonal')}><span class="pv-lead">${lead}</span> ${metrics} ${chevron}</button>`;
       const trip = ctx.ui.liveTrip;
+      if (!trip && ctx.avisos === 'b' && noticeList(ctx.data).includes('motion')) return `<div class="pv-box">${rowA}${personalBlock(ctx)}</div>`;
       if (!trip || ctx.vivo === 'barra') return rowA;
       return ctx.vivo === 'tablero' ? liveBoard(ctx, trip, rowA) : `<div class="pv-box">${rowA}${liveLine(ctx, trip)}</div>`;
     }
@@ -394,6 +478,17 @@
       ledger: ['notice', 'hero', 'recent', 'personal', 'options'],
       studio: ['hero', 'start', 'notice', 'recent', 'personal', 'options']
     }[h];
+    if (ctx.famId === 'v0') {
+      const list = noticeList(ctx.data);
+      // Low Power Mode: as in the app, Start is disabled and filled with brandBorder at 55 %.
+      if (ctx.data.lowPower) {
+        const why = ctx.avisos === 'b' ? 'start-note' : 'start-off-hint';
+        parts.start = parts.start.replace('<button class="start-circle', `<button disabled aria-describedby="${why}" class="start-off start-circle`)
+          .replace(/<\/div>$/, `<span class="sr-only" id="start-off-hint">${esc(ctx.t('startOffHint'))}</span></div>`);
+      }
+      if (ctx.avisos === 'b') parts.start += startNote(ctx, list);
+      if (ctx.avisos === 'c' && list.length) parts.hero = noticeStrip(ctx, list) + parts.hero;
+    }
     const drift = E.xmas.heroDecor(ctx);
     if (drift) parts.hero = parts.hero.replace(/(<section class="hero[^>]*>)/, `$1${drift}`).replace('class="hero ', 'class="hero hero-drift ');
     // «Sin título»: the visible name and its bar go away; the heading stays for screen readers and focus.
@@ -928,6 +1023,7 @@
   E.sheets = {
     editor: { render: editorSheet, ref: 'screens/04-completar-importes/03-07, 16-18, 23-25' },
     seDetail: { render: seSheet, ref: 'screens/04-completar-importes/11 + 05-coherencia-corregida/03, 08' },
+    notice: { render: noticeSheet, approx: true },
     recovery: { render: recoverySheet, ref: 'screens/03-cierre-laboral/00' },
     pdf: { render: pdfSheet, ref: 'screens/06-documentos-ejemplo (in-app preview is an approximation)' }
   };

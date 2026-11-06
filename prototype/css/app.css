@@ -364,6 +364,62 @@
 .notice-title { font-weight: var(--weight-semibold); }
 .notice-body { color: var(--color-text-muted); font-size: var(--size-subhead); }
 .notice-icon .ic { width: 1.5em; height: 1.5em; }
+.notice-icon-small .ic { width: 1.15em; height: 1.15em; margin-top: 2px; }
+
+/* Low Power Mode: the app disables Start and fills it with brandBorder at 55 %. */
+.start-circle.start-off { background: var(--color-card-border) !important; opacity: .55; box-shadow: none; cursor: default; }
+.start-circle.start-off:active { transform: none; }
+/* The dark-mode Corte halo is the circle's own fill, so on the disabled wine circle it has to be wine too. */
+.app[data-theme="dark"] .start-off.start-map-corte .start-label { --halo: var(--color-card-border); }
+
+/* «A · Un solo aviso»: one box, worst first, an explicit action per notice. */
+.nb { background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border); border-radius: var(--radius-card); padding: 0 var(--space-md); }
+.nb-head { display: flex; align-items: center; gap: var(--space-xs); padding: var(--space-sm) 0; color: var(--color-destructive); font-weight: var(--weight-semibold); border-bottom: var(--stroke-hairline) solid var(--color-separator); }
+.nb-head .ic { flex: none; }
+.nb-item { display: grid; grid-template-columns: 1.5em 1fr; column-gap: var(--space-sm); padding: var(--space-sm) 0 var(--space-xxs); }
+.nb-item:only-child, .nb-item:last-child { padding-bottom: var(--space-xs); }
+.nb-item + .nb-item { border-top: var(--stroke-hairline) solid var(--color-separator); }
+.nb-icon { display: inline-flex; color: var(--color-destructive); }
+.nb-icon .ic { width: 1.5em; height: 1.5em; }
+.nb-title { font-weight: var(--weight-semibold); }
+.nb-blocks .nb-title { color: var(--color-destructive); }
+.nb-body { color: var(--color-text-muted); font-size: var(--size-subhead); margin-top: 2px; }
+.nb-action { font-weight: var(--weight-semibold); margin-inline-start: calc(-1 * var(--space-xxs)); padding-inline: var(--space-xxs); }
+.nb-item:not(:has(.nb-action)) { padding-bottom: var(--space-sm); }
+
+/* «B · Cada uno en su sitio»: the shift's notices right under the circle they affect. */
+.start-note { display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); margin-top: calc(-1 * var(--space-xs)); padding: 0 var(--space-md); text-align: center; }
+.sn-item { display: flex; flex-direction: column; align-items: center; gap: 2px; max-width: 22em; }
+.sn-item + .sn-item { padding-top: var(--space-sm); border-top: var(--stroke-hairline) solid var(--color-separator); }
+.sn-title { display: inline-flex; align-items: flex-start; gap: 6px; font-weight: var(--weight-semibold); text-align: center; }
+.sn-title .ic { flex: none; width: 1.2em; height: 1.2em; margin-top: .1em; color: var(--color-destructive); }
+.sn-blocks .sn-title { color: var(--color-destructive); }
+.sn-body { color: var(--color-text-muted); font-size: var(--size-subhead); }
+.sn-action { font-weight: var(--weight-semibold); }
+.pv-block { grid-template-columns: 1.25em 1fr; padding-block: var(--space-xs) var(--space-xxs); }
+.pv-block .pv-stop { grid-column: 2; justify-self: start; margin-inline: calc(-1 * var(--space-xs)) 0; }
+.pv-block .pv-live-mark { color: var(--color-destructive); }
+.pv-block .pv-live-mark .ic { width: 1.15em; height: 1.15em; }
+
+/* «C · Franja arriba»: short rows above the green card; the explanation lives in a sheet. */
+.nc { background: var(--color-surface); border: var(--stroke-card) solid var(--color-card-border); border-radius: var(--radius-card); overflow: hidden; }
+.nc-row { display: grid; grid-template-columns: 1.4em 1fr auto; align-items: center; column-gap: var(--space-sm); width: 100%; min-height: var(--control-min-target); padding: var(--space-xs) var(--space-md); text-align: start; }
+.nc-row + .nc-row { border-top: var(--stroke-hairline) solid var(--color-separator); }
+.nc-icon { display: inline-flex; color: var(--color-destructive); }
+.nc-icon .ic { width: 1.3em; height: 1.3em; }
+.nc-title { font-weight: var(--weight-semibold); }
+.nc-blocks .nc-title { color: var(--color-destructive); }
+/* Large text: the icon moves above its title instead of eating a column of the line. */
+.app[data-ax="true"] .nb-item { grid-template-columns: 1fr; row-gap: var(--space-xxs); }
+.app[data-ax="true"] .nb-head { flex-direction: column; align-items: flex-start; gap: var(--space-xxs); }
+.app[data-ax="true"] .nc-row { grid-template-columns: 1fr auto; grid-template-areas: "icon chev" "title chev"; row-gap: 2px; padding-block: var(--space-sm); }
+.app[data-ax="true"] .nc-icon { grid-area: icon; }
+.app[data-ax="true"] .nc-title { grid-area: title; }
+.app[data-ax="true"] .nc-row .row-chevron { grid-area: chev; }
+.app[data-ax="true"] .sn-title { flex-direction: column; align-items: center; gap: 2px; }
+.ns { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-md); padding: var(--space-md) 0; }
+.ns-icon { display: inline-flex; color: var(--color-destructive); }
+.ns-icon .ic { width: 2em; height: 2em; }
 .status-line { display: flex; align-items: center; gap: var(--space-xs); width: 100%; min-height: var(--control-min-target); padding: 6px 2px; font-size: var(--size-subhead); flex-wrap: wrap; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-caution); flex: none; }
 .status-text { flex: 0 1 auto; color: var(--color-text-muted); }

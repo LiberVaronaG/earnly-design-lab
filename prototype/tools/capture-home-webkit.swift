@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro
+// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro | avisos
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -25,11 +25,29 @@ struct Shot {
 let personalOn = "E.state.data.autoPersonal = true; E.render();"
 let personalView = "view=personal&family=v0&deco=none&motion=normal"
 let chosen = "solo=1&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&family=v0&deco=none&motion=normal"
+// Everything chosen in Home so far, the dark-mode Corte circle included.
+let chosenAll = "\(chosen)&personal=a&vivo=tablero&circulo=fondo-corte"
+let avisosView = "view=avisos&family=v0&deco=none&motion=normal"
 
 
 // Same scenario, screen and size on every side of a comparison; only the lab variant differs.
 let common = "family=v0&deco=none&motion=normal"
 let sets: [String: [Shot]] = [
+  "avisos": [
+    Shot(file: "01-comparar-siempre-claro-es.png", hash: "\(avisosView)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "02-comparar-dos-avisos-claro-es.png", hash: "\(avisosView)&screen=homeTwoNotices&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "03-comparar-bateria-claro-es.png", hash: "\(avisosView)&screen=homeLowPower&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "04-comparar-ubicacion-apagada-claro-es.png", hash: "\(avisosView)&screen=homeDenied&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "05-comparar-personal-movimiento-claro-es.png", hash: "\(avisosView)&screen=homeMotion&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false, full: true),
+    Shot(file: "06-comparar-dos-avisos-oscuro-en.png", hash: "\(avisosView)&screen=homeTwoNotices&theme=dark&lang=en&scenario=partial&width=390&text=1", dark: true, solo: false, full: true),
+    Shot(file: "07-comparar-320-texto-200-dos-avisos-es.png", hash: "\(avisosView)&screen=homeTwoNotices&theme=light&lang=es&scenario=partial&width=320&text=2", dark: false, solo: false, full: true),
+    Shot(file: "08-actual-dos-avisos-es.png", hash: "\(chosenAll)&avisos=actual&screen=homeTwoNotices&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "09-a-dos-avisos-es.png", hash: "\(chosenAll)&avisos=a&screen=homeTwoNotices&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "10-b-dos-avisos-es.png", hash: "\(chosenAll)&avisos=b&screen=homeTwoNotices&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "11-c-dos-avisos-es.png", hash: "\(chosenAll)&avisos=c&screen=homeTwoNotices&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true),
+    Shot(file: "12-c-hoja-bateria-es.png", hash: "\(chosenAll)&avisos=c&screen=homeTwoNotices&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: true,
+         setup: "E.state.ui.sheet = 'notice'; E.state.ui.noticeId = 'low'; E.render(); document.querySelectorAll('.sheet').forEach((el) => { el.style.animation = 'none'; });")
+  ],
   "sin-titulo": [
     Shot(file: "01-comparar-claro-es.png", hash: "view=sintitulo&\(common)&screen=home&theme=light&lang=es&scenario=partial&width=390&text=1", dark: false, solo: false),
     Shot(file: "02-comparar-oscuro-es.png", hash: "view=sintitulo&\(common)&screen=home&theme=dark&lang=es&scenario=partial&width=390&text=1", dark: true, solo: false),
@@ -189,6 +207,9 @@ func snapshot(_ rect: NSRect, scale: CGFloat, to url: URL) throws {
 
 web.loadFileURL(index, allowingReadAccessTo: proto)
 while web.isLoading || (js("document.readyState") as? String) != "complete" { spin(0.05) }
+// iPhone scroll indicators float over the content. A Mac scrollbar takes 11 px, so Home rendered at 379 px instead of 390
+// in every capture made before 6 Nov; the side-by-side comparisons were fair (both sides had the bar), absolute widths were not.
+_ = js("(() => { const s = document.createElement('style'); s.textContent = '.scroll, .sheet-body { scrollbar-width: none; } .scroll::-webkit-scrollbar, .sheet-body::-webkit-scrollbar { display: none; width: 0; }'; document.head.appendChild(s); })()")
 
 for shot in shots {
   web.appearance = NSAppearance(named: shot.dark ? .darkAqua : .aqua)
