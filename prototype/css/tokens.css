@@ -301,3 +301,13 @@
   --color-tab-bar: #1B1612;
   --color-chip-bg: rgba(232,167,69,0.12);
 }
+
+/* Adjustment: Readable dark-mode green */
+.phone[data-verde="legible"] > .app[data-family="v0"] {
+  --color-action: #2D6B30;
+  --color-map-start: #2D6B30;
+}
+.phone[data-verde="legible"] > .app[data-family="v0"][data-theme="dark"] {
+  --color-action: #36853A;
+  --color-map-start: #36853A;
+}

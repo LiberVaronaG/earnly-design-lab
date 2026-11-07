@@ -821,3 +821,7 @@
   --size-footnote: var(--size-body); --size-caption: var(--size-body);
   --size-title3: var(--size-title2); --size-title1: var(--size-title2); --size-result-figure: var(--size-title2);
 }
+
+/* Base 1 (Liber, 7 nov): every box takes the subtle line Home already uses. Fields keep the strong one,
+   which a field needs (3 : 1 against its surface) to read as a field. */
+.phone[data-bordes="suave"] > .app[data-family="v0"] :is(.card, .map, .notice-card) { border-color: var(--color-card-border-subtle) !important; }

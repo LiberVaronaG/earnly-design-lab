@@ -65,6 +65,22 @@ for (const [id, fam] of Object.entries(tokens.families)) {
   css += block(`.app[data-family="${id}"][data-theme="dark"]`, o.dark);
 }
 
+// Base 1 adjustments sit on top of V0 only, behind their own lab control, so base 0 keeps the reference values.
+for (const [control, adj] of Object.entries(tokens.adjustments || {})) {
+  if (control.startsWith('$')) continue;
+  for (const [group, entries] of Object.entries(adj.override || {})) {
+    for (const [key, value] of Object.entries(entries)) {
+      if (!(key in (tokens.base[group] || {}))) errors.push(`adjustment ${control}: ${group}.${key} has no base role`);
+      if (group === 'color' && !isThemed(value)) errors.push(`adjustment ${control}: color.${key} must define light and dark`);
+    }
+  }
+  const o = collect(adj.override || {});
+  const sel = `.phone[data-${control}="${adj.value}"] > .app[data-family="v0"]`;
+  css += `\n/* Adjustment: ${adj.name.en} */\n`;
+  css += block(sel, [...o.plain, ...o.light]);
+  css += block(`${sel}[data-theme="dark"]`, o.dark);
+}
+
 // V0 must keep the reference values for every role that cites a source color.
 const toHex = (c) => '#' + ['red', 'green', 'blue']
   .map((k) => Math.round(parseFloat(c.components[k]) * 255).toString(16).padStart(2, '0')).join('').toUpperCase();

@@ -45,20 +45,26 @@ const lum = ([r, g, b]) => {
 };
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
 
-function resolve(fam, mode) {
+function resolve(fam, mode, adj) {
   const out = {};
   for (const [k, v] of Object.entries(tokens.base.color)) out[k] = v[mode];
   for (const [k, v] of Object.entries(tokens.families[fam].override.color || {})) out[k] = v[mode];
+  for (const [k, v] of Object.entries(adj?.override?.color || {})) out[k] = v[mode];
   return out;
 }
+// Every family, then V0 with each base 1 adjustment on. The V0 allowance does not cover an adjustment.
+const SETS = [
+  ...Object.keys(tokens.families).map((fam) => ({ id: fam, fam })),
+  ...Object.entries(tokens.adjustments || {}).filter(([k]) => !k.startsWith('$')).map(([k, adj]) => ({ id: `v0+${k}`, fam: 'v0', adj }))
+];
 // Gradient backgrounds: check every color stop.
 const stops = (v) => (v.includes('gradient') ? v.match(/#[0-9a-fA-F]{6}/g) : [v]);
 
 let failed = 0;
 const rows = [];
-for (const fam of Object.keys(tokens.families)) {
+for (const { id, fam, adj } of SETS) {
   for (const mode of ['light', 'dark']) {
-    const c = resolve(fam, mode);
+    const c = resolve(fam, mode, adj);
     const page = parse(c.bg);
     for (const [fg, bg, min, what] of PAIRS) {
       if (c[fg] === 'transparent' || c[bg] === 'transparent') continue;
@@ -69,9 +75,9 @@ for (const fam of Object.keys(tokens.families)) {
       }
       const key = `${fg}/${bg}/${mode}`;
       const ok = worst >= min;
-      const allowed = !ok && fam === 'v0' && ALLOWED_V0.has(key);
+      const allowed = !ok && id === 'v0' && ALLOWED_V0.has(key);
       if (!ok && !allowed) failed++;
-      if (!ok || process.argv.includes('--all')) rows.push(`${ok ? 'ok  ' : allowed ? 'V0* ' : 'FAIL'} ${fam} ${mode.padEnd(5)} ${(fg + ' on ' + bg).padEnd(34)} ${worst.toFixed(2).padStart(5)} (min ${min}) ${what}`);
+      if (!ok || process.argv.includes('--all')) rows.push(`${ok ? 'ok  ' : allowed ? 'V0* ' : 'FAIL'} ${id} ${mode.padEnd(5)} ${(fg + ' on ' + bg).padEnd(34)} ${worst.toFixed(2).padStart(5)} (min ${min}) ${what}`);
     }
   }
 }

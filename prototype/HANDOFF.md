@@ -270,11 +270,17 @@ Detalle completo en [BASE-1.md](BASE-1.md).
   - controles de al menos 44 × 44, ninguno montado sobre otro, nada que se arrastre de lado;
   - «Terminar turno» y «Listo» siempre visibles en la zona del pulgar.
 - **Corregido:** «principal» sola en la tarjeta verde (ahora se parte por el punto) y un aviso que se salía de su caja a 320 px y 200 %.
-- **Para que Liber decida:**
+- **Propuesto a Liber el 6 nov:**
   - el verde de los botones en oscuro: 3,80 : 1, heredado de la base 0; propuesta #36853A;
   - los dos grosores de borde: propuesta, línea suave en el mapa del turno y en las tarjetas del cierre.
 - **Comprobación:** auditoría sin más fallo que el verde heredado; control negativo 10 de 10; las demás capturas solo cambian en esa línea de la tarjeta C. `check-ui.cjs` no corrió (sin Playwright).
-- **Siguiente paso:** que Liber revise la base 1 y decida el verde y los bordes; después, la base 2 con la Navidad. Nada pasa a SwiftUI.
+- **7 nov, aprobado por Liber: «Sí, los dos».**
+  - El verde de los botones en oscuro pasa a #36853A (4,59 : 1). Está en `design-tokens.json` → `adjustments.verde`, con el control «Verde oscuro» (`verde=legible`).
+  - Una sola línea suave para las cajas: el mapa del turno, las tarjetas del cierre y el aviso de batería del turno, que no estaba en la propuesta y va en la misma pantalla. Los campos siguen con la fuerte. Control «Bordes» (`bordes=suave`).
+  - La base 1 trae los dos puestos; la base 0 y las demás vistas no cambian.
+  - Comprobado: 1680 de 1680 estados sin ningún fallo; las 150 capturas de las otras vistas, idénticas píxel a píxel; tokens, contraste y SHA256SUMS bien.
+  - Las capturas de la base 1 se regeneraron. Las del 6 nov se habían hecho antes de corregir «principal».
+- **Siguiente paso:** la base 2 con la Navidad, encima de la base 1. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

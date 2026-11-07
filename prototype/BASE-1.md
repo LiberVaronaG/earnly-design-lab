@@ -1,6 +1,6 @@
 # Base 1: la pasada final de Inicio
 
-6 nov 2026. Rama `design/home-sin-titulo-2026-10-27`.
+6 nov 2026; el 7 nov Liber aprobó el verde en oscuro y la línea suave. Rama `design/home-sin-titulo-2026-10-27`.
 
 - **Base 0:** la app publicada (2.0.3).
 - **Base 1:** todo lo que Liber eligió encima de la base 0. Es una base fija y no lleva ninguna decoración de fiestas.
@@ -29,6 +29,8 @@ En el laboratorio, «tokens» también son los colores y radios de `design-token
 | Turno en curso | B sin «Trackeando», sin cambio de espacio | [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md) |
 | Cierre | A · Marca las apps, con la lista filtrada | [CIERRE-TURNO.md](CIERRE-TURNO.md), [CIERRE-COMBINACIONES.md](CIERRE-COMBINACIONES.md) |
 | Letra | La de la app: tres tamaños | ver abajo |
+| Verde oscuro | Legible · #36853A | ver abajo |
+| Bordes | Una línea suave; los campos, la fuerte | ver abajo |
 | Decoración | Ninguna | |
 
 ## Lo que cambia al verla junta: la letra de la app
@@ -140,25 +142,35 @@ En cada estado se comprueba:
    - En inglés, con 320 px y texto al 200 %, la palabra «undercounted.» del aviso de ahorro de batería durante el turno no cabía en la línea y empujaba el texto fuera de la caja.
    - Ahora la palabra se parte, como hace `Text` en SwiftUI.
 
-## Queda para que decidas
+## Aprobado el 7 nov: el verde y los bordes
 
-1. **El verde de los botones en oscuro.**
-   - «Listo» y «Guardar turno» llevan letra blanca sobre el verde de la app en oscuro (`ActionPositive`, #3F9442). Eso da 3,80 : 1, y el mínimo para su tamaño es 4,5 : 1.
-   - Viene de la base 0: está así en la app publicada, y el comprobador del laboratorio ya lo marcaba como heredado.
-   - **Propuesta:** #36853A en oscuro, que da 4,59 : 1. El claro, #2D6B30, no cambia.
-   - Sería un color nuevo en la app, en iOS y Android, con su fila en PARITY.md. No se ha tocado.
-2. **Dos grosores de borde.**
-   - Las cajas de Inicio y la tarjeta del turno en curso llevan la línea suave: el granate al 30 %.
-   - El mapa del turno en curso y las tarjetas del cierre llevan la línea fuerte de la base 0.
-   - En la pantalla del turno se ven juntas: la tarjeta con línea suave y el mapa, justo debajo, con la fuerte.
-   - **Propuesta:** línea suave en el mapa y en las tarjetas del cierre. Los campos donde se escribe mantienen la fuerte, porque un campo necesita al menos 3 : 1 para verse como campo. No se ha tocado.
-3. **Observaciones, sin propuesta de cambio:**
-   - **En el SE, durante un viaje personal,** el círculo queda cortado por las pestañas: se ve la mitad de arriba y se puede tocar. Para que entrara habría que quitar unos 60 px de arriba, más de lo que se gana achicando el círculo.
-   - **En el cierre, la pregunta del cobro va debajo del resumen del turno,** igual que en la app. En el SE se ve el resumen y el principio de la pregunta. Si se quisiera la pregunta primero, sería cambiar el orden de la base 0.
+Liber aprobó las dos propuestas de la pasada. Cada una tiene su control en el laboratorio, como la letra, para comparar con la app publicada. La base 1 las trae puestas y la base 0 sigue igual.
+
+1. **El verde de los botones en oscuro** (control «Verde oscuro → Legible · #36853A», `verde=legible`).
+   - En oscuro, «Listo» y «Guardar turno» llevaban letra blanca sobre #3F9442: 3,80 : 1, por debajo del 4,5 : 1 que pide su tamaño. Venía de la base 0.
+   - El círculo «Iniciar turno» usa el mismo verde. Con su letra grande ya pasaba (3 : 1), y ahora tiene más margen.
+   - Ahora el verde es #36853A en oscuro: 4,59 : 1. El claro, #2D6B30, no cambia (6,45 : 1).
+   - El punto de salida del mapa usa el mismo verde en la app (`ActionPositive`), así que también cambia.
+   - Sobre las tarjetas, el verde como icono o contorno queda en 3,33 : 1; para gráficos el mínimo es 3 : 1.
+   - Está en `design-tokens.json`, en `adjustments.verde`. El comprobador de contraste lo revisa aparte («v0+verde»), sin la excepción de lo heredado.
+2. **Una sola línea para las cajas** (control «Bordes → Una línea suave», `bordes=suave`).
+   - Ahora llevan la línea suave de Inicio (el granate al 30 %):
+     - el mapa del turno en curso;
+     - las tarjetas del cierre: resumen, cobro, resultado y estación;
+     - el aviso de batería baja durante el turno. No estaba en la propuesta, pero va en la misma pantalla, entre la tarjeta y el mapa. Sin él, volvían a verse las dos líneas juntas.
+   - **Los campos donde se escribe mantienen la fuerte,** porque un campo necesita al menos 3 : 1 para verse como campo. También los botones secundarios y las casillas de la lista de apps, que llevan su propio color.
+   - Revisado en las 35 pantallas: la línea fuerte ya solo queda en los campos.
+
+**Observaciones, sin propuesta de cambio:**
+
+- **En el SE, durante un viaje personal,** el círculo queda cortado por las pestañas: se ve la mitad de arriba y se puede tocar. Para que entrara habría que quitar unos 60 px de arriba, más de lo que se gana achicando el círculo.
+- **En el cierre, la pregunta del cobro va debajo del resumen del turno,** igual que en la app. En el SE se ve el resumen y el principio de la pregunta. Si se quisiera la pregunta primero, sería cambiar el orden de la base 0.
 
 ## Comprobación
 
-- **Auditoría:** 1680 de 1680 estados aplicados. El único fallo que queda, en 88 estados, es el verde de los botones en oscuro: oscuro, texto al 100 %, «Listo» y «Guardar turno». Es el punto 1 de arriba.
+- **Auditoría:** 1680 de 1680 estados aplicados.
+  - **6 nov:** el único fallo, en 88 estados, era el verde de los botones en oscuro: oscuro, texto al 100 %, «Listo» y «Guardar turno».
+  - **7 nov, con el verde y los bordes aprobados:** ningún fallo en los 1680 estados.
 - **Control negativo:** 10 de 10.
   - Ocho errores metidos a propósito se detectaron con el mensaje previsto:
     - una página más ancha que la pantalla;
@@ -176,13 +188,19 @@ En cada estado se comprueba:
     - a 320 px ahora se parte por el punto;
     - en una línea, el espacio tras el punto se mueve menos de 1 px.
   - Las capturas guardadas de esas vistas no se regeneraron, porque son historial.
-- **Tokens, contraste y SHA256SUMS:** sin cambios. El contraste solo marca el verde heredado de la base 0. `screens/`, `screens.json`, `TOKENS-BASE.json` y `SHA256SUMS` no se tocaron.
+  - **7 nov:** las 150 capturas de las otras 14 vistas, generadas otra vez con el verde y los bordes nuevos, salen idénticas píxel a píxel. Los dos ajustes solo actúan en la base 1.
+- **Tokens, contraste y SHA256SUMS:**
+  - Los tokens solo cambian por el ajuste nuevo; la base 0 sigue igual que `TOKENS-BASE.json`.
+  - El contraste solo marca el verde heredado de la base 0. El ajuste da 4,59 : 1 en oscuro.
+  - SHA256SUMS: 91 de 91. `screens/`, `screens.json`, `TOKENS-BASE.json` y `SHA256SUMS` no se tocaron.
 - **No se ejecutó** `check-ui.cjs` (Chromium), porque Playwright no está instalado. La auditoría de WebKit lo sustituye.
 - **No probado:** iOS, Apple Maps real, VoiceOver, Dynamic Type real ni la tipografía SF exacta. El navegador aproxima.
 
 ## Capturas
 
 En `captures/home-base-1/`; se regeneran con `swift prototype/tools/capture-home-webkit.swift base-1`.
+
+Se regeneraron el 7 nov, con el verde y los bordes. Las del 6 nov se habían hecho antes de corregir «principal» y lo seguían mostrando solo en su línea; las de ahora ya llevan la corrección.
 
 - **Inicio a 390:** claro y oscuro.
 - **Inicio en el SE:** con texto al 100 % y al 135 %.
@@ -200,7 +218,9 @@ En `captures/home-base-1/`; se regeneran con `swift prototype/tools/capture-home
   - los avisos con `Text`, que ya parte las palabras largas;
   - el resto de cada pieza está en su documento.
 - **Lo que no cambia:** la letra ya es la de la app (cuerpo, título 2 y título grande), así que no hay tamaños nuevos.
-- **Los colores:** solo si Liber aprueba el verde en oscuro y los bordes suaves.
+- **Los colores, aprobados por Liber:**
+  - `ActionPositive` en oscuro pasa a #36853A, en iOS (`Assets.xcassets`) y en Android (`colors.xml`) a la vez; el claro no cambia;
+  - el mapa del turno y las tarjetas del cierre pasan a la línea suave que ya usa Inicio; los campos siguen con la fuerte.
 - **Lo de siempre:**
   - SPEC §4.3 (Inicio), §4.4 (turno en curso) y §4.5 (cierre);
   - PARITY.md y su `docs/parity`;

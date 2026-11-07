@@ -9,9 +9,11 @@
   // Type scale. `lab` is this lab's iOS-like scale (15 and 13 px secondary text); `app` is what the shipped app uses:
   // only body 17, title2 22 and largeTitle 34 (SPEC's three sizes), so secondary text is 17 px there.
   const TIPO = { lab: 'Laboratorio', app: 'App · tres tamaños' };
+  const VERDE = { app: 'App · #3F9442', legible: 'Legible · #36853A' };
+  const BORDES = { app: 'App · dos líneas', suave: 'Una línea suave' };
   // Base 1: every Home piece Liber chose on top of the shipped app (base 0), with no festive decoration.
   // `base=1` in the link opens it whole; changing any of these controls leaves the base.
-  const BASE1 = { family: 'v0', home: 'sintitulo', card: 'c', bd: 'propuesta', opts: 'propuesta', personal: 'a', vivo: 'tablero', circ: 'fondo-corte', avisos: 'b', recientes: 'd', turno: 'b', cierre: 'a', tipo: 'app', deco: 'none' };
+  const BASE1 = { family: 'v0', home: 'sintitulo', card: 'c', bd: 'propuesta', opts: 'propuesta', personal: 'a', vivo: 'tablero', circ: 'fondo-corte', avisos: 'b', recientes: 'd', turno: 'b', cierre: 'a', tipo: 'app', verde: 'legible', bordes: 'suave', deco: 'none' };
   const isBase1 = (L) => Object.entries(BASE1).every(([k, v]) => L[k] === v);
   const HOME = {
     original: ['Original', 'con «Earnly Driver»'],
@@ -135,6 +137,8 @@
     if (TURNO[h.get('turno')]) L.turno = h.get('turno');
     if (CIERRE[h.get('cierre')]) L.cierre = h.get('cierre');
     if (TIPO[h.get('tipo')]) L.tipo = h.get('tipo');
+    if (VERDE[h.get('verde')]) L.verde = h.get('verde');
+    if (BORDES[h.get('bordes')]) L.bordes = h.get('bordes');
     if (['light', 'dark'].includes(h.get('theme'))) L.theme = h.get('theme');
     if (['en', 'es'].includes(h.get('lang'))) L.lang = h.get('lang');
     if (E.SCENARIOS[h.get('scenario')]) L.scenario = h.get('scenario');
@@ -156,7 +160,7 @@
       history.replaceState(null, '', '#' + b.toString());
       return;
     }
-    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, vivo: L.vivo, circulo: L.circ, avisos: L.avisos, recientes: L.recientes, turno: L.turno, cierre: L.cierre, tipo: L.tipo, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
+    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, vivo: L.vivo, circulo: L.circ, avisos: L.avisos, recientes: L.recientes, turno: L.turno, cierre: L.cierre, tipo: L.tipo, verde: L.verde, bordes: L.bordes, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
     if (L.solo) h.set('solo', '1');
     if (L.tall) h.set('tall', '1');
     history.replaceState(null, '', '#' + h.toString());
@@ -182,6 +186,8 @@
     $('c-turno').value = L.turno;
     $('c-cierre').value = L.cierre;
     $('c-tipo').value = L.tipo;
+    $('c-verde').value = L.verde;
+    $('c-bordes').value = L.bordes;
     $('c-theme').value = L.theme;
     $('c-lang').value = L.lang;
     $('c-scenario').value = L.scenario;
@@ -260,7 +266,7 @@
       return `
       <section class="frame-col" aria-label="${name}" style="--w:${L.width}px">
         ${L.solo ? '' : `<div class="frame-head"><strong>${name}</strong><span>${summary}</span></div>`}
-        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}" data-vivo="${vivo}" data-circ="${circ}" data-avisos="${aviso}" data-recientes="${rec}" data-turno="${tur}" data-cierre="${cie}" data-tipo="${L.tipo}">
+        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}" data-vivo="${vivo}" data-circ="${circ}" data-avisos="${aviso}" data-recientes="${rec}" data-turno="${tur}" data-cierre="${cie}" data-tipo="${L.tipo}" data-verde="${L.verde}" data-bordes="${L.bordes}">
           <div class="app" data-family="${f}" data-theme="${L.theme}"></div>
         </div>
       </section>`;
@@ -319,6 +325,8 @@
     L.turno = $('c-turno').value;
     L.cierre = $('c-cierre').value;
     L.tipo = $('c-tipo').value;
+    L.verde = $('c-verde').value;
+    L.bordes = $('c-bordes').value;
     L.theme = $('c-theme').value;
     L.lang = $('c-lang').value;
     L.scenario = $('c-scenario').value;
@@ -331,7 +339,7 @@
       L.familyB = Object.keys(FAMS).find((f) => f !== L.family);
     }
     if (prev.scenario !== L.scenario || prevScreen !== screenId) E.jump(screenId);
-    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.vivo !== L.vivo || prev.circ !== L.circ || prev.avisos !== L.avisos || prev.recientes !== L.recientes || prev.turno !== L.turno || prev.cierre !== L.cierre || prev.tipo !== L.tipo || prev.width !== L.width) buildStage();
+    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.vivo !== L.vivo || prev.circ !== L.circ || prev.avisos !== L.avisos || prev.recientes !== L.recientes || prev.turno !== L.turno || prev.cierre !== L.cierre || prev.tipo !== L.tipo || prev.verde !== L.verde || prev.bordes !== L.bordes || prev.width !== L.width) buildStage();
     syncControls();
     writeHash();
     E.render();

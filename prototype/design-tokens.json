@@ -190,5 +190,18 @@
         "weight": { "heroFigure": 500, "title": 600 }
       }
     }
+  },
+  "adjustments": {
+    "$description": "Base 1 changes Liber approved on top of V0 (7 nov 2026). Each one applies only where its lab control is on (data-<control> on .phone), so base 0 keeps the reference values.",
+    "verde": {
+      "value": "legible",
+      "name": { "es": "Verde legible en oscuro", "en": "Readable dark-mode green" },
+      "override": {
+        "color": {
+          "action": { "light": "#2D6B30", "dark": "#36853A" },
+          "mapStart": { "light": "#2D6B30", "dark": "#36853A" }
+        }
+      }
+    }
   }
 }
