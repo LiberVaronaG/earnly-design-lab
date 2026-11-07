@@ -249,7 +249,8 @@ Detalle completo en [CIERRE-TURNO.md](CIERRE-TURNO.md).
   - **Construido** cuando Liber aceptó las reglas. Con un turno de Flex, A mide 222 px aunque haya cinco apps activadas.
   - De paso, la propina de la app del turno en plataformas con propinas, como la app, y GrubHub en el laboratorio.
   - Auditoría: 2016 renders sin fallos; control negativo de 15 de 15. El cierre antiguo sigue idéntico.
-- **Siguiente paso:** que Liber revise la lista; luego, Navidad. Nada pasa a SwiftUI.
+- **Liber aprobó la lista filtrada el 6 nov** (`afcc68a`). Al registrarlo no cambió el producto.
+- **Siguiente paso:** Navidad (el gorrito frente al mapa del círculo) y después la pasada final por Inicio entero. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

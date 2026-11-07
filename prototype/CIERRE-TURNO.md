@@ -102,7 +102,7 @@ El cierre ya se desplaza hoy, y «Listo» va fijo abajo, así que la altura pesa
 
 ## Decisión
 
-**Liber eligió A · Marca las apps el 6 nov 2026.** Pidió además que la lista no ofrezca apps que no se combinan con la del turno, por ejemplo Instacart en un turno de Amazon Flex. **Ya está construido** (ver A arriba).
+**Liber eligió A · Marca las apps el 6 nov 2026.** Pidió además que la lista no ofrezca apps que no se combinan con la del turno, por ejemplo Instacart en un turno de Amazon Flex. **Ya está construido** (ver A arriba), y Liber aprobó la lista filtrada el mismo día.
 - La investigación y las reglas propuestas están en [CIERRE-COMBINACIONES.md](CIERRE-COMBINACIONES.md). Por ejemplo:
   - Flex no ofrece ninguna;
   - Uber ofrece Lyft, DoorDash y Grubhub;
@@ -206,4 +206,4 @@ El cierre ya se desplaza hoy, y «Listo» va fijo abajo, así que la altura pesa
 
 ## Siguiente paso
 
-Que Liber revise la lista filtrada. Después, según lo que pidió, toca Navidad. Nada pasa a SwiftUI.
+Liber aprobó la lista filtrada el 6 nov (`afcc68a`). Toca Navidad y después la pasada final por Inicio entero. Nada pasa a SwiftUI.
