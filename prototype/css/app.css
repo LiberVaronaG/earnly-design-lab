@@ -171,6 +171,8 @@
 .hero-figure small { font-size: .5em; font-weight: 400; }
 .hero-toggle { display: inline-flex; align-items: center; gap: 4px; color: inherit !important; }
 .hero-toggle .ic { width: .9em; height: .9em; opacity: .85; }
+/* Each fact wraps as one piece (SwiftUI: ViewThatFits with an HStack, then a VStack). */
+.hero-status .hs-part { display: inline-block; max-width: 100%; }
 .hero-status { font-size: var(--size-subhead); color: var(--color-on-hero-muted); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .hero-breakdown { border-top: 1px solid var(--color-hero-divider); padding-top: var(--space-sm); margin-top: var(--space-xs); }
 .hero-breakdown .kv, .hero-breakdown .note { color: var(--color-on-hero); }
@@ -360,7 +362,8 @@
 .notice-card .notice-icon { color: var(--color-destructive); }
 .notice-soft { background: var(--color-surface); box-shadow: var(--shadow-card); }
 .notice-soft .notice-icon { color: var(--color-caution); }
-.notice-main { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+/* min-width 0: a word longer than the line ("undercounted." at 200 % on 320 px) breaks, as SwiftUI Text does, instead of pushing out of the card. */
+.notice-main { flex: 1; min-width: 0; overflow-wrap: anywhere; display: flex; flex-direction: column; gap: 2px; }
 .notice-title { font-weight: var(--weight-semibold); }
 .notice-body { color: var(--color-text-muted); font-size: var(--size-subhead); }
 .notice-icon .ic { width: 1.5em; height: 1.5em; }
@@ -810,3 +813,11 @@
 /* With very large text the label wins: button decorations step aside, only the snow stays. */
 .app[data-ax="true"] :is(.xmas-sparkles, .xmas-elf, .xmas-cap, .xmas-wreath, .xmas-snowcap, .xmas-lights-ring) { display: none; }
 .app[data-ax="true"] .start-xmas { padding-top: var(--space-md); }
+
+/* The shipped app's type: only body 17, title2 22 and largeTitle 34 (SPEC: three sizes). Secondary text is body
+   with a muted colour, not a smaller size. Base 1 uses it so the lab shows what SwiftUI will draw. */
+.phone[data-tipo="app"] > .app {
+  --size-headline: var(--size-body); --size-callout: var(--size-body); --size-subhead: var(--size-body);
+  --size-footnote: var(--size-body); --size-caption: var(--size-body);
+  --size-title3: var(--size-title2); --size-title1: var(--size-title2); --size-result-figure: var(--size-title2);
+}

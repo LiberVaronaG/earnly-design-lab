@@ -14,6 +14,7 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 | Control | Qué hace |
 |---|---|
 | Vista | Muestra una familia, compara dos lado a lado, enseña las cuatro con la misma pantalla y los mismos datos, «Original y Sin título»: la misma familia dos veces, con y sin el rótulo de Inicio, «Tarjeta verde»: la tarjeta actual y C, «Tarjeta abierta»: el desglose de C actual y la propuesta, «Opciones»: Opciones actual y la propuesta, «Personal»: la fila Personal actual, A y B, «Personal en marcha»: tres formas de mostrar un viaje personal en curso, «Iniciar turno»: el círculo actual y el Fondo, «Contraste en oscuro»: el Fondo, Corte y Tenue, «Avisos»: los avisos de hoy y las propuestas A, B y C, «Recientes»: la tarjeta de la app y las propuestas A, B, C y D, «Turno activo»: la pantalla del turno en curso de la app y las propuestas A, B y C, «Turno activo · espacio de B»: B, Mapa con tope y Más junto, o «Cierre del turno»: el cierre de la app y las propuestas A, B y C |
+| Base | «Base 1 (elegida)» pone de una vez todo lo elegido en Inicio, el turno en curso y el cierre, con la letra de la app y sin decoración (`base=1` en el enlace). Al cambiar cualquier pieza pasa a «A medida»; ver [BASE-1.md](BASE-1.md) |
 | Familia / Comparar con | V0 Actual, V1 Esencial, V2 Claridad, V3 Estudio |
 | Inicio | Original o Sin título (sin «Earnly Driver» arriba). Solo afecta a Inicio; ver [HOME-SIN-TITULO.md](HOME-SIN-TITULO.md) |
 | Tarjeta / Tarjetas | Tarjeta verde de Inicio: la actual o C · Dos zonas (solo V0). La vista «Tarjeta verde» las pone lado a lado con Inicio sin título; ver [HOME-TARJETA-VERDE.md](HOME-TARJETA-VERDE.md) |
@@ -29,7 +30,8 @@ Este es un laboratorio navegable en HTML, CSS y JavaScript con datos sintéticos
 | Turno | Turno en curso: la antigua del laboratorio (por defecto; no es la app), la actual de la app, A · Con estado, B · Como tu viaje personal (elegida, sin «Trackeando»), C · Mapa grande, o las pruebas de espacio de B: Mapa con tope y Más junto (solo V0); ver [HOME-TURNO-ACTIVO.md](HOME-TURNO-ACTIVO.md) |
 | Cierre | Cierre del turno: la antigua del laboratorio (por defecto; no es la app), la actual de la app, A · Marca las apps (elegida), B · Añadir otra o C · Pregunta primero (solo V0); ver [CIERRE-TURNO.md](CIERRE-TURNO.md) y las combinaciones en [CIERRE-COMBINACIONES.md](CIERRE-COMBINACIONES.md) |
 | Pantalla | Salta a uno de los estados de ejemplo, incluidos los cuatro de viaje personal en marcha (con Personal A) y los de avisos (sin avisos, ubicación apagada, ahorro de batería, dos avisos y Personal sin Movimiento) y el último turno sin ruta, y los del turno en curso (en marcha, buscando ubicación, ahorro de batería, turno largo y la pregunta de terminar), y los del cierre con otras apps y con un turno de Uber. Después se puede navegar normalmente por la app |
-| Ancho | 320, 390 o 430 px |
+| Ancho | 320 px (solo prueba), 375 × 667 (iPhone SE, el más pequeño de iOS 18), 390 o 430 px |
+| Letra | Laboratorio (por defecto; textos secundarios a 15 px) o App · tres tamaños: cuerpo 17, título 2 22 y título grande 34, como la app publicada (`tipo=app`; la base 1 la usa) |
 | Texto | 100 %, 135 % o 200 %. Aproxima Dynamic Type/AX; no equivale a iOS |
 | Decoración | Muestra opcional de Halloween o Navidad. Está apagada por defecto y no tapa controles |
 
@@ -69,6 +71,7 @@ node prototype/tools/build-tokens.mjs --check  # falla si lo generado está desa
 node prototype/tools/check-contrast.mjs        # contraste WCAG de los pares de color usados, por familia y tema
 node prototype/tools/check-ui.cjs              # pruebas en Chromium (Playwright): 1000 renders + flujos
 node prototype/tools/capture.cjs               # regenera captures/
+swift prototype/tools/capture-home-webkit.swift base-1         # regenera captures/home-base-1/: la base 1 entera, también en el iPhone SE
 swift prototype/tools/capture-home-webkit.swift sin-titulo     # regenera captures/home-sin-titulo/ con WebKit de macOS (sin Playwright)
 swift prototype/tools/capture-home-webkit.swift tarjeta-verde  # regenera captures/home-tarjeta-verde/
 swift prototype/tools/capture-home-webkit.swift tarjeta-abierta  # regenera captures/home-tarjeta-abierta/

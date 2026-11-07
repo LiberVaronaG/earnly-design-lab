@@ -31,8 +31,10 @@
     if (!s.n) return { text: ctx.t('noShiftsYet'), partial: false };
     if (!s.missing.length) return { text: ctx.t('allShiftsLogged', { n: s.n }), partial: false };
     let text = ctx.t('shiftsOfWithPay', { a: s.withAnyPay, n: s.n });
+    // Card C wraps the two facts as whole pieces, so a narrow card never leaves «principal» alone on a line.
+    const parts = s.extrasOnly ? [text + ' ·', ctx.t('missingMain', { m: s.extrasOnly })] : null;
     if (s.extrasOnly) text += ' · ' + ctx.t('missingMain', { m: s.extrasOnly });
-    return { text, partial: true };
+    return { text, parts, partial: true };
   }
 
   function paidText(ctx) {
@@ -302,7 +304,7 @@
           <div class="c-money">
             <span class="hero-mini-label">${esc(ctx.t('paid'))}</span>
             <span class="c-amount" data-fit>${toggleBtn(`<span class="hero-figure">${paidText(ctx)}</span>`)}</span>
-            <span class="hero-status">${esc(st.text)}</span>
+            <span class="hero-status">${st.parts ? `<span>${st.parts.map((x) => `<span class="hs-part">${esc(x)}</span>`).join(' ')}</span>` : esc(st.text)}</span>
           </div>
           <dl class="c-miles">
             <div class="c-mile"><dt class="hero-mini-label">${esc(ctx.t('today'))}</dt><dd class="c-mile-figure">${ctx.fmt.int(ctx.lang, today)}<small> mi</small></dd></div>

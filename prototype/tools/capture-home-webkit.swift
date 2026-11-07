@@ -1,6 +1,6 @@
 // Before/after PNGs of Home lab variants, rendered by macOS WebKit (the Safari engine).
 // Playwright is not needed; it runs wherever Xcode or the Command Line Tools are installed.
-// Usage: swift prototype/tools/capture-home-webkit.swift sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro | avisos | recientes | turno-activo | cierre
+// Usage: swift prototype/tools/capture-home-webkit.swift base-1 | sin-titulo | tarjeta-verde | tarjeta-abierta | opciones | personal | personal-en-marcha | personal-en-marcha-tres | personal-viaje-primero | iniciar-turno | contraste-oscuro | avisos | recientes | turno-activo | cierre
 // Results describe WebKit on macOS; they are not iOS, Dynamic Type or VoiceOver captures.
 import AppKit
 import WebKit
@@ -19,6 +19,9 @@ struct Shot {
   var setup = ""
   // Crop a comparison to the top of Home (frame titles down to the notice), at 3x, to judge alignments.
   var detail = false
+  // Phone size for solo shots: 390 × 844 by default; 375 × 667 is the iPhone SE.
+  var w = 390.0
+  var h = 844.0
 }
 
 // «Sin datos» with personal tracking switched on: both personal figures are zero.
@@ -38,7 +41,31 @@ let chosenShift = "\(chosenRecent)&turno=b"
 
 // Same scenario, screen and size on every side of a comparison; only the lab variant differs.
 let common = "family=v0&deco=none&motion=normal"
+// Base 1: every chosen piece together, opened with the single `base=1` link.
+let base1 = "base=1&view=single&solo=1&motion=normal"
+func b1(_ file: String, _ screen: String, dark: Bool = false, lang: String = "es", scenario: String = "partial", width: Int = 390, text: String = "1", full: Bool = false) -> Shot {
+  let h = width == 375 ? 667.0 : width == 320 ? 640.0 : width == 430 ? 932.0 : 844.0
+  return Shot(file: file, hash: "\(base1)&screen=\(screen)&theme=\(dark ? "dark" : "light")&lang=\(lang)&scenario=\(scenario)&width=\(width)&text=\(text)", dark: dark, solo: true, full: full, w: Double(width), h: h)
+}
 let sets: [String: [Shot]] = [
+  "base-1": [
+    b1("01-inicio-390-claro-es.png", "home"),
+    b1("02-inicio-390-oscuro-en.png", "home", dark: true, lang: "en"),
+    b1("03-inicio-se-claro-es.png", "home", width: 375),
+    b1("04-inicio-se-texto-135-es.png", "home", width: 375, text: "1.35"),
+    b1("05-inicio-viaje-390-es.png", "homeLive"),
+    b1("06-inicio-viaje-se-es.png", "homeLive", width: 375),
+    b1("07-inicio-dos-avisos-390-es.png", "homeTwoNotices"),
+    b1("08-inicio-entero-390-es.png", "homeNoNotice", full: true),
+    b1("09-inicio-desglose-390-es.png", "homeBreakdown", full: true),
+    b1("10-inicio-opciones-390-es.png", "homeOptions", full: true),
+    b1("11-turno-390-es.png", "active"),
+    b1("12-turno-se-es.png", "active", width: 375),
+    b1("13-turno-terminar-oscuro-es.png", "activeEnd", dark: true),
+    b1("14-cierre-390-es.png", "closeStacked", scenario: "complete", full: true),
+    b1("15-cierre-flex-390-es.png", "closeFlexMany", scenario: "complete", full: true),
+    b1("16-inicio-320-texto-200-es.png", "home", width: 320, text: "2", full: true)
+  ],
   "cierre": [
     Shot(file: "01-comparar-vacio-es.png", hash: "\(cierreView)&screen=close&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
     Shot(file: "02-comparar-con-uber-es.png", hash: "\(cierreView)&screen=closeStacked&theme=light&lang=es&scenario=complete&width=390&text=1", dark: false, solo: false, full: true),
@@ -270,16 +297,16 @@ for shot in shots {
   web.appearance = NSAppearance(named: shot.dark ? .darkAqua : .aqua)
   if shot.solo {
     // A scrollbar left over from the lab layout would eat into the phone viewport.
-    resize(NSSize(width: 390, height: 844))
+    resize(NSSize(width: shot.w, height: shot.h))
     _ = js("document.documentElement.style.overflow = 'hidden'; location.hash = '\(shot.hash)'")
     spin(0.5)
     if !shot.setup.isEmpty { _ = js(shot.setup); spin(0.2) }
-    var height = 844.0
+    var height = shot.h
     if shot.full {
-      height += js("(() => { const s = document.querySelector('.scroll'); return s.scrollHeight - s.clientHeight; })()") as? Double ?? 0
-      resize(NSSize(width: 390, height: height))
+      height += js("(() => { const s = document.querySelector('.screen .scroll'); return s.scrollHeight - s.clientHeight; })()") as? Double ?? 0
+      resize(NSSize(width: shot.w, height: height))
     }
-    try snapshot(NSRect(x: 0, y: 0, width: 390, height: height), scale: 3, to: out.appendingPathComponent(shot.file))
+    try snapshot(NSRect(x: 0, y: 0, width: shot.w, height: height), scale: 3, to: out.appendingPathComponent(shot.file))
   } else {
     resize(NSSize(width: 960, height: 1200))
     _ = js("document.documentElement.style.overflow = ''; location.hash = '\(shot.hash)'")

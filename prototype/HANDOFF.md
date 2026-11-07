@@ -1,6 +1,6 @@
 # HANDOFF
 
-Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio, Recientes D · El último en grande y, durante el turno, B · Como tu viaje personal sin la ficha «Trackeando» (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&turno=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`; con un turno en curso, `screen=active`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Turno en curso (elegida B): `#view=turno&family=v0&lang=es&scenario=partial&screen=active`. Cierre del turno (elegida A, con la lista filtrada): `#view=cierre&family=v0&lang=es&scenario=complete&screen=closeStacked`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
+Último punto recuperable: rama `design/home-sin-titulo-2026-10-27`, derivada de `claude/prototype-design-lab` (`0a5ba0e`), que no se ha modificado. Para abrirlo, `prototype/index.html`. **La base 1 entera, con un enlace: `#base=1&lang=es&scenario=partial&screen=home`** ([BASE-1.md](BASE-1.md)). Inicio elegido hasta ahora: sin título, tarjeta C, su desglose propuesto, Opciones propuesta, Personal A, durante un viaje personal El viaje primero el círculo «Iniciar turno» con el trébol de Woodbridge de fondo, que en oscuro se corta alrededor del texto, los avisos B · Cada uno en su sitio, Recientes D · El último en grande y, durante el turno, B · Como tu viaje personal sin la ficha «Trackeando» (`#view=single&family=v0&home=sintitulo&card=c&desglose=propuesta&opciones=propuesta&personal=a&vivo=tablero&circulo=fondo-corte&avisos=b&recientes=d&turno=b&lang=es&scenario=partial&screen=home`; con viaje, `screen=homeLive`; con dos avisos, `screen=homeTwoNotices`; sin avisos, para ver Recientes, `screen=homeNoNotice`; con un turno en curso, `screen=active`). Comparación del círculo: `#view=iniciar&family=v0&lang=es&scenario=partial&screen=home`; su contraste en oscuro: `#view=contraste&family=v0&theme=dark&lang=es&scenario=partial&screen=home`. Avisos: `#view=avisos&family=v0&lang=es&scenario=partial&screen=homeTwoNotices`. Recientes (elegida D): `#view=recientes&family=v0&lang=es&scenario=partial&screen=homeNoNotice`. Turno en curso (elegida B): `#view=turno&family=v0&lang=es&scenario=partial&screen=active`. Cierre del turno (elegida A, con la lista filtrada): `#view=cierre&family=v0&lang=es&scenario=complete&screen=closeStacked`. Comparación de Personal: `#view=personal&family=v0&lang=es&scenario=partial&screen=home`. Comparación de Opciones: `#view=opciones&family=v0&lang=es&scenario=partial&screen=homeOptions`. Comparación de la tarjeta C abierta: `#view=abierta&family=v0&lang=es&scenario=complete&screen=homeBreakdown`. La de la tarjeta verde: `prototype/index.html#view=tarjeta&cards=actual,c&family=v0&lang=es&scenario=partial&screen=home`. La de Original / Sin título sigue en `#view=sintitulo&family=v0&lang=es&scenario=partial&screen=home`.
 
 ## Fase 1: versión navegable (hecha)
 
@@ -252,6 +252,29 @@ Detalle completo en [CIERRE-TURNO.md](CIERRE-TURNO.md).
 - **Liber aprobó la lista filtrada el 6 nov** (`afcc68a`). Al registrarlo no cambió el producto.
 - **Orden (6 nov, Liber):** primero se termina la base 1 (él también la llama «token 1»). Queda fija y sin ninguna decoración de fiestas, ni Navidad ni Halloween. La base 0 es la app con la que se lanzó. Navidad irá en la base 2, encima de la base 1.
 - **Siguiente paso:** la pasada final por Inicio entero, que cierra la base 1. Nada pasa a SwiftUI.
+
+### Base 1 (6 nov): **la pasada final de Inicio**
+
+Detalle completo en [BASE-1.md](BASE-1.md).
+
+- **Un enlace:** `index.html#base=1&lang=es&scenario=partial&screen=home`, o el control «Base → Base 1 (elegida)». Abre todo lo elegido: Inicio, el turno en curso y el cierre, sin decoración.
+- **La letra:** la app publicada solo usa cuerpo 17, título 2 22 y título grande 34. El laboratorio pintaba los textos secundarios a 15 px. La base 1 usa la letra de la app (`tipo=app`); las demás vistas no cambian.
+- **Medido en 1680 estados:**
+  - 35 pantallas;
+  - anchos 320, 375 (iPhone SE), 390 y 430;
+  - texto al 100 %, 135 % y 200 %;
+  - claro y oscuro, español e inglés.
+- **Resultados:**
+  - margen de 16 px en todos los anchos;
+  - el contenido de las cajas alineado a 32–33 px;
+  - controles de al menos 44 × 44, ninguno montado sobre otro, nada que se arrastre de lado;
+  - «Terminar turno» y «Listo» siempre visibles en la zona del pulgar.
+- **Corregido:** «principal» sola en la tarjeta verde (ahora se parte por el punto) y un aviso que se salía de su caja a 320 px y 200 %.
+- **Para que Liber decida:**
+  - el verde de los botones en oscuro: 3,80 : 1, heredado de la base 0; propuesta #36853A;
+  - los dos grosores de borde: propuesta, línea suave en el mapa del turno y en las tarjetas del cierre.
+- **Comprobación:** auditoría sin más fallo que el verde heredado; control negativo 10 de 10; las demás capturas solo cambian en esa línea de la tarjeta C. `check-ui.cjs` no corrió (sin Playwright).
+- **Siguiente paso:** que Liber revise la base 1 y decida el verde y los bordes; después, la base 2 con la Navidad. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 

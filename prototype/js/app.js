@@ -17,7 +17,7 @@
   }
 
   const state = {
-    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', avisos: 'actual', recientes: 'lab', turno: 'lab', cierre: 'lab', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
+    lab: { view: 'single', family: 'v0', familyB: 'v1', home: 'original', card: 'actual', cards: 'actual,c', bd: 'actual', opts: 'actual', personal: 'actual', personals: 'actual,a,b', vivo: 'linea', circ: 'actual', avisos: 'actual', recientes: 'lab', turno: 'lab', cierre: 'lab', tipo: 'lab', theme: 'light', lang: 'en', scenario: 'partial', width: 390, textScale: 1, deco: 'none', motion: 'normal', solo: false },
     data: null,
     ui: null
   };

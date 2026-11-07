@@ -4,7 +4,15 @@
   const S = E.state;
   const FAMS = window.EARNLY_FAMILIES;
   const $ = (id) => document.getElementById(id);
-  const HEIGHT = { 320: 640, 390: 844, 430: 932 };
+  // 375 × 667 is the small iPhone that iOS 18 still runs on (SE, 2nd and 3rd generation); 320 is only a stress width.
+  const HEIGHT = { 320: 640, 375: 667, 390: 844, 430: 932 };
+  // Type scale. `lab` is this lab's iOS-like scale (15 and 13 px secondary text); `app` is what the shipped app uses:
+  // only body 17, title2 22 and largeTitle 34 (SPEC's three sizes), so secondary text is 17 px there.
+  const TIPO = { lab: 'Laboratorio', app: 'App · tres tamaños' };
+  // Base 1: every Home piece Liber chose on top of the shipped app (base 0), with no festive decoration.
+  // `base=1` in the link opens it whole; changing any of these controls leaves the base.
+  const BASE1 = { family: 'v0', home: 'sintitulo', card: 'c', bd: 'propuesta', opts: 'propuesta', personal: 'a', vivo: 'tablero', circ: 'fondo-corte', avisos: 'b', recientes: 'd', turno: 'b', cierre: 'a', tipo: 'app', deco: 'none' };
+  const isBase1 = (L) => Object.entries(BASE1).every(([k, v]) => L[k] === v);
   const HOME = {
     original: ['Original', 'con «Earnly Driver»'],
     sintitulo: ['Sin título', 'sin el rótulo ni su espacio']
@@ -109,6 +117,7 @@
     const h = new URLSearchParams(location.hash.slice(1));
     const L = Object.assign(S.lab, DEFAULTS);
     screenId = 'home';
+    if (h.get('base') === '1') Object.assign(L, BASE1);
     if (h.get('view')) L.view = h.get('view');
     if (FAMS[h.get('family')]) L.family = h.get('family');
     if (FAMS[h.get('b')]) L.familyB = h.get('b');
@@ -125,6 +134,7 @@
     if (RECIENTES[h.get('recientes')]) L.recientes = h.get('recientes');
     if (TURNO[h.get('turno')]) L.turno = h.get('turno');
     if (CIERRE[h.get('cierre')]) L.cierre = h.get('cierre');
+    if (TIPO[h.get('tipo')]) L.tipo = h.get('tipo');
     if (['light', 'dark'].includes(h.get('theme'))) L.theme = h.get('theme');
     if (['en', 'es'].includes(h.get('lang'))) L.lang = h.get('lang');
     if (E.SCENARIOS[h.get('scenario')]) L.scenario = h.get('scenario');
@@ -139,7 +149,14 @@
 
   function writeHash() {
     const L = S.lab;
-    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, vivo: L.vivo, circulo: L.circ, avisos: L.avisos, recientes: L.recientes, turno: L.turno, cierre: L.cierre, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
+    if (L.view === 'single' && isBase1(L)) {
+      const b = new URLSearchParams({ base: '1', theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, motion: L.motion });
+      if (L.solo) b.set('solo', '1');
+      if (L.tall) b.set('tall', '1');
+      history.replaceState(null, '', '#' + b.toString());
+      return;
+    }
+    const h = new URLSearchParams({ view: L.view, family: L.family, b: L.familyB, home: L.home, card: L.card, cards: L.cards, desglose: L.bd, opciones: L.opts, personal: L.personal, personales: L.personals, vivo: L.vivo, circulo: L.circ, avisos: L.avisos, recientes: L.recientes, turno: L.turno, cierre: L.cierre, tipo: L.tipo, theme: L.theme, lang: L.lang, scenario: L.scenario, screen: screenId, width: L.width, text: L.textScale, deco: L.deco, motion: L.motion });
     if (L.solo) h.set('solo', '1');
     if (L.tall) h.set('tall', '1');
     history.replaceState(null, '', '#' + h.toString());
@@ -148,6 +165,7 @@
   function syncControls() {
     const L = S.lab;
     $('c-view').value = L.view;
+    $('c-base').value = isBase1(L) ? '1' : '';
     $('c-family').value = L.family;
     $('c-familyB').value = L.familyB;
     $('c-home').value = L.home;
@@ -163,6 +181,7 @@
     $('c-recientes').value = L.recientes;
     $('c-turno').value = L.turno;
     $('c-cierre').value = L.cierre;
+    $('c-tipo').value = L.tipo;
     $('c-theme').value = L.theme;
     $('c-lang').value = L.lang;
     $('c-scenario').value = L.scenario;
@@ -241,7 +260,7 @@
       return `
       <section class="frame-col" aria-label="${name}" style="--w:${L.width}px">
         ${L.solo ? '' : `<div class="frame-head"><strong>${name}</strong><span>${summary}</span></div>`}
-        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}" data-vivo="${vivo}" data-circ="${circ}" data-avisos="${aviso}" data-recientes="${rec}" data-turno="${tur}" data-cierre="${cie}">
+        <div class="phone" style="--w:${L.width}px; --h:${L.tall ? 2200 : HEIGHT[L.width]}px" data-slot="${i}" data-family="${f}" data-home="${home}" data-card="${card}" data-bd="${bd}" data-opts="${opt}" data-personal="${per}" data-vivo="${vivo}" data-circ="${circ}" data-avisos="${aviso}" data-recientes="${rec}" data-turno="${tur}" data-cierre="${cie}" data-tipo="${L.tipo}">
           <div class="app" data-family="${f}" data-theme="${L.theme}"></div>
         </div>
       </section>`;
@@ -256,6 +275,7 @@
       : `<span class="tag tag-ref">Referencia</span> <code>${i.ref}</code>`;
     $('lab-info').innerHTML = `<span>Vista actual: <strong>${i.name}</strong></span><span>${src}</span>
       <span>Escenario: ${sc.label.es}${sc.ref ? ` (<code>${sc.ref}</code>)` : ' <span class="tag tag-approx">aprox.</span>'}</span>
+      ${S.lab.view === 'single' && isBase1(S.lab) ? '<span>Base 1: todo lo elegido en Inicio, el turno en curso y el cierre encima de la app actual, sin decoración de fiestas. Cambia la pantalla para recorrerla.</span>' : ''}
       ${S.lab.view === 'sintitulo' ? '<span>Original y Sin título: misma familia, datos, tamaño y estado; solo cambia el rótulo de Inicio.</span>' : ''}
       ${S.lab.view === 'tarjeta' ? '<span>Tarjeta verde: Inicio sin título en todos los marcos, mismos datos y estado; solo cambia la composición de la tarjeta.</span>' : ''}
       ${S.lab.view === 'iniciar' ? '<span>Iniciar turno: todo lo elegido en Inicio en los dos marcos, mismos datos y estado; solo cambia el círculo. El fondo es el trébol real de Woodbridge (Nueva Jersey) trazado con datos de OpenStreetMap.</span>' : ''}
@@ -278,6 +298,11 @@
     const prev = { ...L };
     const prevScreen = screenId;
     L.view = $('c-view').value;
+    if ($('c-base').value === '1' && !isBase1(L)) {
+      Object.assign(L, BASE1);
+      L.view = 'single';
+      syncControls();
+    }
     L.family = $('c-family').value;
     L.familyB = $('c-familyB').value;
     L.home = $('c-home').value;
@@ -293,6 +318,7 @@
     L.recientes = $('c-recientes').value;
     L.turno = $('c-turno').value;
     L.cierre = $('c-cierre').value;
+    L.tipo = $('c-tipo').value;
     L.theme = $('c-theme').value;
     L.lang = $('c-lang').value;
     L.scenario = $('c-scenario').value;
@@ -305,7 +331,7 @@
       L.familyB = Object.keys(FAMS).find((f) => f !== L.family);
     }
     if (prev.scenario !== L.scenario || prevScreen !== screenId) E.jump(screenId);
-    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.vivo !== L.vivo || prev.circ !== L.circ || prev.avisos !== L.avisos || prev.recientes !== L.recientes || prev.turno !== L.turno || prev.cierre !== L.cierre || prev.width !== L.width) buildStage();
+    if (prev.view !== L.view || prev.family !== L.family || prev.familyB !== L.familyB || prev.home !== L.home || prev.card !== L.card || prev.cards !== L.cards || prev.bd !== L.bd || prev.opts !== L.opts || prev.personal !== L.personal || prev.personals !== L.personals || prev.vivo !== L.vivo || prev.circ !== L.circ || prev.avisos !== L.avisos || prev.recientes !== L.recientes || prev.turno !== L.turno || prev.cierre !== L.cierre || prev.tipo !== L.tipo || prev.width !== L.width) buildStage();
     syncControls();
     writeHash();
     E.render();
