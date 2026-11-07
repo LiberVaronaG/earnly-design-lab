@@ -206,4 +206,4 @@ El cierre ya se desplaza hoy, y «Listo» va fijo abajo, así que la altura pesa
 
 ## Siguiente paso
 
-Liber aprobó la lista filtrada el 6 nov (`afcc68a`). Toca Navidad y después la pasada final por Inicio entero. Nada pasa a SwiftUI.
+Liber aprobó la lista filtrada el 6 nov (`afcc68a`). Toca la pasada final por Inicio entero, que cierra la base 1. Navidad va después, en la base 2. Nada pasa a SwiftUI.

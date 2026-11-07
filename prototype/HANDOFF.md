@@ -250,7 +250,8 @@ Detalle completo en [CIERRE-TURNO.md](CIERRE-TURNO.md).
   - De paso, la propina de la app del turno en plataformas con propinas, como la app, y GrubHub en el laboratorio.
   - Auditoría: 2016 renders sin fallos; control negativo de 15 de 15. El cierre antiguo sigue idéntico.
 - **Liber aprobó la lista filtrada el 6 nov** (`afcc68a`). Al registrarlo no cambió el producto.
-- **Siguiente paso:** Navidad (el gorrito frente al mapa del círculo) y después la pasada final por Inicio entero. Nada pasa a SwiftUI.
+- **Orden (6 nov, Liber):** primero se termina la base 1 (él también la llama «token 1»). Queda fija y sin ninguna decoración de fiestas, ni Navidad ni Halloween. La base 0 es la app con la que se lanzó. Navidad irá en la base 2, encima de la base 1.
+- **Siguiente paso:** la pasada final por Inicio entero, que cierra la base 1. Nada pasa a SwiftUI.
 
 ## Cómo continuar
 
